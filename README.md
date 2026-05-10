@@ -36,7 +36,8 @@ Estado actual: :heavy_plus_sign: En desarrollo
 ### :white_check_mark::white_check_mark::white_check_mark: Implementación
 Estado actual: :heavy_check_mark: [Ver Item Competencia](https://github.com/cuervoforjador/aquelarre/wiki/Competencias-(Item))
 ### :black_square_button::black_square_button::white_check_mark: Repositorio (Competencias)
-Estado actual: :heavy_check_mark: [Ver Item Competencia](https://github.com/cuervoforjador/aquelarre/wiki/Competencias-(Repositorio))<br>
+Estado actual: :heavy_check_mark: [Ver Item Competencia](https://github.com/cuervoforjador/aquelarre/wiki/Competencias-(Repositorio))
+
 Pendiente: :heavy_multiplication_x: Expandir a los sistemas Aquelarre v4 y Villa y Corte
 ### :black_square_button::black_square_button::black_square_button: Integración en la Ficha de Personaje
 Estado actual: :heavy_multiplication_x: Pendiente
@@ -53,7 +54,8 @@ Estado actual: :heavy_check_mark: [Ver Item Reino](https://github.com/cuervoforj
 ### :white_check_mark::white_check_mark::white_check_mark: Implementación Estamento y Posición social
 Estado actual: :heavy_check_mark: [Ver Item Estamento y Posiciones sociales](https://github.com/cuervoforjador/aquelarre/wiki/Estamentos-y-Posiciones-sociales-(Item))
 ### :black_square_button::black_square_button::white_check_mark: Repositorio (Contexto)
-Estado actual: :heavy_check_mark: Completado para el Sistema Aquelarre v3<br>
+Estado actual: :heavy_check_mark: Completado para el Sistema Aquelarre v3
+
 Pendiente: :heavy_multiplication_x: Expandir a los sistemas Aquelarre v4 y Villa y Corte
 ### :black_square_button::black_square_button::black_square_button: Integración en la Ficha de Personaje
 Estado actual: Pendiente
