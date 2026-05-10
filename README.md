@@ -14,9 +14,9 @@ Estado actual: :heavy_check_mark: [Ver Sistema de Reglas](https://github.com/cue
 
 ## Sistema de Tiradas
 ### :black_square_button::black_square_button::black_square_button: Implementación 
-Estado actual: :heavy_multiplication_x: Pendiente
+Estado actual: :heavy_plus_sign: En desarrollo
 ### :black_square_button::black_square_button::black_square_button: Publicación a través de mensajes
-Estado actual: :heavy_multiplication_x: Pendiente
+Estado actual: :heavy_plus_sign: En desarrollo
 
 ## Sistema de Mensajes
 ### :black_square_button::black_square_button::black_square_button: Implementación
@@ -26,17 +26,17 @@ Estado actual: :heavy_multiplication_x: Pendiente
 
 ## Características
 ### :black_square_button::white_check_mark::white_check_mark: Implementación
-Estado actual: Pendiente
+Estado actual: :heavy_plus_sign: En desarrollo
 ### :black_square_button::black_square_button::black_square_button: Dependencia en función de las Reglas
-Estado actual: Pendiente
+Estado actual: :heavy_plus_sign: En desarrollo
 ### :black_square_button::black_square_button::black_square_button: Tiradas de Características
-Estado actual: Pendiente
+Estado actual: :heavy_plus_sign: En desarrollo
 
 ## Competencias
 ### :white_check_mark::white_check_mark::white_check_mark: Implementación
-Estado actual: Pendiente
+Estado actual: :heavy_check_mark: [Ver Item Competencia](https://github.com/cuervoforjador/aquelarre/wiki/Competencias-(Item))
 ### :black_square_button::black_square_button::white_check_mark: Repositorio (Competencias)
-Estado actual: Pendiente
+Estado actual: :heavy_check_mark: [Ver Item Competencia](https://github.com/cuervoforjador/aquelarre/wiki/Competencias-(Repositorio))
 ### :black_square_button::black_square_button::black_square_button: Integración en la Ficha de Personaje
 Estado actual: Pendiente
 ### :black_square_button::black_square_button::black_square_button: Tiradas por Competencia
