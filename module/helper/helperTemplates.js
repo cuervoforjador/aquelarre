@@ -13,8 +13,19 @@ export default class helperTemplates {
 
         foundry.applications.handlebars.loadTemplates({
 
-            main_Actor: `${character}/main.hbs`,
+            // --- CHARACTER ---
+            main_Actor: `${character}/main/character.hbs`,
 
+            character_footer: `${character}/parts/_footer.hbs`,
+            character_header: `${character}/headers/_header.hbs`,
+            character_background: `${character}/headers/_background.hbs`,            
+
+            header_Character: `${character}/headers/character.hbs`,
+
+            tab_Stats: `${character}/tabs/stats.hbs`,
+            tab_Combate: `${character}/tabs/combate.hbs`,
+
+            // --- ITEMS ---
             main_Item: `${item}/main/item.hbs`,
             main_Competencia: `${item}/main/competencia.hbs`,
             main_Sociedad: `${item}/main/sociedad.hbs`,

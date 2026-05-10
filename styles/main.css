@@ -1,10 +1,15 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Almendra+Display&display=swap');
+@font-face {
+  font-family: corvux;
+  src: url(corvux.ttf);
+}
 
 :root {
     --fSize: 1rem;
     --fFont0: "Almendra", serif;
-    --fFont1: "Modesto Condensed", serif;    
+    --fFont1: "corvux", serif;    
+    --fFont2: "Modesto Condensed", serif;    
     --aqRed: #b42323;
     --aqRed1: #ffffff52;
     --aqRed2: #771313;

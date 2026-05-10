@@ -9,7 +9,7 @@ export default class extendCharacter_Base extends extend_Base {
      */
     static defineSchema() {
         const schema = super.defineSchema()
-
+        
         /** --- INFO --- */
         schema.info  = new api.SchemaField({
             edad: new api.NumberField({ nullable: true, initial: null }),

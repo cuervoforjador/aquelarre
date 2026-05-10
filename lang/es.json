@@ -1,6 +1,6 @@
 {
  "TYPES.Actor.character":               "Personaje",
- "TYPES.Actor.NPC":                     "Personaje NJ",
+ "TYPES.Actor.npc":                     "Personaje NJ",
  "TYPES.Item.item":                     "Item",
  "TYPES.Item.competencia":              "Competencia",
  "TYPES.Item.sociedad":                 "Sociedad",
@@ -47,6 +47,7 @@
  "common.borrar":                       "Borrar",
  "common.caracteristica":               "Característica",
  "common.caracteristicas":              "Características",
+ "common.combat":                       "Combate",
  "common.cultura":                      "Cultura",
  "common.descripcion":                  "Descripción",
  "common.desde":                        "Desde",
@@ -75,6 +76,7 @@
  "common.reino":                        "Reino",
  "common.rules":                        "Reglas",
  "common.sociedad":                     "Sociedad",
+ "common.stats":                        "Atributos",
  "common.superior":                     "Superior",
  "common.total":                        "Total",
  "common.valor":                        "Valor",

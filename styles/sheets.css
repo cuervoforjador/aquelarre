@@ -149,7 +149,7 @@ form._extend ._sheetContent ._combo select {
 }
 
 /** --- CABECERA --- */
-form._item ._sheetHeader {
+form._extend ._sheetHeader {
     width: 100%;
     display: flex;
     justify-content: flex-start;
@@ -159,7 +159,7 @@ form._item ._sheetHeader {
     flex-direction: row;
     align-items: center;
 }
-form._item ._sheetHeader ._headerBackground {
+form._extend ._sheetHeader ._headerBackground {
     position: absolute;
     z-index: -1;
     width: 100%;
@@ -171,12 +171,12 @@ form._item ._sheetHeader ._headerBackground {
     background-position: center;
     opacity: 0.15;    
 }
-form._item ._sheetHeader,
-form._item ._sheetFooter {
+form._extend ._sheetHeader,
+form._extend ._sheetFooter {
     border: none;    
     background: var(--aqDarkRed);
 }
-form._item ._sheetHeader {
+form._extend ._sheetHeader {
     padding: 20px 10px 10px 10px;
     border-bottom: 1px solid var(--aqRed);
     position: relative;
@@ -184,32 +184,32 @@ form._item ._sheetHeader {
     align-content: flex-start;
     align-items: flex-start;    
 }
-form._item ._mainHeader {
+form._extend ._mainHeader {
     display: flex;
     flex-direction: row;
     align-content: center;
     align-items: center;
 }
-form._item ._sheetFooter {
+form._extend ._sheetFooter {
     border-top: 1px solid var(--aqRed);
 }
 
-._sheetHeader .portrait {
+form._extend ._sheetHeader .portrait {
     height: 150px;
     width: 150px;
 }
-form._item ._sheetHeader .portrait {
+form._extend ._sheetHeader .portrait {
     width: 75px;
     height: 75px;
 }
-._sheetHeader ._info {
+form._extend ._sheetHeader ._info {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
     width: calc(100% - 150px);
 }
-form._item ._sheetHeader ._info {
+form._extend ._sheetHeader ._info {
     width: calc(100% - 75px);
     padding-left: 10px;
 }

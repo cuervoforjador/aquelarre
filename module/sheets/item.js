@@ -88,6 +88,7 @@ export default class extendItem0Sheet
 
   /** @override */
   async _prepareContext() {
+    
     return {
       fields:               this.document.schema.fields,
       systemFields:         this.document.system.schema.fields,

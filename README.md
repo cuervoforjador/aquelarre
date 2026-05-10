@@ -6,7 +6,7 @@ Situación actual del desarrollo
 ### :black_square_button::white_check_mark::white_check_mark: Clase básica Item
 Estado actual: :heavy_check_mark: Implementado a la espera de posibles cambios
 ### :black_square_button::black_square_button::white_check_mark: Fuente Aquelarre 
-Estado actual: :heavy_plus_sign: En desarrollo
+Estado actual: :heavy_check_mark: [Ver Fuente](https://github.com/cuervoforjador/aquelarre/wiki/Fuente)
 
 ## Configuración del Sistema
 ### :black_square_button::white_check_mark::white_check_mark: Sistema de reglas
