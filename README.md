@@ -4,25 +4,25 @@ Situación actual del desarrollo
 
 ## Elementos e interfaz UI
 ### :black_square_button::white_check_mark::white_check_mark: Clase básica Item
-Estado actual: Implementado a la espera de posibles cambios
+Estado actual: :heavy_check_mark: Implementado a la espera de posibles cambios
 ### :black_square_button::black_square_button::white_check_mark: Fuente Aquelarre 
-Estado actual: En desarrollo
+Estado actual: :heavy_plus_sign: En desarrollo
 
 ## Configuración del Sistema
 ### :black_square_button::white_check_mark::white_check_mark: Sistema de reglas
-Estado actual: [Ver Sistema de Reglas](https://github.com/cuervoforjador/aquelarre/wiki/Sistema-de-Reglas)
+Estado actual: :heavy_check_mark: [Ver Sistema de Reglas](https://github.com/cuervoforjador/aquelarre/wiki/Sistema-de-Reglas)
 
 ## Sistema de Tiradas
 ### :black_square_button::black_square_button::black_square_button: Implementación 
-Estado actual: Pendiente
+Estado actual: :heavy_multiplication_x: Pendiente
 ### :black_square_button::black_square_button::black_square_button: Publicación a través de mensajes
-Estado actual: Pendiente
+Estado actual: :heavy_multiplication_x: Pendiente
 
 ## Sistema de Mensajes
 ### :black_square_button::black_square_button::black_square_button: Implementación
-Estado actual: Pendiente
+Estado actual: :heavy_multiplication_x: Pendiente
 ### :black_square_button::black_square_button::black_square_button: Estilización
-Estado actual: Pendiente
+Estado actual: :heavy_multiplication_x: Pendiente
 
 ## Características
 ### :black_square_button::white_check_mark::white_check_mark: Implementación
