@@ -1,0 +1,23 @@
+<div class="_header _sheetHeader">
+
+    {{>item_background}}
+    {{>item_header}}
+        
+    {{!-- PROPERTIES --}}
+    <div class="_row _gapped _marginTop">
+        <div class="_combo">
+            <label>{{localize 'common.sociedad'}} :</label>
+            <select name="system.sociedad.key" {{{_disabled}}} style="width: calc(var(--fSize) * 10);">
+            {{selectOptions sociedades 
+                            selected=system.sociedad.key
+                            localize=false
+                            nameAttr="key"
+                            labelAttr="label" }}
+            </select>                 
+        </div>
+
+        {{{navTab 'primary' (array 'idiomas' 'descripcion') '_expanded'}}}
+      
+    </div>
+ 
+</div>

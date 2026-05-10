@@ -1,0 +1,81 @@
+{
+  "id": "aquelarre",
+  "title": "Aquelarre",
+  "description": "Aquelarre system",
+  "manifest": "https://github.com/cuervoforjador/aquelarre/releases/download/latest/system.json",
+  "download": "https://github.com/cuervoforjador/aquelarre/releases/download/0.1.0/aquelarre.zip",
+  "url": "https://github.com/cuervoforjador/aquelarre/",
+  "license": "LICENSE",
+  "version": "0.1.0",
+  "authors": [
+    {
+      "name": "Cuervo Forjador",
+      "url": "https://github.com/cuervoforjador"
+    }
+  ],
+  "compatibility": {
+    "minimum": "12",
+    "verified": "14"
+  },
+  "esmodules": [
+    "system.js"
+  ],
+  "scripts": [
+    "https://code.jquery.com/ui/1.13.2/jquery-ui.js"
+  ],
+  "styles": [
+      "styles/main.css",
+      "styles/sheets.css"
+  ],
+  "packs": [
+        {
+            "name": "aq3_pack",
+            "label": "Aquelarre 3a Edición",
+            "system": "aquelarre",
+            "path": "packs/aquelarre-3a-edicion",
+            "type": "Item",
+            "flags": {
+              "rules": "aq3",
+              "class": "_mainPack",
+              "background": "systems/aquelarre/assets/ui/systemBackground.png"
+            }
+        }  
+  ],
+  "languages": [
+    {
+      "lang": "en",
+      "name": "English",
+      "path": "lang/en.json"
+    },
+    {
+      "lang": "es",
+      "name": "Español",
+      "path": "lang/es.json"
+    }
+  ],
+  "socket": true,
+  "grid": {
+      "distance": 5,
+      "units": "m"
+  },  
+  "background": "systems/aquelarre/assets/ui/systemBackground.png",
+  "primaryTokenAttribute": "attributes.health",
+  "secondaryTokenAttribute": "attributes.power",
+  "documentTypes": {
+    "Actor": {
+      "character": {},
+      "npc": {}
+    },
+    "Item": {
+      "sociedad": {},
+      "pueblo": {},
+      "reino": {},
+      "estrato": {},
+      "posicion": {},
+      "profesion": {},
+      "competencia": {},
+      "item": {}
+    }
+  }
+
+}

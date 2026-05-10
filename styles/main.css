@@ -1,0 +1,121 @@
+
+@import url('https://fonts.googleapis.com/css2?family=Almendra+Display&display=swap');
+
+:root {
+    --fSize: 1rem;
+    --fFont0: "Almendra", serif;
+    --fFont1: "Modesto Condensed", serif;    
+    --aqRed: #b42323;
+    --aqRed1: #ffffff52;
+    --aqRed2: #771313;
+    --aqDarkRed: #340202b3;
+    --aqBackRed: #34020238;
+    --aqText: #000000;
+    --aqText2: #FFF;
+}
+
+._row {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+}
+._row._inverse {
+    justify-content: flex-end;
+}
+input {
+    border-radius: 0;
+}
+input.h4 {
+    font-size: calc(var(--fSize) * 2);
+    line-height: calc(var(--fSize) * 2);
+    height: calc(var(--fSize) * 2);
+    font-family: var(--fFont1);
+    background: none;
+    margin-bottom: 5px;
+}
+._sSize {
+    width: calc(var(--fSize) * 4);
+}
+._mSize {
+    width: calc(var(--fSize) * 8);
+}
+._lSize {
+    width: calc(var(--fSize) * 20);
+}
+
+._lessBottom {
+    margin-bottom: -1px;
+}
+._gapped {
+    gap: 10px!important;
+}
+._smallGapped {
+    gap: 4px!important;
+}
+._marginTop {
+    margin-top: 4px;
+}
+._center {
+    text-align: center;
+}
+._right {
+    text-align: right;
+}
+._expanded {
+    width: 100%;
+    justify-content: flex-end;
+}
+
+
+table._table {
+    background: none;
+    border: 1px solid #0000002e;
+    padding: 3px;
+}
+table._table thead {
+    background: none;
+    border-radius: 0;
+    background: var(--aqDarkRed);
+    color: var(--aqText2);    
+}
+table._table tr:nth-child(odd) {
+    background: var(--aqBackRed);
+}
+table._table th, 
+table._table td {
+    padding: 0.25rem;
+}
+table._table th {
+    padding-left: 0.5rem;
+    font-family: var(--fFont1);
+    font-size: calc(var(--fSize) * 1.15);
+}
+table._table th._button,
+table._table td._button {
+    width: 20px;
+}
+table._table input,
+table._table select {
+    font-size: calc(var(--fSize) * 1);
+    height: calc(var(--fSize) * 1.6);
+    line-height: calc(var(--fSize) * 1.6);
+    padding: 0 0.25rem;
+}
+
+
+/** --- PACKS --- */
+._systemPack a.entry-name i,
+._systemPack .compendium-name i {
+    display: none;
+}
+._systemPack footer {
+    display: none;
+}
+._systemPack a.entry-name.compendium-name,
+._systemPack .compendium-name strong.ellipsis {
+    font-family: var(--fFont1);
+    font-size: calc(var(--fSize) * 1.3);
+}
+._systemPack .compendium-name strong.ellipsis {
+    font-size: calc(var(--fSize) * 2);
+}

@@ -1,0 +1,269 @@
+/** --- CONTENT --- */
+form._extend section.window-content {
+    padding: 0;
+}
+form._extend {
+    font-family: var(--fFont0);
+    font-size: var(--fSize);
+    background-image: url(../assets/ui/paper.png);
+}
+form._extend.minimized {
+    background: var(--aqDarkRed);
+}
+form._extend header.window-header {
+    justify-content: flex-end;
+    margin-bottom: -35px;
+    background: none;
+    border: none;
+}
+form._extend ._main {
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+}
+form._extend ._sheetContent {
+    overflow-y: auto;
+    height: calc(100% - 40px);
+    padding: 10px;
+    color: var(--aqText);
+    box-shadow: inset 0px 0px 3px 2px #000000c9;
+}
+form._extend ._sheetFooter {
+    width: 100%;
+    height: 40px;
+}
+
+/** --- TABS --- */
+form._extend nav.tabs {
+    gap: none;
+    line-height: calc(var(--fSize) * 1.5);
+    border: none;
+}
+form._extend section.tab.active {
+    height: calc( 100% - 10px);
+}
+
+/** --- CONTROLES GENERAL --- */
+form._extend input:disabled, 
+form._extend select:disabled, 
+form._extend textarea:disabled, 
+form._extend code-mirror:disabled, 
+form._extend formula-input:disabled, 
+form._extend color-picker:disabled, 
+form._extend file-picker:disabled {
+    background: none!important;
+    --input-background-color: none;
+    --input-border-color: none;
+    --input-text-color: var(--color-light-4);
+}
+
+form._extend ._sheetContent input,
+form._extend ._sheetContent select,
+form._extend ._sheetContent textarea {
+    color: var(--aqText);
+    background: #0000001a;
+    border-radius: 0;
+}
+
+button._checked {
+    background: var(--aqRed2);
+    color: #000;
+    border: 1px solid var(--aqRed1);
+}
+
+/** --- SECCIONES --- */
+._box {
+    display: flex;
+    flex-direction: column;
+    width: fit-content;
+    row-gap: 2px;
+    border: 1px solid var(--aqRed);
+    padding: 8px;
+}
+._box ._title {
+    width: 100%;
+    text-align: center;
+}
+._box ._title h4.divider {
+    margin: 0 0 4px 0;
+}
+._box ._title h4.divider::before,
+._box ._title h4.divider::after {
+    border-top: 2px ridge var(--aqRed);
+}
+
+._box ._title label {
+    font-family: var(--fFont1);
+    font-size: calc(var(--fSize) * 1.5);
+    line-height: calc(var(--fSize) * 1.5);
+}
+._box ._row {
+    gap: 2px;
+}
+._box._table ._row:nth-child(even) {
+    background: #ffffff12;
+}
+._box ._row input,
+._box ._row select {
+    background: none;
+    border-radius: 0;
+}
+._box input:focus,
+._box select:focus,
+._table input:focus,
+._table select:focus {
+    outline: 2px solid var(--aqRed);
+}
+._box ._row label._input {
+    height: var(--input-height);
+    line-height: var(--input-height);
+}
+._box option,
+._combo option,
+._table option {
+    background: #000000e0;
+    color: #FFF;
+}
+
+._combo {
+    display: flex;
+    align-content: center;
+    align-items: center;
+}
+._combo label {
+    white-space: nowrap;
+}
+._combo input,
+._combo select {
+    margin-left: 4px;
+    font-size: var(--fSize);
+    line-height: calc(var(--fSize) * 1.5);
+    height: calc(var(--fSize) * 1.5);
+    background: #ffffff0d;
+    border-bottom: 1px solid #ffffff21;
+    border-radius: 0;
+}
+form._extend ._sheetContent ._combo input,
+form._extend ._sheetContent ._combo select {
+    background: #6565651f;
+}
+
+/** --- CABECERA --- */
+form._item ._sheetHeader {
+    width: 100%;
+    display: flex;
+    justify-content: flex-start;
+    align-content: center;
+    overflow-x: auto;
+    overflow-y: hidden;
+    flex-direction: row;
+    align-items: center;
+}
+form._item ._sheetHeader ._headerBackground {
+    position: absolute;
+    z-index: -1;
+    width: 100%;
+    height: 100%;
+    top: 0px;
+    left: 0px;
+    background-repeat: no-repeat;
+    background-size: 100%;
+    background-position: center;
+    opacity: 0.15;    
+}
+form._item ._sheetHeader,
+form._item ._sheetFooter {
+    border: none;    
+    background: var(--aqDarkRed);
+}
+form._item ._sheetHeader {
+    padding: 20px 10px 10px 10px;
+    border-bottom: 1px solid var(--aqRed);
+    position: relative;
+    flex-direction: column;
+    align-content: flex-start;
+    align-items: flex-start;    
+}
+form._item ._mainHeader {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+}
+form._item ._sheetFooter {
+    border-top: 1px solid var(--aqRed);
+}
+
+._sheetHeader .portrait {
+    height: 150px;
+    width: 150px;
+}
+form._item ._sheetHeader .portrait {
+    width: 75px;
+    height: 75px;
+}
+._sheetHeader ._info {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-start;
+    width: calc(100% - 150px);
+}
+form._item ._sheetHeader ._info {
+    width: calc(100% - 75px);
+    padding-left: 10px;
+}
+
+/** --- TEXTOS --- */
+form._extend .editor {
+    height: calc(100% - 10px);
+    text-align: justify;
+}
+form._extend input._fuente {
+    text-align: right;
+}
+form._extend  .editor h4 {
+    color: var(--aqText);
+}
+
+/** --- TIRADAS --- */
+._roll {
+    position: relative;
+    cursor: pointer;
+}
+._roll span._value,
+._roll span._dice {
+    position: absolute;
+    display: inline;
+    left: 0;
+    width: 100%;
+    text-align: center;
+    transition: 0.3s;
+}
+._roll span._dice {
+    opacity: 0;
+}
+._roll:hover span._dice {
+    opacity: 0.50;
+}
+._roll:hover span._value {
+    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
+    z-index: 1;
+}
+
+/** --- CARACTERÍSTICAS --- */
+._row._char label,
+._row._char input {
+    font-family: var(--fFont1);
+    font-size: calc(var(--fSize) * 1.5);
+    width: calc(var(--fSize) * 2.5);
+    padding: 0;
+}
+
+._row._char._header label {
+    padding: 0;
+    font-size: calc(var(--fSize) * 1);
+    font-family: var(--fFont1);
+    text-align: center;
+    margin-right: 2px;
+}

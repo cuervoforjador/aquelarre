@@ -1,0 +1,63 @@
+<div class="_main">
+
+    <!-- CABECERA -->
+    <div class="_box _sheetHeader _lessBottom">
+        <div class="portrait" >
+            <img src="{{actor.img}}" 
+                 alt="{{actor.name}}" 
+                 data-action="editImage"
+                 class="actor-portrait {{#unless isEditMode}}click-to-edit{{/unless}}">
+        </div>
+        <div class="_info">
+            <input type="text" 
+                   class="h4"
+                   name="name" 
+                   value="{{actor.name}}" 
+                   placeholder="{{localize 'common.nombre'}}">
+            <div class="_row">
+                <div class="_combo">
+                    <label>{{localize 'common.reino'}}</label>
+                    <input 
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- CARACTERÍSTICAS -->
+    <div class="_box _table _chars">
+        <div class="_title">
+            <h4 class="divider">{{localize 'common.caracteristicas'}}</h4>
+        </div>
+        <div class="_row _char _header">
+            <label></label>
+            <label class="_input _center">{{localize 'common.total'}}</label>
+            <label class="_input _center">{{localize 'common.actual'}}</label>
+            <label class="_input _center">x5%</label>
+        </div>
+        {{#each system.caracteristicas as |char key|}}
+        <div class="_row _char">
+            <label>{{localize (concat "CHAR." key "Short")}}</label>
+            <input type="number" 
+                   name="system.caracteristicas.{{key}}.total" 
+                   value="{{char.total}}" 
+                   min="{{char.min}}" 
+                   max="{{char.max}}"
+                   class="_charTotal _center">
+            <input type="number" 
+                   name="system.caracteristicas.{{key}}.value" 
+                   value="{{char.value}}" 
+                   min="{{char.min}}" 
+                   max="{{char.max}}"
+                   class="_charValue _center">  
+            <label class="_input _roll"
+                   data-spectrum="true"
+                   data-action="charX5"
+                   data-tooltip="{{localize 'tooltip.charX5'}}">
+                   <span class="_value _center">{{mult char.value 5}}</span>
+                   <span class="_dice"><i class="fa-sharp fa-light fa-dice-d10"></i></span>
+            </label>           
+        </div>
+        {{/each}}
+    </div>
+
+</div>
