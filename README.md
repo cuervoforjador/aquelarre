@@ -2,9 +2,14 @@
 ## Situación actual del desarrollo:
 
  :black_square_button::black_square_button::black_square_button: PENDIENTE
+
  :black_square_button::black_square_button::white_check_mark: IMPLEMENTADO
+
  :black_square_button::white_check_mark::white_check_mark: EN PRUEBAS
+
  :white_check_mark::white_check_mark::white_check_mark: COMPLETO
+
+ 
 
 ## Elementos e interfaz UI
 ### :white_check_mark::white_check_mark::white_check_mark: Clase básica Item
