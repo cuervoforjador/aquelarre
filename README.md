@@ -1,15 +1,19 @@
 # Aquelarre a V14
 
-Situación actual del desarrollo
+Situación actual del desarrollo:
+:black_square_button::black_square_button::black_square_button: PENDIENTE
+:black_square_button::black_square_button::white_check_mark: IMPLEMENTADO
+:black_square_button::white_check_mark::white_check_mark: EN PRUEBAS
+:white_check_mark::white_check_mark::white_check_mark: COMPLETO
 
 ## Elementos e interfaz UI
-### :black_square_button::white_check_mark::white_check_mark: Clase básica Item
+### :white_check_mark::white_check_mark::white_check_mark: Clase básica Item
 Estado actual: :heavy_check_mark: Implementado a la espera de posibles cambios
-### :black_square_button::black_square_button::white_check_mark: Fuente Aquelarre 
+### :white_check_mark::white_check_mark::white_check_mark: Fuente Aquelarre 
 Estado actual: :heavy_check_mark: [Ver Fuente](https://github.com/cuervoforjador/aquelarre/wiki/Fuente)
 
 ## Configuración del Sistema
-### :black_square_button::white_check_mark::white_check_mark: Sistema de reglas
+### :white_check_mark::white_check_mark::white_check_mark: Sistema de reglas
 Estado actual: :heavy_check_mark: [Ver Sistema de Reglas](https://github.com/cuervoforjador/aquelarre/wiki/Sistema-de-Reglas)
 
 ## Sistema de Tiradas
