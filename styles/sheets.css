@@ -304,6 +304,15 @@ form._extend .editor h4 {
 form._extend._vyc .editor h4 {
     color: var(--vcText);
 }
+form._extend._vyc blockquote p,
+form._extend._vyc em {
+    font-family: var(--vcfFont0);
+    text-align: right;
+    color: var(--vcRed);
+    width: 100%;
+    display: flex;
+    justify-content: flex-end;
+}
 
 /** --- TIRADAS --- */
 ._roll {

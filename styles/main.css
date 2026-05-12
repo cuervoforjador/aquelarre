@@ -23,7 +23,8 @@
 
     --vcfFont0: "IM Fell English", serif; /* "Trykker", serif; */
     --vcfFont1: "IM Fell English SC", serif;    
-    --vcfFont2: "Modesto Condensed", serif;      
+    --vcfFont2: "Modesto Condensed", serif;   
+    --vcRed: #b42323;  
     --vcGreen: #298f6f;
     --vcGreen1: #ffffff52;
     --vcGreen2: #2c594b;    
