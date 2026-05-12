@@ -29,7 +29,7 @@ static define() {
     })   
 
     Handlebars.registerHelper("translate", (key, docs) => {
-        return Object.keys(docs).map((key) => docs[key]).find(e => e.key === key).label
+        return Object.keys(docs).map((key) => docs[key]).find(e => e.key === key)?.label
     })
 
     Handlebars.registerHelper("navTab", (...args) => {

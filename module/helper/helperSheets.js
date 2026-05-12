@@ -92,7 +92,9 @@ export default class helperSheets {
         let header = html.find('._sheetHeader')
         const nHeight = header.height() + 20
         html.find('._main').css({height: 'calc(100% - '+nHeight+'px)'})
-        //header.find('._headerBackground').css({height: 'calc('+nHeight+'px)'})
+        //html.find('._sheetHeader .portrait').css({
+        //                height: 'calc('+nHeight+'px - 20px)',
+        //                width: 'calc('+nHeight+'px - 20px)' })
     }
 
     /**
@@ -143,5 +145,35 @@ export default class helperSheets {
     static showTitle(html) {
         let title = html.find('.window-title')
         title.show();
+    }
+
+    /**
+     * readLoreContext
+     * @param {*} document 
+     */
+    static readLoreContext(document) {
+        let info = {};
+        [
+            {type: 'reino', field: 'reino'},
+            {type: 'pueblo', field: 'origen'},
+            {type: 'sociedad', field: 'cultura'},
+            {type: 'estrato', field: 'estamento'},
+            {type: 'posicion', field: 'posicion'}
+
+        ].map(o => {
+            const oItem = document.items.find(e => e.type === o.type)
+            info[o.field] = {} 
+            if (oItem) {
+                info[o.field].key = oItem.system.key
+                info[o.field].label = oItem.name
+                info[o.field].img = oItem.img
+            } else {
+                info[o.field].key = ''
+                info[o.field].label = ''
+                info[o.field].img = "systems/"+SYSTEM_ID+"/assets/svg/cancel.svg"
+            }
+        })
+
+        return info
     }
 }

@@ -21,7 +21,8 @@ export const md_stat = (options = {}) => {
 export const md_lore = (options = {}) => {
       const _options = {...{label: "", hint: ""}, ...options}
       return new api.SchemaField({
-                        key: new api.StringField({ initial: '' })
+                        key: new api.StringField({ initial: '' }),
+                        img: new api.StringField({ initial: '' })
                   }, {
                         label: _options.label,
                         hint: _options.hint

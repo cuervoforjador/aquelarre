@@ -1,6 +1,7 @@
 import { SYSTEM_ID } from "../../config/uiConstants.js"
 import extendActorSheet from "../actor.js";
 import helperContext from "../../helper/helperContext.js";
+import helperSheets from "../../helper/helperSheets.js";
 import sheetHandler from "../handler.js";
 
 export default class extendCharacterSheet extends extendActorSheet {
@@ -37,6 +38,11 @@ export default class extendCharacterSheet extends extendActorSheet {
     const rules = this.document.system.rules
     const context = await super._prepareContext()
     context.caracteristicas = helperContext.getCaracteristicas()
+    context.lore = {
+      reinos: await helperContext.getLoreReinos(rules)
+    }
+
+    context.info = {...context.info, ...helperSheets.readLoreContext(this.document)}
 
     context.tabs = this._prepareTabs("primary")
     return context
@@ -62,6 +68,7 @@ export default class extendCharacterSheet extends extendActorSheet {
 
     if ( !this.isEditable || !this.isEditMode) return;
 
+    html.find('select[name="info.reino.key"]').on("change", sheetHandler._onChangeReino.bind(this))
     html.find('._charTotal').on("change", sheetHandler._onChangeCharTotal.bind(this))
   }  
 

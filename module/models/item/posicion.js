@@ -11,6 +11,10 @@ export default class modelPosicion extends extendItem_Base {
         const schema = super.defineSchema();
 
         schema.femenino = new api.StringField({ initial: '' })
+        schema.roll = new api.SchemaField({
+            low: new api.NumberField({ nullable: true, initial: null }),
+            high: new api.NumberField({ nullable: true, initial: null })
+        })
         return schema;
     }
 

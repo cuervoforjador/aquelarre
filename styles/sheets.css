@@ -7,8 +7,14 @@ form._extend {
     font-size: var(--fSize);
     background-image: url(../assets/ui/paper.png);
 }
+form._extend._vyc {
+    font-family: var(--vcfFont0);
+}
 form._extend.minimized {
     background: var(--aqDarkRed);
+}
+form._extend._vyc.minimized {
+    background: var(--vcDarkGreen);
 }
 form._extend header.window-header {
     justify-content: flex-end;
@@ -27,6 +33,12 @@ form._extend ._sheetContent {
     padding: 10px;
     color: var(--aqText);
     box-shadow: inset 0px 0px 3px 2px #000000c9;
+}
+form._extend._vyc ._sheetContent {
+    color: var(--vcText);
+}
+form._extend._actor ._sheetContent {
+    height: 100%;
 }
 form._extend ._sheetFooter {
     width: 100%;
@@ -54,7 +66,16 @@ form._extend file-picker:disabled {
     background: none!important;
     --input-background-color: none;
     --input-border-color: none;
-    --input-text-color: var(--color-light-4);
+    --input-text-color: var(--aqTextDisabled);
+}
+form._extend._vyc input:disabled, 
+form._extend._vyc select:disabled, 
+form._extend._vyc textarea:disabled, 
+form._extend._vyc code-mirror:disabled, 
+form._extend._vyc formula-input:disabled, 
+form._extend._vyc color-picker:disabled, 
+form._extend._vyc file-picker:disabled {
+    --input-text-color: var(--vcTextDisabled);
 }
 
 form._extend ._sheetContent input,
@@ -64,11 +85,20 @@ form._extend ._sheetContent textarea {
     background: #0000001a;
     border-radius: 0;
 }
+form._extend._vyc ._sheetContent input,
+form._extend._vyc ._sheetContent select,
+form._extend._vyc ._sheetContent textarea {
+    color: var(--vcText);
+}
 
 button._checked {
     background: var(--aqRed2);
     color: #000;
     border: 1px solid var(--aqRed1);
+}
+._vyc button._checked {
+    background: var(--vcGreen2);
+    border: 1px solid var(--vcGreen1);
 }
 
 /** --- SECCIONES --- */
@@ -79,6 +109,9 @@ button._checked {
     row-gap: 2px;
     border: 1px solid var(--aqRed);
     padding: 8px;
+}
+._vyc ._box {
+    border: 1px solid var(--vcGreen);
 }
 ._box ._title {
     width: 100%;
@@ -91,11 +124,18 @@ button._checked {
 ._box ._title h4.divider::after {
     border-top: 2px ridge var(--aqRed);
 }
+._vyc ._box ._title h4.divider::before,
+._vyc ._box ._title h4.divider::after {
+    border-top: 2px ridge var(--vcGreen);
+}
 
 ._box ._title label {
     font-family: var(--fFont1);
     font-size: calc(var(--fSize) * 1.5);
     line-height: calc(var(--fSize) * 1.5);
+}
+._vyc ._box ._title label {
+    font-family: var(--vcfFont1);
 }
 ._box ._row {
     gap: 2px;
@@ -113,6 +153,12 @@ button._checked {
 ._table input:focus,
 ._table select:focus {
     outline: 2px solid var(--aqRed);
+}
+._vyc ._box input:focus,
+._vyc ._box select:focus,
+._vyc ._table input:focus,
+._vyc ._table select:focus {
+    outline: 2px solid var(--vcGreen);
 }
 ._box ._row label._input {
     height: var(--input-height);
@@ -143,6 +189,12 @@ button._checked {
     border-bottom: 1px solid #ffffff21;
     border-radius: 0;
 }
+._combo img._fieldImg {
+    width: calc(var(--fSize) * 1.5);
+    height: calc(var(--fSize) * 1.5);
+    margin: 0 5px;
+}
+
 form._extend ._sheetContent ._combo input,
 form._extend ._sheetContent ._combo select {
     background: #6565651f;
@@ -171,10 +223,17 @@ form._extend ._sheetHeader ._headerBackground {
     background-position: center;
     opacity: 0.15;    
 }
+form._extend._actor ._sheetHeader ._headerBackground {
+    opacity: 1;
+}
 form._extend ._sheetHeader,
 form._extend ._sheetFooter {
     border: none;    
     background: var(--aqDarkRed);
+}
+form._extend._vyc ._sheetHeader,
+form._extend._vyc ._sheetFooter {
+    background: var(--vcDarkGreen);
 }
 form._extend ._sheetHeader {
     padding: 20px 10px 10px 10px;
@@ -184,19 +243,33 @@ form._extend ._sheetHeader {
     align-content: flex-start;
     align-items: flex-start;    
 }
+form._extend._vyc ._sheetHeader {
+    border-bottom: 1px solid var(--vcGreen);
+}
 form._extend ._mainHeader {
     display: flex;
     flex-direction: row;
     align-content: center;
     align-items: center;
 }
+form._extend._actor ._mainHeader {
+    width: 100%;
+    height: 100%;
+}
 form._extend ._sheetFooter {
     border-top: 1px solid var(--aqRed);
+}
+form._extend._vyc ._sheetFooter {
+    border-top: 1px solid var(--vcGreen);
 }
 
 form._extend ._sheetHeader .portrait {
     height: 150px;
     width: 150px;
+}
+form._extend._actor ._sheetHeader .portrait {
+    height: 100%;
+    width: 120px;
 }
 form._extend ._sheetHeader .portrait {
     width: 75px;
@@ -213,6 +286,9 @@ form._extend ._sheetHeader ._info {
     width: calc(100% - 75px);
     padding-left: 10px;
 }
+form._extend._actor ._sheetHeader ._info {
+    width: calc(100% - 120px);
+}
 
 /** --- TEXTOS --- */
 form._extend .editor {
@@ -222,8 +298,11 @@ form._extend .editor {
 form._extend input._fuente {
     text-align: right;
 }
-form._extend  .editor h4 {
+form._extend .editor h4 {
     color: var(--aqText);
+}
+form._extend._vyc .editor h4 {
+    color: var(--vcText);
 }
 
 /** --- TIRADAS --- */
@@ -259,6 +338,10 @@ form._extend  .editor h4 {
     width: calc(var(--fSize) * 2.5);
     padding: 0;
 }
+._vyc ._row._char label,
+._vyc ._row._char input {
+    font-family: var(--vcfFont1);
+}
 
 ._row._char._header label {
     padding: 0;
@@ -266,4 +349,7 @@ form._extend  .editor h4 {
     font-family: var(--fFont1);
     text-align: center;
     margin-right: 2px;
+}
+._vyc ._row._char._header label {
+    font-family: var(--vcfFont1);
 }

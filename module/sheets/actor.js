@@ -189,8 +189,8 @@ export default class extendActorSheet
       })
     }
 
-    /*** --- */
-    html.find('._charTotal').on("change", sheetHandler._onChangeCharTotal.bind(this))
+    /** --- TABLES --- */
+    html.find('._table tbody tr').on("click", this._clickTableTR.bind(this))
   }
     
   /**
@@ -226,6 +226,20 @@ export default class extendActorSheet
     await this.document.update({[path]: mItems})
   }
   
+  /**
+   * _clickTableTR
+   * @param {*} event 
+   */
+  _clickTableTR(event) {
+    const key = $(event.currentTarget).data('key')
+    if (!key || key === '') return 
+    const option = $(event.currentTarget).parents('table._table')
+                                         .find('thead tr select[data-field="key"]')
+                                         .find('option[value="'+key+'"]')
+    if (!option) return
+    option.prop('selected', true)
+  }
+
   /**
    * _access
    * @param {*} object 

@@ -4,6 +4,7 @@
 
 export const SYSTEM_ID = "aquelarre"
 export const SYSTEM_NAME = "aquelarre"
+export const ACTOR_IMG = "assets/svg/cowled.svg"
 export const SYSTEM_ASCII = `
                                                                                             
    █████████      ██████    █████  █████ ██████████ █████         █████████   ███████████   ███████████   ██████████

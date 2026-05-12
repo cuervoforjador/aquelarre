@@ -15,6 +15,7 @@
                             labelAttr="label" }}
             </select>       
         </div>  
+        {{#if configRULES.estratoRoll}} 
         <div class="_combo">
             <label>{{localize 'common.desde'}} :</label>
             <input type="number"
@@ -31,6 +32,7 @@
                 name="system.roll.high" 
                 value="{{system.roll.high}}">                 
         </div>        
+        {{/if}}
     </div>
     <div class="_row _gapped _marginTop">
         {{{navTab 'primary' (array 'posiciones' 'descripcion') '_expanded'}}}      

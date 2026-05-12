@@ -1,5 +1,7 @@
 
 @import url('https://fonts.googleapis.com/css2?family=Almendra+Display&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IM+Fell+Great+Primer+SC&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=IM+Fell+English:ital@0;1&display=swap');
 @font-face {
   font-family: corvux;
   src: url(corvux.ttf);
@@ -17,6 +19,19 @@
     --aqBackRed: #34020238;
     --aqText: #000000;
     --aqText2: #FFF;
+    --aqTextDisabled: #ffffffc4;   
+
+    --vcfFont0: "IM Fell English", serif; /* "Trykker", serif; */
+    --vcfFont1: "IM Fell English SC", serif;    
+    --vcfFont2: "Modesto Condensed", serif;      
+    --vcGreen: #298f6f;
+    --vcGreen1: #ffffff52;
+    --vcGreen2: #2c594b;    
+    --vcDarkGreen: #193d2bbf;
+    --vcBackGreen: #34020238;
+    --vcText: #000000;
+    --vcText2: #FFF; 
+    --vcTextDisabled: #ffffffc4;   
 }
 
 ._row {
@@ -37,6 +52,9 @@ input.h4 {
     font-family: var(--fFont1);
     background: none;
     margin-bottom: 5px;
+}
+._vyc input.h4 {
+    font-family: var(--vcfFont1);
 }
 ._sSize {
     width: calc(var(--fSize) * 4);
@@ -81,10 +99,16 @@ table._table thead {
     background: none;
     border-radius: 0;
     background: var(--aqDarkRed);
-    color: var(--aqText2);    
+    color: var(--aqText2);
+}
+._vyc table._table thead {
+    color: var(--vycText2);
 }
 table._table tr:nth-child(odd) {
     background: var(--aqBackRed);
+}
+._vyc table._table tr:nth-child(odd) {
+    background: var(--vcBackGreen);
 }
 table._table th, 
 table._table td {
@@ -92,8 +116,11 @@ table._table td {
 }
 table._table th {
     padding-left: 0.5rem;
-    font-family: var(--fFont1);
+    font-family: var(--fFont2);
     font-size: calc(var(--fSize) * 1.15);
+}
+._vyc table._table th {
+    font-family: var(--vcfFont2);
 }
 table._table th._button,
 table._table td._button {
@@ -123,4 +150,7 @@ table._table select {
 }
 ._systemPack .compendium-name strong.ellipsis {
     font-size: calc(var(--fSize) * 2);
+}
+._systemPack .compendium-name strong {
+    line-height: 1em;
 }

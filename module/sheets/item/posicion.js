@@ -1,4 +1,5 @@
 import { SYSTEM_ID } from "../../config/uiConstants.js"
+import { configRULES } from "../../config/rules.js";
 import extendItem0Sheet from "../item.js";
 import helperContext from "../../helper/helperContext.js";
 
@@ -24,6 +25,9 @@ export default class sheetPosicion extends extendItem0Sheet {
    */
   async _prepareContext() {
     const context = await super._prepareContext()
+    const rules = context.system.rules;
+
+    context.configRULES = configRULES[rules]
     return context
 
   }

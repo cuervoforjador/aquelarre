@@ -16,10 +16,7 @@ export default class helperTemplates {
             // --- CHARACTER ---
             main_Actor: `${character}/main/character.hbs`,
 
-            character_footer: `${character}/parts/_footer.hbs`,
-            character_header: `${character}/headers/_header.hbs`,
             character_background: `${character}/headers/_background.hbs`,            
-
             header_Character: `${character}/headers/character.hbs`,
 
             tab_Stats: `${character}/tabs/stats.hbs`,

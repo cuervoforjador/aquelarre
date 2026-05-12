@@ -5,8 +5,10 @@
         <thead>
             <tr>
                 <th>{{localize 'common.posicion'}}</th>
+                {{#if configRULES.estratoRoll}} 
                 <th class="_sSize _right">{{localize 'common.desde'}}</th>
                 <th class="_sSize _right">{{localize 'common.hasta'}}</th>
+                {{/if}}
                 {{#if isEditable}}<th class="_button"></th>{{/if}}
             </tr>
             {{#if isEditable}}
@@ -16,7 +18,8 @@
                                     localize=false
                                     nameAttr="key"
                                     labelAttr="label" }}
-                    </select></td>                
+                    </select></td>  
+                {{#if configRULES.estratoRoll}}               
                 <td><input type="number"           
                             data-field="low"
                             data-tooltip="{{localize 'common.desde'}}"
@@ -31,6 +34,7 @@
                             max="100"
                             value="0"                    
                             class="_sSize"></td>
+                {{/if}}
                 <td><button type="button"
                             class="icon fas fa-add" 
                             data-action="_addRow" 
@@ -43,8 +47,10 @@
             {{#each system.posiciones as |entry key|}}
             <tr data-key="{{entry.key}}">
                 <td>{{translate entry.key ../posiciones}}</td>
+                {{#if configRULES.estratoRoll}}
                 <td class="_sSize">{{entry.low}}</td>
                 <td class="_sSize">{{entry.high}}</td>
+                {{/if}}
                 {{#if ../isEditable}}
                 <td class="_button"><button type="button" {{{_disabled}}}
                             class="icon fas fa-remove" 

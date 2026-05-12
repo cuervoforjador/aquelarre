@@ -37,9 +37,33 @@
             "flags": {
               "rules": "aq3",
               "class": "_mainPack",
-              "background": "systems/aquelarre/assets/ui/systemBackground.png"
+              "background": "systems/aquelarre/assets/ui/packAQ3.png"
             }
-        }  
+        },
+        {
+            "name": "aq4_pack",
+            "label": "Aquelarre 4a Edición",
+            "system": "aquelarre",
+            "path": "packs/aquelarre-4a-edicion",
+            "type": "Item",
+            "flags": {
+              "rules": "aq4",
+              "class": "_mainPack",
+              "background": "systems/aquelarre/assets/ui/packAQ4.png"
+            }
+        },
+        {
+            "name": "vyc_pack",
+            "label": "Villa y Corte",
+            "system": "aquelarre",
+            "path": "packs/villa-y-corte",
+            "type": "Item",
+            "flags": {
+              "rules": "vyc",
+              "class": "_mainPack",
+              "background": "systems/aquelarre/assets/ui/packVYC.png"
+            }
+        }                  
   ],
   "languages": [
     {

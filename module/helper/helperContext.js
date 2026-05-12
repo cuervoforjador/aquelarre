@@ -75,6 +75,15 @@ export default class helperContext {
     }
 
     /**
+     * getLoreReinos
+     * @param {*} rules 
+     */
+    static async getLoreReinos(rules) {
+        const mDocs = await this.getFromCompendium(rules, 'reino')
+        return {...{null: {key:'', label:''}}, ...this._toObject(mDocs)}
+    }
+
+    /**
      * getFromCompendium
      */
     static async getFromCompendium(rules, sType=null) {
