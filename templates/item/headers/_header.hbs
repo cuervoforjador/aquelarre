@@ -16,6 +16,7 @@
                 placeholder="{{localize 'common.nombre'}}"> 
         <div class="_row _gapped _marginTop">
             <div class="_combo">
+
                 <label>{{localize 'common.key'}} :</label>
                 <input type="text" 
                     {{{_disabled}}}
@@ -28,8 +29,16 @@
                         class="icon fas fa-key" 
                         data-action="_readKey" 
                         data-tooltip="{{localize 'common.getKey'}}">
+                </button>
+                {{#if (eq myRules 'vyc')}}
+                <button type="button"
+                        style="margin-right: 5px"
+                        class="icon fa-solid fa-brush" 
+                        data-action="_greenIcon" 
+                        data-tooltip="{{localize 'common.greenIcon'}}">
                 </button>       
-                {{/if}}                           
+                {{/if}}                       
+                {{/if}}                          
             </div>                 
             <div class="_combo">
                 <label>{{localize 'common.rules'}} :</label>

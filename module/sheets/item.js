@@ -30,7 +30,8 @@ export default class extendItem0Sheet
       _readKey:       this.#onReadKey,
       _checkButton:   this.#onBooleanField,
       _addRow:        this.#onAddRow,
-      _deleteRow:     this.#onDeleteRow  
+      _deleteRow:     this.#onDeleteRow,
+      _greenIcon:     this.#onGreenIcon
     },
   }
 
@@ -86,6 +87,20 @@ export default class extendItem0Sheet
     await this.document.update({[path]: mItems})
   }
 
+  static async #onGreenIcon(_event, target) {
+    const filename = this.document.img
+    const folder = filename.split('/').slice(0,-1).join('/')
+    const newFilename = filename.replace('.svg', '-green.svg')
+    const file = await fetch(filename);
+    const content = await file.text();
+    const newContent = content.replaceAll('#820a0a', '#204231')
+    const newFile = new File([newContent], newFilename, { type: "text/plain" })
+
+    const FilePickerV2 = foundry.applications.apps.FilePicker.implementation;
+    const filePicker = await FilePickerV2.upload("data", folder, newFile)
+    await this.document.update({'img': newFilename})
+  }
+
   /** @override */
   async _prepareContext() {
     
@@ -97,6 +112,7 @@ export default class extendItem0Sheet
       source:               this.document.toObject(),
       isEditable:           this.isEditable && this._sheetMode === 0,
       rules:                helperContext.getRules(),
+      myRules:              this.document.system.rules,
 
       _richDescripcion:     await extendItem0Sheet.textImplentation('descripcion', this.document)
     }

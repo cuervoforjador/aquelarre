@@ -12,6 +12,7 @@ static define() {
     Handlebars.registerHelper("or", (...args) => args.slice(0, -1).some(Boolean))
     Handlebars.registerHelper("array", (...args) => args.slice(0, -1))
 
+    Handlebars.registerHelper("and", (a, b) => a && b)
     Handlebars.registerHelper("eq", (a, b) => a === b)
     Handlebars.registerHelper("gt", (a, b) => a > b)
     Handlebars.registerHelper("gte", (a, b) => a >= b)

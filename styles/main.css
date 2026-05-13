@@ -155,3 +155,8 @@ table._table select {
 ._systemPack .compendium-name strong {
     line-height: 1em;
 }
+._systemPack._vyc .compendium-name strong,
+._systemPack._vyc .compendium-name strong.ellipsis {
+    font-family: var(--vcfFont1);
+    font-size: calc(var(--fSize) * 2.35);
+}

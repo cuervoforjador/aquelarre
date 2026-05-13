@@ -47,7 +47,7 @@
             {{#each system.posiciones as |entry key|}}
             <tr data-key="{{entry.key}}">
                 <td>{{translate entry.key ../posiciones}}</td>
-                {{#if configRULES.estratoRoll}}
+                {{#if ../configRULES.estratoRoll}}
                 <td class="_sSize">{{entry.low}}</td>
                 <td class="_sSize">{{entry.high}}</td>
                 {{/if}}

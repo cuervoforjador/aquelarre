@@ -1,4 +1,5 @@
 import { SYSTEM_ID } from "../../config/uiConstants.js"
+import { configRULES } from "../../config/rules.js";
 import extendItem0Sheet from "../item.js";
 import helperContext from "../../helper/helperContext.js";
 
@@ -34,6 +35,7 @@ export default class sheetPueblo extends extendItem0Sheet {
     context.sociedades = await helperContext.getSociedades(rules)
     context.idiomas = await helperContext.getIdiomas(rules)
     
+    context.configRULES = configRULES[rules]
     context.tabs = this._prepareTabs("primary")
     return context
   }

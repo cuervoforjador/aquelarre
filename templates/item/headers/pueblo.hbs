@@ -13,11 +13,23 @@
                             localize=false
                             nameAttr="key"
                             labelAttr="label" }}
-            </select>                 
+            </select> 
         </div>
 
+        {{#if configRULES.limpiezaSangre}}
+        <div class="_combo">
+            <label>{{localize 'common.limpiezaSangre'}} :</label>
+            <input type="number"
+                {{{_disabled}}} 
+                class="_sSize _right"
+                name="system.sangre" 
+                value="{{system.sangre}}">%            
+        </div>
+        {{/if}}
+
+    </div>
+    <div class="_row _gapped _marginTop">
         {{{navTab 'primary' (array 'idiomas' 'descripcion') '_expanded'}}}
-      
     </div>
  
 </div>

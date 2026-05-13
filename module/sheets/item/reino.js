@@ -1,4 +1,5 @@
 import { SYSTEM_ID } from "../../config/uiConstants.js"
+import { configRULES } from "../../config/rules.js";
 import extendItem0Sheet from "../item.js";
 import helperContext from "../../helper/helperContext.js";
 
@@ -33,6 +34,7 @@ export default class sheetReino extends extendItem0Sheet {
     const context = await super._prepareContext()
     context.pueblos = await helperContext.getPueblos(rules)
 
+    context.configRULES = configRULES[rules]
     context.tabs = this._prepareTabs("primary")
     return context
 
