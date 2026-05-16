@@ -46,8 +46,6 @@ Estado actual: :heavy_plus_sign: En desarrollo
 Estado actual: :heavy_check_mark: [Ver Item Competencia](https://github.com/cuervoforjador/aquelarre/wiki/Competencias-(Item))
 ### :white_check_mark::white_check_mark::white_check_mark: Repositorio (Competencias)
 Estado actual: :heavy_check_mark: [Ver Item Competencia](https://github.com/cuervoforjador/aquelarre/wiki/Competencias-(Repositorio))
-
-Pendiente: :heavy_multiplication_x: Expandir a los sistemas Aquelarre v4 y Villa y Corte
 ### :black_square_button::black_square_button::black_square_button: Integración en la Ficha de Personaje
 Estado actual: :heavy_multiplication_x: Pendiente
 ### :black_square_button::black_square_button::black_square_button: Tiradas por Competencia
