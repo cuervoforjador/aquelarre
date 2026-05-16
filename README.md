@@ -22,20 +22,20 @@ Estado actual: :heavy_check_mark: [Ver Fuente](https://github.com/cuervoforjador
 Estado actual: :heavy_check_mark: [Ver Sistema de Reglas](https://github.com/cuervoforjador/aquelarre/wiki/Sistema-de-Reglas)
 
 ## Sistema de Tiradas
-### :black_square_button::black_square_button::black_square_button: Implementación 
-Estado actual: :heavy_plus_sign: En desarrollo
-### :black_square_button::black_square_button::black_square_button: Publicación a través de mensajes
-Estado actual: :heavy_plus_sign: En desarrollo
+### :white_check_mark::white_check_mark::white_check_mark: Implementación 
+Estado actual: :heavy_check_mark: Completado
+### :white_check_mark::white_check_mark::white_check_mark: Publicación a través de mensajes
+Estado actual: :heavy_check_mark: Completado
 
 ## Sistema de Mensajes
-### :black_square_button::black_square_button::black_square_button: Implementación
-Estado actual: :heavy_multiplication_x: Pendiente
-### :black_square_button::black_square_button::black_square_button: Estilización
-Estado actual: :heavy_multiplication_x: Pendiente
+### :white_check_mark::white_check_mark::white_check_mark: Implementación
+Estado actual: :heavy_check_mark: Completado
+### :white_check_mark::white_check_mark::white_check_mark: Estilización
+Estado actual: :heavy_check_mark: Completado
 
 ## Características
-### :black_square_button::white_check_mark::white_check_mark: Implementación
-Estado actual: :heavy_plus_sign: En desarrollo
+### :white_check_mark::white_check_mark::white_check_mark: Implementación
+Estado actual: :heavy_check_mark: Completado
 ### :black_square_button::black_square_button::black_square_button: Dependencia en función de las Reglas
 Estado actual: :heavy_plus_sign: En desarrollo
 ### :black_square_button::black_square_button::black_square_button: Tiradas de Características
@@ -44,7 +44,7 @@ Estado actual: :heavy_plus_sign: En desarrollo
 ## Competencias
 ### :white_check_mark::white_check_mark::white_check_mark: Implementación
 Estado actual: :heavy_check_mark: [Ver Item Competencia](https://github.com/cuervoforjador/aquelarre/wiki/Competencias-(Item))
-### :black_square_button::black_square_button::white_check_mark: Repositorio (Competencias)
+### :white_check_mark::white_check_mark::white_check_mark: Repositorio (Competencias)
 Estado actual: :heavy_check_mark: [Ver Item Competencia](https://github.com/cuervoforjador/aquelarre/wiki/Competencias-(Repositorio))
 
 Pendiente: :heavy_multiplication_x: Expandir a los sistemas Aquelarre v4 y Villa y Corte
@@ -62,18 +62,16 @@ Estado actual: :heavy_check_mark: [Ver Item Pueblo](https://github.com/cuervofor
 Estado actual: :heavy_check_mark: [Ver Item Reino](https://github.com/cuervoforjador/aquelarre/wiki/Reinos-(Item))
 ### :white_check_mark::white_check_mark::white_check_mark: Implementación Estamento y Posición social
 Estado actual: :heavy_check_mark: [Ver Item Estamento y Posiciones sociales](https://github.com/cuervoforjador/aquelarre/wiki/Estamentos-y-Posiciones-sociales-(Item))
-### :black_square_button::black_square_button::white_check_mark: Repositorio (Contexto)
-Estado actual: :heavy_check_mark: Completado para el Sistema Aquelarre v3
-
-Pendiente: :heavy_multiplication_x: Expandir a los sistemas Aquelarre v4 y Villa y Corte
-### :black_square_button::black_square_button::black_square_button: Integración en la Ficha de Personaje
-Estado actual: Pendiente
+### :white_check_mark::white_check_mark::white_check_mark: Repositorio (Contexto)
+Estado actual: :heavy_check_mark: Completado
+### :white_check_mark::white_check_mark::white_check_mark: Integración en la Ficha de Personaje
+Estado actual: P:heavy_check_mark: Completado
 
 ## Sistema de Tablas
-### :black_square_button::black_square_button::black_square_button: Implementación
-Estado actual: :heavy_multiplication_x: Pendiente
-### :black_square_button::black_square_button::black_square_button: Tiradas de Contexto por Tablas
-Estado actual: :heavy_multiplication_x: Pendiente
+### :white_check_mark::white_check_mark::white_check_mark: Implementación
+Estado actual: :heavy_check_mark: Completado
+### :white_check_mark::white_check_mark::white_check_mark: Tiradas de Contexto por Tablas
+Estado actual: :heavy_check_mark: Completado
 
 ## Profesiones
 ### :black_square_button::black_square_button::black_square_button: Implementación
