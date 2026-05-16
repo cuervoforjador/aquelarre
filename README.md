@@ -63,7 +63,7 @@ Estado actual: :heavy_check_mark: [Ver Item Estamento y Posiciones sociales](htt
 ### :white_check_mark::white_check_mark::white_check_mark: Repositorio (Contexto)
 Estado actual: :heavy_check_mark: Completado
 ### :white_check_mark::white_check_mark::white_check_mark: Integración en la Ficha de Personaje
-Estado actual: P:heavy_check_mark: Completado
+Estado actual: :heavy_check_mark: Completado
 
 ## Sistema de Tablas
 ### :white_check_mark::white_check_mark::white_check_mark: Implementación
