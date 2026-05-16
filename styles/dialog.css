@@ -1,0 +1,123 @@
+dialog._extend {
+    border-radius: 0;
+    font-family: var(--fFont0);
+}
+dialog._extend._vyc {
+    font-family: var(--vcfFont0);
+}
+dialog._extend section.window-content {
+    background-image: url(../assets/ui/paper.png);
+    padding: 0.5rem;
+}
+dialog._extend .window-content ._shadow,
+dialog._extend .window-content ._watermark {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    background-image: url(../assets/ui/shadowpaper.png);
+    background-size: 100% 100%;
+    opacity: 0.1;
+    z-index: -1;
+}
+dialog._extend .window-content ._watermark {
+    opacity: 0.15;
+    background-size: cover;
+    background-position: center;
+}
+dialog._extend header {
+    font-family: var(--fFont1);
+    background: var(--aqDarkRed);
+    font-size: calc(var(--fSize) * 1.5);
+}
+dialog._extend._vyc header {
+    font-family: var(--vcfFont1);
+    background: var(--vcDarkGreen);
+}
+dialog._extend footer button {
+    font-family: var(--fFont0);
+    font-size: calc(var(--fSize) * 1.1);
+    white-space: nowrap;
+}
+dialog._extend._vyc footer button {
+    font-family: var(--vcfFont1);
+    font-size: calc(var(--fSize) * 1);
+}
+.dialog._extend .dialog-content {
+    font-size: var(--fSize);
+    line-height: calc(var(--fSize) * 1.4);
+    text-align: justify;
+    color: var(--aqText);
+}
+dialog._extend form.dialog-form {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+}
+dialog._extend form ul._main {
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    padding: 0;
+    margin: 0;
+}
+dialog._extend form ul._main li {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;    
+    width: 100%;
+    overflow: hidden;
+    margin: 0;
+    padding: 0.25rem;
+}
+dialog._extend form ul._main li,
+dialog._extend form ul._main li label {
+    cursor: pointer;
+}
+dialog._extend form ul._main li:nth-child(odd) {
+    background: var(--aqBackRed);
+}
+dialog._extend form ul._main li:hover {
+    background: #ffc8007a;
+}
+dialog._extend form ul._main li button._showDescription {
+    margin-left: 2rem;
+}
+dialog._extend form ul._main input[type="checkbox"]._selector::before,
+dialog._extend form ul._main input[type="checkbox"]._selector::after {
+    line-height: 2rem;
+    font-size: 2rem;
+    border-radius: 0;
+    color: #5c17174a;
+    --checkbox-size: 2rem;
+}
+dialog._extend form ul._main input[type="checkbox"]._selector::after {
+    color: var(--vcRed)
+}
+dialog._extend form ul._main li img {
+    width: calc(var(--fSize) * 2);
+    height: calc(var(--fSize) * 2);
+}
+dialog._extend form ul._main li label._title {
+    font-family: var(--fFont0);
+    font-size: calc(var(--fSize) * 1.2);
+    width: 100%;
+    padding: 0 6px;
+}
+dialog._extend form ul._main li label._title::first-letter {
+    color: var(--redLetter);
+    font-weight: 900;
+    font-size: calc(var(--fSize) * 1.8);
+}
+dialog._extend._vyc form ul._main li label._title {
+    font-family: var(--vcfFont1);
+}
+dialog._extend button[type="submit"]._selected {
+    background: var(--aqRed);
+}
+dialog._extend._vyc button[type="submit"]._selected {
+    background: var(--vcGreen);
+}

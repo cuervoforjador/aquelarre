@@ -1,7 +1,10 @@
 import { SYSTEM_ID } from "../../config/uiConstants.js"
+import { configRULES } from "../../config/rules.js";
 import extendActorSheet from "../actor.js";
 import helperContext from "../../helper/helperContext.js";
 import helperSheets from "../../helper/helperSheets.js";
+import helperDialog from "../../helper/helperDialog.js";
+import helperTables from "../../helper/helperTables.js";
 import sheetHandler from "../handler.js";
 
 export default class extendCharacterSheet extends extendActorSheet {
@@ -13,8 +16,11 @@ export default class extendCharacterSheet extends extendActorSheet {
   static DEFAULT_OPTIONS = {
     classes: ['_'+this.templateTag],
     position: { 
-      width: 900, 
+      width: 1000, 
       height: 700 
+    },
+    actions: {
+      _editLore: this.#onEditLore
     }    
   }
 
@@ -38,9 +44,6 @@ export default class extendCharacterSheet extends extendActorSheet {
     const rules = this.document.system.rules
     const context = await super._prepareContext()
     context.caracteristicas = helperContext.getCaracteristicas()
-    context.lore = {
-      reinos: await helperContext.getLoreReinos(rules)
-    }
 
     context.info = {...context.info, ...helperSheets.readLoreContext(this.document)}
 
@@ -65,11 +68,42 @@ export default class extendCharacterSheet extends extendActorSheet {
    * @param {*} html 
    */
   activateListeners(html) {
+    super.activateListeners(html)
 
     if ( !this.isEditable || !this.isEditMode) return;
 
-    html.find('select[name="info.reino.key"]').on("change", sheetHandler._onChangeReino.bind(this))
     html.find('._charTotal').on("change", sheetHandler._onChangeCharTotal.bind(this))
+  }  
+
+  /**
+   * onEditLore
+   * @param {*} _event 
+   * @param {*} target 
+   */
+  static async #onEditLore(_event, target) {
+    const lore = $(target).data('lore')
+    const rules = this.document.system.rules
+    
+    if (lore !== 'posicion' || !configRULES[rules].estratoRoll) {
+
+      const option = await helperDialog.dialogSelectLore(rules, lore, this.document)
+      if (!option) return
+      if (option === '#alea') await helperTables.tableLore(rules, lore, this.document)
+                         else await helperContext.assignLoreToActor(rules, lore, this.document, option)
+
+    } else {
+
+      const optionEstrato = await helperDialog.dialogSelectLore(rules, 'estrato', this.document)
+      if (!optionEstrato) return
+      if (optionEstrato === '#alea') await helperTables.tableLore(rules, 'estrato', this.document)
+      else {
+        await helperContext.assignLoreToActor(rules, 'estrato', this.document, optionEstrato)
+        const optionPosicion = await helperDialog.dialogSelectLore(rules, 'posicion', this.document)
+        if (!optionPosicion) return
+        if (optionPosicion === '#alea') await helperTables.tableLore(rules, 'posicion', this.document)
+                                    else await helperContext.assignLoreToActor(rules, 'posicion', this.document, optionPosicion)
+      }   
+    }
   }  
 
 }

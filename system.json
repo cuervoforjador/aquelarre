@@ -25,7 +25,10 @@
   ],
   "styles": [
       "styles/main.css",
-      "styles/sheets.css"
+      "styles/sheets.css",
+      "styles/dialog.css",
+      "styles/rolltables.css",
+      "styles/messages.css"
   ],
   "packs": [
         {

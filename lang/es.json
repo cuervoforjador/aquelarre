@@ -42,12 +42,15 @@
  "RULES.vyc":                           "Villa y Corte",
 
  "common.actual":                       "Actual",
+ "common.aleatorio":                    "Método aleatorio",
  "common.altura":                       "Altura",
  "common.anadir":                       "Añadir",
  "common.borrar":                       "Borrar",
  "common.caracteristica":               "Característica",
  "common.caracteristicas":              "Características",
  "common.combat":                       "Combate",
+ "common.confirmar":                    "Confirmar",
+ "common.copyObjeto":                   "Copiar de objeto",
  "common.cultura":                      "Cultura",
  "common.descripcion":                  "Descripción",
  "common.desde":                        "Desde",
@@ -55,6 +58,12 @@
  "common.editar":                       "Editar",
  "common.editarFicha":                  "En modo Jugable. Pulsa para pasar a modo Editar ficha",
  "common.editarFichaNo":                "En modo Edición. Pulsa para pasar a modo Jugar ficha",
+ "common.editarOrigen":                 "Elegir Origen",
+ "common.editarPosicion":               "Elegir Posición social",
+ "common.editarReino":                  "Elegir Reino",
+ "common.estamento":                    "Estamento social",
+ "common.estrato":                      "Estamento social",
+ "common.estratos":                     "Estamentos sociales",
  "common.femenino":                     "Femenino",
  "common.formula":                      "Formula",
  "common.fuente":                       "Fuente",
@@ -67,6 +76,7 @@
  "common.latin":                        "Latín",
  "common.limpiezaSangre":               "Limpieza de sangre",
  "common.nombre":                       "Nombre",
+ "common.noItem":                       "Sin especificar",
  "common.origen":                       "Origen",
  "common.peso":                         "Peso",
  "common.posicion":                     "Posición social",
@@ -80,6 +90,7 @@
  "common.sociedad":                     "Sociedad",
  "common.stats":                        "Atributos",
  "common.superior":                     "Superior",
+ "common.tirada":                       "Tirada",
  "common.total":                        "Total",
  "common.valor":                        "Valor",
 
@@ -90,10 +101,14 @@
  "tooltip.key":                         "ID único del objeto",
  "tooltip.noble":                       "Competencia/Arma de nobles",
  "tooltip.rules":                       "Sistema de reglas\nEn función del sistema, varían las características primarias, los atributos, las competencias, ...",
+ "tooltip.showItem":                    "Ver Item",
  "tooltip.soldado":                     "Competencia/Arma de soldados",
  "tooltip.superior":                    "ID del objeto superior del que cuelga",
- "tooltip.villano":                     "Competencia/Arma de villanos"
+ "tooltip.villano":                     "Competencia/Arma de villanos",
  
-
+ "explain.rollTable_reino":             "Tabla para elegir el Reino",
+ "explain.rollTable_pueblo":            "Tabla para elegir Origen",
+ "explain.rollTable_estrato":           "Tabla para elegir Estamento social",
+ "explain.rollTable_posicion":          "Tabla para elegir Posición social"
 
 }

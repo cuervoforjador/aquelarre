@@ -1,0 +1,61 @@
+li.chat-message._extend {
+    background-image: url(../assets/ui/paper.png);
+    background-repeat: repeat;
+    font-family: var(--fFont0);
+    font-size: var(--fSize);
+    border-radius: 0;
+}
+li.chat-message._extend h4.message-sender {
+    font-family: var(--fFont1);
+}
+li.chat-message._extend._vyc h4.message-sender {
+    font-family: var(--vcfFont1);
+}
+li.chat-message._extend._vyc {
+    font-family: var(--vcfFont0);
+}
+li.chat-message._extend .description {
+    text-align: justify;
+}
+li.chat-message._extend._lore .description {
+    max-height: 250px;
+    overflow-y: auto;
+}
+.chat-message._extend._lore span.flavor-text {
+    display: none;
+}
+li.chat-message._extend .dice-total,
+li.chat-message._extend .dice-roll .dice-formula  {
+    border: 1px solid var(--aqRed2);
+    background: var(--aqDarkRed);
+    border-radius: 0;
+    color: var(--aqText2);
+    font-size: var(--fSize);
+    font-family: var(--fFont1);
+    line-height: calc(var(--fSize) * 1.5);
+}
+li.chat-message._extend._vyc .dice-total,
+li.chat-message._extend._vyc .dice-roll .dice-formula {
+    border: 1px solid var(--vcGreen2);
+    background: var(--vcDarkGreen);    
+    color: var(--vcText2);
+    font-family: var(--vcfFont1);
+    font-size: calc(var(--fSize) * 1.25);
+}
+li.chat-message._extend .dice-roll.expanded .dice-tooltip {
+    border: 1px solid var(--aqRed);
+    background: #ffffff8a;
+    padding: 5px;
+}
+li.chat-message._extend._vyc .dice-roll.expanded .dice-tooltip {
+    border: 1px solid var(--vcGreen);
+    background: #ffffff8a;
+}
+li.chat-message._extend .table-results strong.name {
+    font-family: var(--fFont1);
+    font-size: calc(var(--fSize) * 0.8);
+}
+li.chat-message._extend._vyc .table-results strong.name {
+    font-family: var(--vcfFont1);
+    font-size: calc(var(--fSize) * 1.25);
+}

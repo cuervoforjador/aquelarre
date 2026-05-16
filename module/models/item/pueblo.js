@@ -18,6 +18,11 @@ export default class modelPueblo extends extendItem_Base {
             value: new api.NumberField({ nullable: true, initial: null }),
             formula: new api.StringField({ initial: '' })
         }))
+        schema.estratos = new api.ArrayField(new api.SchemaField({
+            key: new api.StringField({ initial: '' }),
+            low: new api.NumberField({ nullable: true, initial: null }),
+            high: new api.NumberField({ nullable: true, initial: null })            
+        }))
         schema.sangre = new api.NumberField({ nullable: true, initial: 0 })
 
         return schema;

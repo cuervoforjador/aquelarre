@@ -1,4 +1,5 @@
 import { SYSTEM_ID } from "../config/uiConstants.js"
+import { configRULES } from "../config/rules.js";
 import sheetHandler from "./handler.js"
 import helperSheets from "../helper/helperSheets.js"
 import helperContext from "../helper/helperContext.js";
@@ -40,6 +41,7 @@ export default class extendActorSheet
       _edit:          this.#onEditSheet,
       _play:          this.#onPlaySheet,
       _readKey:       this.#onReadKey,
+      _showItem:      this.#onShowItem,
       _checkButton:   this.#onBooleanField,
       _addRow:        this.#onAddRow,
       _deleteRow:     this.#onDeleteRow    
@@ -66,6 +68,14 @@ export default class extendActorSheet
     let mDocs = await helperContext.getFromCompendium(this.document.system.rules)
     if (mDocs.find(e => e.system.key === sKey)) sKey = ''
     await this.document.update({"system.key": sKey})
+  }
+
+  static async #onShowItem(_event, target) {
+    _event.stopPropagation()
+    const sId = $(target).data('id')
+    const item = this.document.items.get(sId)
+    if (!item) return
+    item.sheet.render(true)
   }
 
   static async #onBooleanField(_event, target) {
@@ -115,8 +125,9 @@ export default class extendActorSheet
       isPlayMode:   this.isPlayMode,
       isEditable:   this.isEditable && this._sheetMode === 0,
       isGM:         game.user.isGM,
-      rules:        helperContext.getRules()
-
+      rules:        helperContext.getRules(),
+      myRules:      this.document.system.rules,
+      configRULES:  configRULES[this.document.system.rules]
     }    
   }
 
@@ -191,6 +202,7 @@ export default class extendActorSheet
 
     /** --- TABLES --- */
     html.find('._table tbody tr').on("click", this._clickTableTR.bind(this))
+
   }
     
   /**

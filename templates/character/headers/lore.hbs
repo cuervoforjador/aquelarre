@@ -1,0 +1,57 @@
+<div class="_row _gapped"> 
+
+    <div class="_combo _smallGapped">
+        <label>{{localize 'common.reino'}} :</label>
+        <a data-action="_showItem" data-id="{{info.reino.id}}">
+            <label class="_field">{{info.reino.label}}</label>
+        </a>
+        {{#if isEditable}}
+        <button type="button"
+                class="icon fas fa-edit" 
+                data-action="_editLore" 
+                data-lore="reino"
+                data-tooltip="{{localize 'common.editarReino'}}">
+        </button>
+        {{/if}}
+    </div>    
+
+    <div class="_combo _smallGapped">
+        <label>{{localize 'common.origen'}} :</label>
+        <a data-action="_showItem" data-id="{{info.origen.id}}">
+            <label class="_field">{{info.origen.label}}</label>
+        </a>
+        {{#if isEditable}}
+        <button type="button"
+                class="icon fas fa-edit" 
+                data-action="_editLore" 
+                data-lore="pueblo"
+                data-tooltip="{{localize 'common.editarOrigen'}}">
+        </button>
+        {{/if}}
+    </div>
+
+    {{#if configRULES.verCultura}}
+    <div class="_combo _smallGapped">
+        <label>{{localize 'common.cultura'}} :</label>
+        <a data-action="_showItem" data-id="{{info.cultura.id}}">
+            <label class="_field">{{info.cultura.label}}</label>
+        </a>
+    </div>
+    {{/if}}
+
+    <div class="_combo _smallGapped">
+        <label>{{localize 'common.posicion'}} :</label>
+        <a data-action="_showItem" data-id="{{info.posicion.id}}">
+            <label class="_field">{{info.posicion.label}}</label>
+        </a>
+        {{#if isEditable}}
+        <button type="button"
+                class="icon fas fa-edit" 
+                data-action="_editLore" 
+                data-lore="posicion"
+                data-tooltip="{{localize 'common.editarPosicion'}}">
+        </button>
+        {{/if}}
+    </div>
+
+</div>

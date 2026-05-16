@@ -20,7 +20,7 @@ export default class sheetPueblo extends extendItem0Sheet {
   }  
   static TABS = {
     primary: {
-      tabs: [ {id: "idiomas"}, {id: "descripcion"} ],
+      tabs: [ {id: "estratos"}, {id: "idiomas"}, {id: "descripcion"} ],
       initial: "descripcion"
     }
   }
@@ -33,7 +33,10 @@ export default class sheetPueblo extends extendItem0Sheet {
     const rules = this.document.system.rules
     const context = await super._prepareContext()
     context.sociedades = await helperContext.getSociedades(rules)
+    context.pueblos = await helperContext.getPueblos(rules)
+    context.estratos = await helperContext.getEstratos(rules)
     context.idiomas = await helperContext.getIdiomas(rules)
+    
     
     context.configRULES = configRULES[rules]
     context.tabs = this._prepareTabs("primary")

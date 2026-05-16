@@ -13,6 +13,7 @@ import modelProfesion from "../models/item/profesion.js"
 import newActor from "../documents/actor.js"
 import newItem from "../documents/item.js"
 import newChatMessage from "../documents/chatMessage.js"
+import newRollTable from "../documents/rollTable.js"
 import newCombat from "../documents/combat.js"
 import newRoll from "../documents/roll.js"
 
@@ -44,6 +45,7 @@ export default class helperModels {
         CONFIG.Actor.documentClass = newActor
         CONFIG.Item.documentClass = newItem
         CONFIG.ChatMessage.documentClass = newChatMessage
+        CONFIG.RollTable.documentClass = newRollTable
         CONFIG.Combat.documentClass = newCombat
         CONFIG.Dice.rolls.push(newRoll)
     }

@@ -11,6 +11,9 @@ import sheetReino  from "../sheets/item/reino.js"
 import sheetEstrato  from "../sheets/item/estrato.js"
 import sheetPosicion  from "../sheets/item/posicion.js"
 import sheetProfesion  from "../sheets/item/profesion.js"
+import sheetTableExtend from "../sheets/table/base.js"
+
+import helperContext from "./helperContext.js"
 
 export default class helperSheets {
 
@@ -47,6 +50,9 @@ export default class helperSheets {
         vI.registerSheet(SYSTEM_ID, sheetEstrato, { types: ["estrato"], makeDefault: true, label: "sheet.estrato" })
         vI.registerSheet(SYSTEM_ID, sheetPosicion, { types: ["posicion"], makeDefault: true, label: "sheet.posicion" })
         vI.registerSheet(SYSTEM_ID, sheetProfesion, { types: ["profesion"], makeDefault: true, label: "sheet.profesion" })
+
+        const vT = foundry.documents.collections.RollTables
+        vT.registerSheet(SYSTEM_ID, sheetTableExtend, { types: ["base"], makeDefault: true, label: "sheet.lore" })
 
     }
 
@@ -131,6 +137,8 @@ export default class helperSheets {
      * @param {*} document 
      */
     static addRulesClass(html, document) {
+        const mRules = game.settings.settings.get('aquelarre.rules').choices
+        for (var s in mRules) { html.removeClass('_'+s) }
         html.addClass('_'+document.system.rules)
     }
 
@@ -162,16 +170,20 @@ export default class helperSheets {
 
         ].map(o => {
             const oItem = document.items.find(e => e.type === o.type)
-            info[o.field] = {} 
+            info[o.field] = {
+                id: '',
+                key: '',
+                label: game.i18n.localize('common.noItem'),
+                img: "systems/"+SYSTEM_ID+"/assets/svg/cancel.svg"
+            } 
             if (oItem) {
-                info[o.field].key = oItem.system.key
-                info[o.field].label = oItem.name
-                info[o.field].img = oItem.img
-            } else {
-                info[o.field].key = ''
-                info[o.field].label = ''
-                info[o.field].img = "systems/"+SYSTEM_ID+"/assets/svg/cancel.svg"
-            }
+                info[o.field] = {...info[o.field], ...{
+                    id: oItem.id,
+                    key: oItem.system.key,
+                    label: oItem.name,
+                    img: oItem.img
+                }}
+            } 
         })
 
         return info

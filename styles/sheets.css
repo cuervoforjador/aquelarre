@@ -1,11 +1,12 @@
 /** --- CONTENT --- */
 form._extend section.window-content {
     padding: 0;
+    background-image: url(../assets/ui/paper.png);
+    background-repeat: repeat;    
 }
 form._extend {
     font-family: var(--fFont0);
     font-size: var(--fSize);
-    background-image: url(../assets/ui/paper.png);
 }
 form._extend._vyc {
     font-family: var(--vcfFont0);
@@ -175,9 +176,17 @@ button._checked {
     display: flex;
     align-content: center;
     align-items: center;
+    min-height: 2em;    
 }
 ._combo label {
     white-space: nowrap;
+}
+._combo label._field {
+    color: var(--aqText2);
+    padding: 0 4px;
+}
+._vyc ._combo label._field {
+    color: var(--vcText2);
 }
 ._combo input,
 ._combo select {
@@ -224,7 +233,7 @@ form._extend ._sheetHeader ._headerBackground {
     opacity: 0.15;    
 }
 form._extend._actor ._sheetHeader ._headerBackground {
-    opacity: 1;
+    opacity: 0.45;
 }
 form._extend ._sheetHeader,
 form._extend ._sheetFooter {
@@ -361,4 +370,24 @@ form._extend._vyc em {
 }
 ._vyc ._row._char._header label {
     font-family: var(--vcfFont1);
+}
+
+form._extend .window-resize-handle {
+    width: 20px;
+    height: 20px;
+    background-image: url(../assets/ui/resizable.png);
+    filter: none;
+}
+
+a[data-action="_showItem"] label {
+    cursor: var(--cursor-pointer);
+    transition: 0.5s;
+}
+a[data-action="_showItem"]:hover label {
+    background: var(--color-warm-2);
+    color: var(--color-light-1);
+    /*
+    border: 1px solid var(--color-light-3);
+    padding: 0 3px;
+    */
 }

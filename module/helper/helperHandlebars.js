@@ -66,5 +66,10 @@ static define() {
                 </button>`;
     })
 
+    Handlebars.registerHelper("sheetRules", (root) => {
+        const document = root.data.root
+        return game.i18n.localize('RULES.'+document.system.rules)
+    })    
+
 }
 }

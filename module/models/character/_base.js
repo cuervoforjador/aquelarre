@@ -18,7 +18,7 @@ export default class extendCharacter_Base extends extend_Base {
             reino: md_lore({label: 'common.reino', hint: 'common.reino'}),
             origen: md_lore({label: 'common.origen', hint: 'common.origen'}),
             cultura: md_lore({label: 'common.cultura', hint: 'common.cultura'}),
-            estamento: md_lore({label: 'common.cultura', hint: 'common.cultura'}),
+            estamento: md_lore({label: 'common.estamento', hint: 'common.estamento'}),
             posicion: md_lore({label: 'common.posicion', hint: 'common.posicion'}),
             profesion: md_lore({label: 'common.profesion', hint: 'common.profesion'}),
             profesionPaterna: md_lore({label: 'common.profesionPaterna', hint: 'common.profesionPaterna'}),

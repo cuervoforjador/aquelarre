@@ -31,6 +31,7 @@ export default class extendItem0Sheet
       _checkButton:   this.#onBooleanField,
       _addRow:        this.#onAddRow,
       _deleteRow:     this.#onDeleteRow,
+      _copyObject:    this.#onCopyObject,
       _greenIcon:     this.#onGreenIcon
     },
   }
@@ -99,6 +100,19 @@ export default class extendItem0Sheet
     const FilePickerV2 = foundry.applications.apps.FilePicker.implementation;
     const filePicker = await FilePickerV2.upload("data", folder, newFile)
     await this.document.update({'img': newFilename})
+  }
+
+  static async #onCopyObject(_event, target) {
+    const select = $(target).parents('._combo').find('select._copyObject')
+    const key = select.find(':selected').val()
+    const path = select.data('path')
+    const rules = this.document.system.rules
+    const lore = this.document.type
+    const mDocs = await helperContext.getFromCompendium(rules, lore)
+    const item = mDocs.find(e => e.system.key === key)
+    if (!item) return
+    const data = this._access(item, path)
+    await this.document.update({[path]: data})
   }
 
   /** @override */

@@ -11,7 +11,7 @@
     --fSize: 1rem;
     --fFont0: "Almendra", serif;
     --fFont1: "corvux", serif;    
-    --fFont2: "Modesto Condensed", serif;    
+    --fFont2: "Almendra", serif; /* "Modesto Condensed", serif; */
     --aqRed: #b42323;
     --aqRed1: #ffffff52;
     --aqRed2: #771313;
@@ -23,16 +23,18 @@
 
     --vcfFont0: "IM Fell English", serif; /* "Trykker", serif; */
     --vcfFont1: "IM Fell English SC", serif;    
-    --vcfFont2: "Modesto Condensed", serif;   
+    --vcfFont2: "IM Fell English SC", serif; /* "Modesto Condensed", serif; */
     --vcRed: #b42323;  
     --vcGreen: #298f6f;
     --vcGreen1: #ffffff52;
     --vcGreen2: #2c594b;    
     --vcDarkGreen: #193d2bbf;
-    --vcBackGreen: #34020238;
+    --vcBackGreen: #31592c38;
     --vcText: #000000;
     --vcText2: #FFF; 
-    --vcTextDisabled: #ffffffc4;   
+    --vcTextDisabled: #ffffffc4;  
+    
+    --redLetter: #812323;
 }
 
 ._row {
@@ -79,6 +81,9 @@ input.h4 {
 ._marginTop {
     margin-top: 4px;
 }
+._marginLeft {
+    margin-left: 4px;
+}
 ._center {
     text-align: center;
 }
@@ -103,7 +108,8 @@ table._table thead {
     color: var(--aqText2);
 }
 ._vyc table._table thead {
-    color: var(--vycText2);
+    background: var(--vcDarkGreen);
+    color: var(--vcText2);
 }
 table._table tr:nth-child(odd) {
     background: var(--aqBackRed);
@@ -119,6 +125,7 @@ table._table th {
     padding-left: 0.5rem;
     font-family: var(--fFont2);
     font-size: calc(var(--fSize) * 1.15);
+    font-weight: 100;
 }
 ._vyc table._table th {
     font-family: var(--vcfFont2);

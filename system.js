@@ -12,7 +12,7 @@ import helperTokens from './module/helper/helperTokens.js'
 helperHooks.initHooks();
 Hooks.once("init", () => {
 
-    CONFIG.debug.hooks = true;
+    //CONFIG.debug.hooks = true;
 
     helperInitialization.loader()
     helperInitialization.config()
