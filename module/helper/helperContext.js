@@ -188,11 +188,12 @@ export default class helperContext {
         }
         await Item.create(item, {parent: actor})
         
-        //Añadiendo Sociedad en el caso de ser un Origen
+        //Añadiendo Sociedad y Limpieza de Sangre en el caso de ser un Origen
         if (item.type === 'pueblo') {
             const newItem = await this.getLoreItem(rules, 'sociedad', item.system.sociedad.key)
             if (!newItem) return
             await Item.create(newItem, {parent: actor})
+            actor.update({"system.info.limpiezaSangre": item.system.sangre})
         }
     }
 

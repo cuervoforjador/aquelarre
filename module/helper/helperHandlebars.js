@@ -1,4 +1,5 @@
 import { SYSTEM_ID } from "../config/uiConstants.js"
+import { configRULES } from "../config/rules.js"
 
 export default class helperHandlebars {
 
@@ -23,6 +24,7 @@ static define() {
     Handlebars.registerHelper("abs", n => Math.abs(n))
     Handlebars.registerHelper("add", (a, b) => a + b)
     Handlebars.registerHelper("mult", (a, b) => a * b)
+    Handlebars.registerHelper("toUpperCase", (a) => a.toUpperCase())
 
     Handlebars.registerHelper("_disabled", (...args) => {
         const isEditable = args[0].data.root.isEditable
@@ -70,6 +72,13 @@ static define() {
         const document = root.data.root
         return game.i18n.localize('RULES.'+document.system.rules)
     })    
+
+    Handlebars.registerHelper("isCharVisible", (key, root) => {
+        const document = root.data.root
+        const rules = document.system.rules
+        if (configRULES[rules].chars.find(e => e === key)) return true
+                                                           return false
+    })
 
 }
 }

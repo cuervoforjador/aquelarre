@@ -20,7 +20,8 @@ export default class extendCharacterSheet extends extendActorSheet {
       height: 700 
     },
     actions: {
-      _editLore: this.#onEditLore
+      _editLore:    this.#onEditLore,
+      _showStatus:  this.#onShowStatus
     }    
   }
 
@@ -105,5 +106,24 @@ export default class extendCharacterSheet extends extendActorSheet {
       }   
     }
   }  
+
+  /**
+   * onShowStatus
+   * @param {*} _event 
+   * @param {*} target 
+   */
+  static async #onShowStatus(_event, target) {
+    const path = $(target).data('path')
+    const key = path.split('.').splice(-1)[0]
+    let data = this.document
+    path.split('.').map(s => {data = data[s]})
+    const content = `<p>${game.i18n.localize('common.penalMov')}: <strong>x ${data.penalMov}</strong></br>       
+                        ${game.i18n.localize('common.penalDan')}: <strong>x ${data.penalDan}</strong></br>
+                        ${game.i18n.localize('common.penalHab')}: <strong>- ${data.penalHab}%</strong></br>
+                        ${game.i18n.localize('common.penalIni')}: <strong>- ${data.penalIni} x AGI</strong></p>
+                     <p>${game.i18n.localize('explain.'+key)}</p>`
+                            
+    helperDialog.dialogDescription(null, content, game.i18n.localize('common.'+key), this.document.system.rules, 300)
+  }
 
 }

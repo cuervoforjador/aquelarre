@@ -18,6 +18,19 @@ export const md_stat = (options = {}) => {
                   })
 }
 
+export const md_healthStatus = (high, low, penalMov, penalDan, penalIni, penalHab) => {
+      return new api.SchemaField({
+                        low: new api.NumberField({ nullable: true, initial: low }),
+                        high: new api.NumberField({ nullable: true, initial: high }),
+                        checked: new api.BooleanField({ initial: false }),                        
+                        value: new api.NumberField({ nullable: true, initial: 0 }),
+                        penalMov: new api.NumberField({ nullable: true, initial: penalMov }),
+                        penalDan: new api.NumberField({ nullable: true, initial: penalDan }),
+                        penalIni: new api.NumberField({ nullable: true, initial: penalIni }),
+                        penalHab: new api.NumberField({ nullable: true, initial: penalHab }),
+                  })
+}
+
 export const md_lore = (options = {}) => {
       const _options = {...{label: "", hint: ""}, ...options}
       return new api.SchemaField({

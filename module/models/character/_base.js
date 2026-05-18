@@ -1,4 +1,4 @@
-import {api, md_stat, md_lore, md_text} from "../_constants.js"
+import {api, md_stat, md_healthStatus, md_lore, md_text} from "../_constants.js"
 import extend_Base from "../base.js";
 
 export default class extendCharacter_Base extends extend_Base {
@@ -22,7 +22,9 @@ export default class extendCharacter_Base extends extend_Base {
             posicion: md_lore({label: 'common.posicion', hint: 'common.posicion'}),
             profesion: md_lore({label: 'common.profesion', hint: 'common.profesion'}),
             profesionPaterna: md_lore({label: 'common.profesionPaterna', hint: 'common.profesionPaterna'}),
-            descripcion: md_text({label: 'common.descripcion', hint: 'common.descripcion'})
+            familia: md_text({label: 'common.familia', hint: 'common.familia'}),
+            descripcion: md_text({label: 'common.descripcion', hint: 'common.descripcion'}),            
+            limpiezaSangre: new api.NumberField({ nullable: true, initial: 0 })
         })
 
         /** --- CARACTERÍSTICAS --- */
@@ -40,23 +42,24 @@ export default class extendCharacter_Base extends extend_Base {
         
         /** --- ATRIBUTOS --- */
         schema.atributos = new api.SchemaField({
-            sue: md_stat({label: 'ATTR.sue', hint: 'ATTR.sue'}),
-            rr: md_stat({label: 'ATTR.rr', hint: 'ATTR.rr'}),
-            irr: md_stat({label: 'ATTR.irr', hint: 'ATTR.irr'}),
-            ptv: md_stat({label: 'ATTR.ptv', hint: 'ATTR.ptv'}),
-            ptf: md_stat({label: 'ATTR.ptf', hint: 'ATTR.ptf'}),
-            ptc: md_stat({label: 'ATTR.ptc', hint: 'ATTR.ptc'}),
-            tem: md_stat({label: 'ATTR.tem', hint: 'ATTR.tem'}),
+            sue: md_stat({label: 'ATTR.sue', hint: 'ATTR.sue'}),                    //Suerte
+            rr: md_stat({label: 'ATTR.rr', hint: 'ATTR.rr'}),                       //Racionalidad
+            irr: md_stat({label: 'ATTR.irr', hint: 'ATTR.irr'}),                    //Irracionalidad
+            ptv: md_stat({label: 'ATTR.ptv', hint: 'ATTR.ptv'}),                    //Puntos de Vida
+            ptf: md_stat({label: 'ATTR.ptf', hint: 'ATTR.ptf'}),                    //Puntos de Fe
+            ptc: md_stat({label: 'ATTR.ptc', hint: 'ATTR.ptc'}),                    //Puntos de Concentración
+            pta: md_stat({label: 'ATTR.pta', hint: 'ATTR.pta', min: 0, max: 666}),  //Puntos de Concentración
+            tem: md_stat({label: 'ATTR.tem', hint: 'ATTR.tem'}),                    //Templanza (como atributo)            
         })
 
         /** --- SALUD --- */
         schema.salud = new api.SchemaField({
             estado: new api.SchemaField({
-                sano: new api.BooleanField({ initial: false }),
-                herido: new api.BooleanField({ initial: false }),
-                malherido: new api.BooleanField({ initial: false }),
-                inconsciente: new api.BooleanField({ initial: false }),
-                muerto: new api.BooleanField({ initial: false })
+                sano: md_healthStatus(0, 0.5, 1, 1, 0, 0),
+                herido: md_healthStatus(0.5, 0.75, 0.5, 0.5, 0.5, 20),
+                malherido: md_healthStatus(0.75, 1, 0.25, 0.25, 1, 40),
+                inconsciente: md_healthStatus(1, 2, 0, 0, 1, 100),
+                muerto: md_healthStatus(2, 10, 0, 0, 1, 100)
             }),
             heridaGrave: new api.NumberField({ nullable: true, initial: null })
         })

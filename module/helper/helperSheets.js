@@ -62,18 +62,54 @@ export default class helperSheets {
      */
     static checkStats(system) {
 
-        [system.caracteristicas, system.atributos].map(group => {
-            if (!!group) {
-                for (var s in group) {
-                    const char = group[s];
-                    ['value', 'total'].map(field => {
-                        char[field] = char[field] < char.min ? char.min :
-                                      char[field] > char.max ? char.max : char[field];
-                    })             
-                }
-            }
+        let _attrs = system.atributos,
+            _chars = system.caracteristicas;
+
+        //Características
+        for (var s in _chars) {
+            let char = _chars[s];
+            ['value', 'total'].map(field => {
+                char[field] = this._checkMinMax(char[field], char.min, char.max)
+            })             
+        }
+
+        //Suerte
+        _attrs.sue.total = _chars.com.value + _chars.per.value + _chars.cul.value;
+        _attrs.sue.max = _attrs.sue.total 
+        _attrs.sue.value = this._checkMinMax(_attrs.sue.value, _attrs.sue.min, _attrs.sue.max)
+
+        //Pt. Vida
+        _attrs.ptv.total = _chars.res.value
+        _attrs.ptv.max = _attrs.ptv.total
+        _attrs.ptv.min = _attrs.ptv.total * (-1)
+        _attrs.ptv.value = this._checkMinMax(_attrs.ptv.value, _attrs.ptv.min, _attrs.ptv.max)
+
+        //Altura y Peso
+        const charEval = _chars.fue.value > _chars.res.value ? _chars.fue.value : _chars.res.value;
+        system.info.altura = Math.round(charEval*2.49 + 139.36)/100;
+        system.info.peso =  Math.round(charEval*3.72 + 88.49);
+        [[5,106], [6,110], [7,118], [8,120], [9,122], [10,125], [11,128], [12,132], [13,134], [14,140], [15,146]].map(e => {
+            if (charEval === e[0]) system.info.peso = e[1]
         })
+        
+        //Estatus de Vida
+        const ptv =  system.atributos.ptv
+        for (var s in system.salud.estado) {
+            let status = system.salud.estado[s]
+            status.checked = false
+
+            const low = ptv.total - Math.ceil(ptv.total * status.low)
+            const high = ptv.total - Math.ceil(ptv.total * status.high)
+            status.value = high
+            if (ptv.value <= high && ptv.value > low) status.checked = true
+        }
+
         return system
+    }
+
+    static _checkMinMax(val, min, max) {
+        return  Number(val) < min ? min :
+                Number(val) > max ? max : Number(val);
     }
 
     /**
@@ -82,10 +118,11 @@ export default class helperSheets {
      */
     static drawSpectrum(html) {
         html.find('[data-spectrum="true"]').each( (i,e) => {
-            const value = Number($(e).find('span._value').html())
+            let value = Number($(e).find('span._value').html())
+            value = value > 100 ? 100 : isNaN(value) ? 0 : value
             let hex = Math.round((value / 100)*255).toString(16);
                 hex = hex.length === 1 ? '0' + hex : hex;
-            const sColor = '#FF' + hex + hex;
+            const sColor = '#'+hex + '0000' //'#FF' + hex + hex;
             $(e).css({color: sColor})
         })
     }
@@ -117,7 +154,7 @@ export default class helperSheets {
 
             const sTooltip = game.i18n.localize('common.editarFicha')
             header.find('button[data-action="close"]').before(`
-                <button type="button" class="header-control icon fa-solid fa-eye"
+                <button type="button" class="header-control icon fa-solid fa-lock"
                         data-tooltip="${sTooltip}" aria-label="${sTooltip}" data-action="_edit"></button>`)
 
         } else {
@@ -126,7 +163,7 @@ export default class helperSheets {
 
             const sTooltip = game.i18n.localize('common.editarFichaNo')
             header.find('button[data-action="close"]').before(`
-                <button type="button" class="header-control icon fa-solid fa-pen-to-square"
+                <button type="button" class="header-control icon fa-solid fa-unlock"
                         data-tooltip="${sTooltip}" aria-label="${sTooltip}" data-action="_play"></button>`)
         }
     }
@@ -166,7 +203,9 @@ export default class helperSheets {
             {type: 'pueblo', field: 'origen'},
             {type: 'sociedad', field: 'cultura'},
             {type: 'estrato', field: 'estamento'},
-            {type: 'posicion', field: 'posicion'}
+            {type: 'posicion', field: 'posicion'},
+            {type: 'profesion', field: 'profesion'},
+            {type: 'profesion', field: 'profesionPaterna'}
 
         ].map(o => {
             const oItem = document.items.find(e => e.type === o.type)

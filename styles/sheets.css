@@ -102,6 +102,41 @@ button._checked {
     border: 1px solid var(--vcGreen1);
 }
 
+form._extend input[type="checkbox"]::before {
+    color: #3402021c;
+}
+form._extend input[type="checkbox"]::after {
+    color: var(--aqRed);
+}
+
+form._extend h1.divider::before, 
+form._extend h2.divider::before, 
+form._extend h3.divider::before, 
+form._extend h4.divider::before,
+form._extend h1.divider::after, 
+form._extend h2.divider::after, 
+form._extend h3.divider::after, 
+form._extend h4.divider::after {
+    border-top: 4px ridge var(--aqRed);
+}
+form._extend._vyc h1.divider::before, 
+form._extend._vyc h2.divider::before, 
+form._extend._vyc h3.divider::before, 
+form._extend._vyc h4.divider::before,
+form._extend._vyc h1.divider::after, 
+form._extend._vyc h2.divider::after, 
+form._extend._vyc h3.divider::after, 
+form._extend._vyc h4.divider::after {
+    border-top: 4px ridge var(--vcGreen);
+}
+
+form._extend input[name="name"]:disabled {
+    color: var(--aqText2);
+}
+form._extend._vyc input[name="name"]:disabled {
+    color: var(--vcText2);
+}
+
 /** --- SECCIONES --- */
 ._box {
     display: flex;
@@ -181,8 +216,12 @@ button._checked {
 ._combo label {
     white-space: nowrap;
 }
+._mainHeader ._combo label {
+    color: var(--color-light-3);    
+}
 ._combo label._field {
     color: var(--aqText2);
+    font-size: calc(var(--fSize) * 1.1);
     padding: 0 4px;
 }
 ._vyc ._combo label._field {
@@ -198,6 +237,11 @@ button._checked {
     border-bottom: 1px solid #ffffff21;
     border-radius: 0;
 }
+._combo._fields input, 
+._combo._fields select {
+    font-size: calc(var(--fSize) * 1.1);
+    color: var(--aqText2);
+}
 ._combo img._fieldImg {
     width: calc(var(--fSize) * 1.5);
     height: calc(var(--fSize) * 1.5);
@@ -207,6 +251,12 @@ button._checked {
 form._extend ._sheetContent ._combo input,
 form._extend ._sheetContent ._combo select {
     background: #6565651f;
+}
+._combo._fields {
+    margin-right: 6px;
+}
+._combo._rowed {
+    width: 100%;
 }
 
 /** --- CABECERA --- */
@@ -322,6 +372,23 @@ form._extend._vyc em {
     display: flex;
     justify-content: flex-end;
 }
+form._extend ._sheetContent h4 {
+    font-family: var(--fFont1);
+    color: var(--aqText);
+    font-size: calc(var(--fSize) * 0.9);
+}
+form._extend._vyc ._sheetContent h4 {
+    font-family: var(--vcfFont1);
+    color: var(--vcText);
+    font-size: calc(var(--fSize) * 1.25);
+}
+
+form._extend label._subTitle {
+    font-size: calc(var(--fSize) * 1.2);
+    line-height: calc(var(--fSize) * 1.15);
+    color: var(--aqRed2);
+    font-weight: 100;    
+}
 
 /** --- TIRADAS --- */
 ._roll {
@@ -341,37 +408,191 @@ form._extend._vyc em {
     opacity: 0;
 }
 ._roll:hover span._dice {
-    opacity: 0.50;
+    opacity: 1;
+    color: #79151547;
 }
 ._roll:hover span._value {
-    text-shadow: -1px -1px 0 #000, 1px -1px 0 #000, -1px 1px 0 #000, 1px 1px 0 #000;
     z-index: 1;
 }
 
 /** --- CARACTERÍSTICAS --- */
+form._extend ._stats {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-content: flex-start;
+    align-items: flex-start;
+}
+form._extend ._stats ._left,
+form._extend ._stats ._right {
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    align-content: center;
+}
+form._extend ._stats ._left h4._title {
+    width: 100%;
+    margin: 0;
+    font-size: calc(var(--fSize) * 1.3);
+}
+form._extend ._stats ._left ._attrs {
+    padding-left: 20px;
+}
+
+    /** --- CUSTO PARA AQ3 --- */
+    form._extend._aq3 ._stats ._left ._row._char._header label:first-child,
+    form._extend._aq3 ._stats ._left ._row._char label._charTitle {
+        width: calc(var(--fSize) * 8);
+        text-align: left;
+        padding-left: 5px;
+    }
+    form._extend._aq3 ._stats ._left ._row._char label._charTitle span._bold {
+        margin-right: 1px;
+    }
+    form._extend._aq3 ._stats ._box {
+        border: none;
+        padding: 0;
+    }
+
+form._extend ._stats ._right {
+    width: calc(var(--fSize)*10);
+}
+form._extend ._stats ._right ._logo {
+    width: 100%;
+    height: calc(var(--fSize) * 10);
+}
+form._extend ._stats ._right input._pta {
+    width: calc(var(--fSize) * 7);
+    height: calc(var(--fSize) * 4);
+    font-size: calc(var(--fSize) * 3);
+}
+form._extend ._stats ._right ._subTitle._pta {
+    white-space: break-spaces;
+    text-align: center;
+}
+
+._table._status ._row {
+    align-content: center;
+    align-items: center;
+}
+._table._status ._row input[type="checkbox"] {
+    margin-right: 4px;
+}
+._table._status label,
+._table._status input {
+    font-size: calc(var(--fSize) * 1);
+    line-height: calc(var(--fSize) * 1);
+    padding: 0;
+    margin: 0;
+    height: calc(var(--fSize) * 1);
+}
+._attrs ._table._status label {
+    width: calc(var(--fSize) * 9);
+    display: flex;
+}
+._attrs ._table._status input[type="number"] {
+    width: calc(var(--fSize) * 2);
+    font-size: calc(var(--fSize) * 1.25);
+    line-height: calc(var(--fSize) * 1.25);
+    height: calc(var(--fSize) * 1.25);
+    padding-bottom: calc(var(--fSize) * 0.1);
+    border-bottom: 2px solid #000;
+    text-align: center;
+}
+._attrs ._table._status {
+    margin-top: calc(var(--fSize) * 1);
+}
+._attrs ._table._rrirr {
+    margin-top: calc(var(--fSize) * 2.9);
+}
+._attrs ._table._rrirr ._row label, 
+._attrs ._table._rrirr ._row input {
+    width: calc(var(--fSize) * 3)!important;
+    text-align: center!important;
+    margin: 0;
+}
+._attrs ._table._rrirr ._row {
+    gap: 7px;
+}
+
+form._extend input._stat {
+    margin: 5px;
+    border: 2px solid #000;
+    font-size: calc(var(--fSize) * 2);
+    line-height: calc(var(--fSize) * 2.2);
+    height: calc(var(--fSize) * 2.2);
+    padding: 0 0 calc(var(--fSize) * 0.2) 0;
+    text-align: center;
+}
+._table._chars ._row:nth-child(even) {
+    background: #691f1726;
+}
+._table._noRowsColor ._row:nth-child(even) {
+    background: none;
+}
 ._row._char label,
 ._row._char input {
-    font-family: var(--fFont1);
-    font-size: calc(var(--fSize) * 1.5);
+    font-size: calc(var(--fSize) * 1.8);
     width: calc(var(--fSize) * 2.5);
     padding: 0;
 }
-._vyc ._row._char label,
-._vyc ._row._char input {
-    font-family: var(--vcfFont1);
+._row._char label._charTitle {
+    font-size: calc(var(--fSize) * 1.2);
+    line-height: calc(var(--fSize) * 2);
+    padding-right: 5px;
+    text-align: right;
+}
+._row._char input._charTotal, 
+._row._char input._charValue {
+    text-align: center;
+    border: 2px solid #000000c2;
+}
+._row._char input._charValue {
+    border: 2px solid #00000047;
+    margin-left: 5px;
 }
 
 ._row._char._header label {
     padding: 0;
     font-size: calc(var(--fSize) * 1);
-    font-family: var(--fFont1);
+    height: calc(var(--fSize) * 1.3);
     text-align: center;
     margin-right: 2px;
 }
-._vyc ._row._char._header label {
-    font-family: var(--vcfFont1);
+._table._extraChars {
+    margin-top: 3px;
+}
+._box._extraChars ._row {
+    margin-bottom: 2px;
+}
+._table._extraChars ._row:nth-child(even) {
+    background: none;
+}
+._box._extraChars ._row._char label,
+._box._extraChars ._row input {
+    line-height: calc(var(--fSize) * 1.5);
+    height: calc(var(--fSize) * 1.5);
+}
+._box._extraChars ._row._char label {
+    padding-top: calc(var(--fSize) * 0.2);
+}
+._box._extraChars ._row label._input {
+    font-size: calc(var(--fSize) * 1);
+    padding-top: calc(var(--fSize) * 0.3);
+}
+._box._extraChars ._row input {
+    border: none;
+    text-align: right;
+}
+._box._extraChars ._row ._input, 
+._box._extraChars ._row input {
+    border-bottom: 2px solid #000000ab;
+    font-size: calc(var(--fSize) * 1.4);
 }
 
+/** --- OTROS --- */
 form._extend .window-resize-handle {
     width: 20px;
     height: 20px;
@@ -379,15 +600,21 @@ form._extend .window-resize-handle {
     filter: none;
 }
 
-a[data-action="_showItem"] label {
+a[data-action="_showItem"] label,
+a[data-action="_showDescr"] label,
+a[data-action="_showStatus"] label {
     cursor: var(--cursor-pointer);
     transition: 0.5s;
 }
-a[data-action="_showItem"]:hover label {
+a[data-action="_showItem"]:hover label,
+a[data-action="_showDescr"]:hover label,
+a[data-action="_showStatus"]:hover label {
     background: var(--color-warm-2);
     color: var(--color-light-1);
-    /*
-    border: 1px solid var(--color-light-3);
-    padding: 0 3px;
-    */
+}
+._logo {
+    background-image: url(../assets/ui/logo.png);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
 }

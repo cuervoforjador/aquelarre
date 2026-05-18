@@ -45,6 +45,11 @@
 ._row._inverse {
     justify-content: flex-end;
 }
+._grid {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+}
 input {
     border-radius: 0;
 }
@@ -59,14 +64,26 @@ input.h4 {
 ._vyc input.h4 {
     font-family: var(--vcfFont1);
 }
+._xsSize {
+    width: calc(var(--fSize) * 2.5)!important;
+}
 ._sSize {
-    width: calc(var(--fSize) * 4);
+    width: calc(var(--fSize) * 4)!important;
+}
+._msSize {
+    width: calc(var(--fSize) * 6)!important;
 }
 ._mSize {
-    width: calc(var(--fSize) * 8);
+    width: calc(var(--fSize) * 8)!important;
 }
 ._lSize {
-    width: calc(var(--fSize) * 20);
+    width: calc(var(--fSize) * 20)!important;
+}
+._xlSize {
+    width: calc(var(--fSize) * 30)!important;
+}
+._xsFont {
+    font-size: calc(var(--fSize) * 0.7)!important;    
 }
 
 ._lessBottom {
@@ -84,6 +101,9 @@ input.h4 {
 ._marginLeft {
     margin-left: 4px;
 }
+._marginRight {
+    margin-right: 4px;
+}
 ._center {
     text-align: center;
 }
@@ -93,6 +113,12 @@ input.h4 {
 ._expanded {
     width: 100%;
     justify-content: flex-end;
+}
+._bold {
+    font-weight: 900;
+}
+._italic {
+    font-style: italic;
 }
 
 

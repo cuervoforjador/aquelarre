@@ -23,6 +23,20 @@ export default class helperTemplates {
             tab_Stats: `${character}/tabs/stats.hbs`,
             tab_Combate: `${character}/tabs/combate.hbs`,
 
+            stats_main_aq3: `${character}/parts/aq3/stats_main.hbs`,
+            stats_chars_aq3: `${character}/parts/aq3/stats_chars.hbs`,
+            stats_extra_aq3: `${character}/parts/aq3/stats_extra.hbs`,
+            stats_health_aq3: `${character}/parts/aq3/stats_health.hbs`,
+            stats_rrirr_aq3: `${character}/parts/aq3/stats_rrirr.hbs`,
+            stats_main_aq4: `${character}/parts/aq4/stats_main.hbs`,
+            stats_chars_aq4: `${character}/parts/aq4/stats_chars.hbs`,
+            stats_health_aq4: `${character}/parts/aq4/stats_health.hbs`,
+            stats_rrirr_aq4: `${character}/parts/aq4/stats_rrirr.hbs`,
+            stats_main_vyc: `${character}/parts/vyc/stats_main.hbs`,
+            stats_chars_vyc: `${character}/parts/vyc/stats_chars.hbs`,
+            stats_health_vyc: `${character}/parts/vyc/stats_health.hbs`,
+            stats_rrirr_vyc: `${character}/parts/vyc/stats_rrirr.hbs`,
+
             // --- ITEMS ---
             main_Item: `${item}/main/item.hbs`,
             main_Competencia: `${item}/main/competencia.hbs`,

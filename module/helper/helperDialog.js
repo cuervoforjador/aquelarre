@@ -54,15 +54,16 @@ export default class helperDialog {
      * dialogDescription
      * @param {*} document 
      */
-    static async dialogDescription(document) {
-        const rules = document.system.rules
-        const content = document.system.descripcion
+    static async dialogDescription(document=null, content='', title='', rules=null, width=550) {
+        const sRules = rules ? rules : document?.system.rules
+        const sContent = document ? document.system.descripcion : content
+        const sTitle = document ? document.name : title
 
         const dialog = await foundry.applications.api.DialogV2.prompt({
-            classes: ['_extend', '_description', '_'+rules],
-            window: { title: document.name },
-            position: {width: 550},
-            content,
+            classes: ['_extend', '_description', '_'+sRules],
+            window: { title: sTitle },
+            position: {width: width},
+            content: sContent,
             ok: {},
             render: (_event, dialog) => {
                 this._setShadowToDialog(dialog)   
@@ -87,6 +88,7 @@ export default class helperDialog {
     }
 
     static _setWaterMarkToDialog(dialog, document) {
+        if (!document) return
         $(dialog.element).find('.window-content').prepend(`<div class="_watermark" style="background-image: url(${document.img})"></div>`)        
     }
 
