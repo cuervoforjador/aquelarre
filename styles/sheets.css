@@ -403,6 +403,7 @@ form._extend label._subTitle {
     width: 100%;
     text-align: center;
     transition: 0.3s;
+    line-height: calc(var(--fSize) * 1.6);
 }
 ._roll span._dice {
     opacity: 0;
@@ -516,6 +517,17 @@ form._extend ._stats ._right ._subTitle._pta {
 ._attrs ._table._rrirr ._row {
     gap: 7px;
 }
+._attrs label._ptf {
+    border-bottom: 6px solid #45698d;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+._attrs label._ptc {
+    border-bottom: 6px solid #8d4545;
+    margin-top: 2px;
+    margin-bottom: 2px;
+}
+
 
 form._extend input._stat {
     margin: 5px;
@@ -544,12 +556,15 @@ form._extend input._stat {
     padding-right: 5px;
     text-align: right;
 }
-._row._char input._charTotal, 
-._row._char input._charValue {
+._row._char input._charTotal,
+._row._char ._input._charTotal, 
+._row._char input._charValue,
+._row._char ._input._charValue {
     text-align: center;
     border: 2px solid #000000c2;
 }
-._row._char input._charValue {
+._row._char input._charValue,
+._row._char ._input._charValue {
     border: 2px solid #00000047;
     margin-left: 5px;
 }

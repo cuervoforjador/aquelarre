@@ -92,6 +92,32 @@ export default class helperSheets {
             if (charEval === e[0]) system.info.peso = e[1]
         })
         
+        //Templanza
+        _attrs.tem.min = 0
+        _attrs.tem.max = 100       
+        _attrs.tem.total = this._checkMinMax(_attrs.tem.total, _attrs.rr.min, _attrs.rr.max)
+        _attrs.tem.value = _attrs.tem.total
+
+        //Racionalidad e Irracionalidad
+        _attrs.rr.min = 0
+        _attrs.rr.max = 200
+        _attrs.rr.value = this._checkMinMax(_attrs.rr.value, _attrs.rr.min, _attrs.rr.max)
+
+        _attrs.irr.min = 0
+        _attrs.irr.max = 200
+        _attrs.irr.value = this._checkMinMax(_attrs.irr.value, _attrs.irr.min, _attrs.irr.max)
+
+        //Pt. Concentración y Fe
+        _attrs.ptc.total = Math.ceil(_attrs.irr.value * 0.2)
+        _attrs.ptc.min = 0
+        _attrs.ptc.max = _attrs.ptc.total
+        _attrs.ptc.value = this._checkMinMax(_attrs.ptc.value, _attrs.ptc.min, _attrs.ptc.max)
+
+        _attrs.ptf.total = Math.ceil(_attrs.rr.value * 0.2)
+        _attrs.ptf.min = 0
+        _attrs.ptf.max = _attrs.ptf.total        
+        _attrs.ptf.value = this._checkMinMax(_attrs.ptf.value, _attrs.ptf.min, _attrs.ptf.max)
+
         //Estatus de Vida
         const ptv =  system.atributos.ptv
         for (var s in system.salud.estado) {

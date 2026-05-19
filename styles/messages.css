@@ -27,20 +27,22 @@ li.chat-message._extend._lore .description {
 li.chat-message._extend .dice-total,
 li.chat-message._extend .dice-roll .dice-formula  {
     border: 1px solid var(--aqRed2);
-    background: var(--aqDarkRed);
+    background: var(--aqBackRed);
     border-radius: 0;
-    color: var(--aqText2);
-    font-size: var(--fSize);
-    font-family: var(--fFont1);
-    line-height: calc(var(--fSize) * 1.5);
+    color: var(--aqText);
+    font-size: 1.25rem;
+    font-family: var(--fFont0);
+    font-weight: 100;
+    line-height: 1.5rem;
+    text-transform: uppercase;
 }
 li.chat-message._extend._vyc .dice-total,
 li.chat-message._extend._vyc .dice-roll .dice-formula {
     border: 1px solid var(--vcGreen2);
-    background: var(--vcDarkGreen);    
+    background: var(--vcBackGreen);    
     color: var(--vcText2);
     font-family: var(--vcfFont1);
-    font-size: calc(var(--fSize) * 1.25);
+    font-size: 1.3rem;
 }
 li.chat-message._extend .dice-roll.expanded .dice-tooltip {
     border: 1px solid var(--aqRed);
@@ -58,4 +60,78 @@ li.chat-message._extend .table-results strong.name {
 li.chat-message._extend._vyc .table-results strong.name {
     font-family: var(--vcfFont1);
     font-size: calc(var(--fSize) * 1.25);
+}
+li.chat-message._extend ._header {
+    display: flex;
+}
+li.chat-message._extend ._header img {
+    width: 22%;
+    padding: 4px;
+}
+li.chat-message._extend ._header ._subHeader {
+    display: flex;
+    flex-direction: column;
+    width: 78%;
+}
+li.chat-message._extend ._subHeader h2,
+li.chat-message._extend ._subHeader h4 {
+    font-family: var(--fFont1);
+    font-size: calc(var(--fSize) * 1);
+    line-height: calc(var(--fSize) * 1);
+    margin: 0;
+    padding: 0;
+}
+li.chat-message._extend ._subHeader h4 {
+    font-family: var(--fFont0);
+    margin-top: 4px;
+    font-weight: 100;
+}
+
+li.chat-message._extend ._stats {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+li.chat-message._extend ._stats label._field {
+    font-weight: 900;
+    margin-left: 5px;
+}
+li.chat-message._extend .dice-roll span._percent {
+    font-size: 0.85rem;
+    margin-left: 0.2rem;
+}
+li.chat-message._extend h4.dice-total {
+    display: flex;
+    justify-content: space-between;
+}
+li.chat-message._extend .dice-roll span._number {
+    width: 60%;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    font-weight: 900;
+}
+li.chat-message._extend .dice-roll span._result {
+    font-family: var(--fFont1);
+    font-size: 1rem;
+    line-height: 1.5rem;
+    margin-left: 0.5rem;
+    width: 40%;
+}
+li.chat-message._extend .success {
+    background: #849f61;
+    color: #000;
+}
+li.chat-message._extend .failure {
+    background: #9f6a61;
+    color: #000;
+}
+li.chat-message._extend .criticalSuccess {
+    background: #ffb100;
+    color: #000;
+}
+li.chat-message._extend .criticalFailure {
+    background: #ff0000;
+    color: #ffffff;
 }

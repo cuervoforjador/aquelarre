@@ -39,6 +39,7 @@ dialog._extend footer button {
     font-family: var(--fFont0);
     font-size: calc(var(--fSize) * 1.1);
     white-space: nowrap;
+    border-radius: 0;
 }
 dialog._extend._vyc footer button {
     font-family: var(--vcfFont1);
@@ -120,4 +121,46 @@ dialog._extend button[type="submit"]._selected {
 }
 dialog._extend._vyc button[type="submit"]._selected {
     background: var(--vcGreen);
+}
+dialog._extend._diffLevels h1.window-title {
+    font-size: 1.2rem;
+}
+
+dialog._extend._diffLevels footer button {
+    text-align: left;
+    display: flex;
+    min-width: 100%;
+    justify-content: center;
+    align-content: center;
+}
+dialog._extend._diffLevels footer button:hover {
+    background: #ffc8007a;
+}
+button.diffB3 {
+    background-color: #3a510e45;
+    color: #000;
+}
+button.diffB2 {
+    background-color: #5e7d2245;
+    color: #000;
+}
+button.diffB1 {
+    background-color: #82a73b45;
+    color: #000;
+}
+button.diff00 {
+    background-color: #9b6e3745;
+    color: #000;
+}
+button.diffP1 {
+    background-color: #a73b3b45;
+    color: #000;
+}
+button.diffP2 {
+    background-color: #731d1d45;
+    color: #000;
+}
+button.diffP3 {
+    background-color: #350a0a45;
+    color: #000;
 }

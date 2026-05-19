@@ -54,10 +54,6 @@ export default class helperTables {
             const sheet = table.sheet
             await sheet.render(true)
         }
-
-        //const roll = await table.draw()
-        //if (game.dice3d) await game.dice3d.showForRoll(roll.roll)
-        //await table.delete()
     }
 
     static _getResultRange(rules, lore, option) {

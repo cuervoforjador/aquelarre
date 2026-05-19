@@ -3,6 +3,7 @@ import { configRULES } from "../config/rules.js";
 import sheetHandler from "./handler.js"
 import helperSheets from "../helper/helperSheets.js"
 import helperContext from "../helper/helperContext.js";
+import helperRolls from "../helper/helperRolls.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api
 export default class extendActorSheet 
@@ -44,7 +45,8 @@ export default class extendActorSheet
       _showItem:      this.#onShowItem,
       _checkButton:   this.#onBooleanField,
       _addRow:        this.#onAddRow,
-      _deleteRow:     this.#onDeleteRow    
+      _deleteRow:     this.#onDeleteRow,
+      _roll:          this.#onRoll
     }
   }
 
@@ -108,6 +110,13 @@ export default class extendActorSheet
     mItems.splice(index, 1)
     await this.document.update({[path]: mItems})
   }  
+
+  static async #onRoll(_event, target) {
+    const sTarget = $(target).data('target')
+    const sPath = $(target).data('path')
+    const useLuck = $(target).data('useluck')
+    helperRolls.roll(this.document, sTarget, sPath, useLuck)
+  }
 
   /**
    * _prepareContext
