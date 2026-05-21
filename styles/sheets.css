@@ -197,8 +197,8 @@ form._extend._vyc input[name="name"]:disabled {
     outline: 2px solid var(--vcGreen);
 }
 ._box ._row label._input {
-    height: var(--input-height);
-    line-height: var(--input-height);
+    height: calc(var(--fSize) * 2);
+    line-height: calc(var(--fSize) * 2);
 }
 ._box option,
 ._combo option,
@@ -517,6 +517,13 @@ form._extend ._stats ._right ._subTitle._pta {
 ._attrs ._table._rrirr ._row {
     gap: 7px;
 }
+._attrs ._table ._row._lines {
+    height: 1rem;
+    line-height: 1rem;
+}
+._attrs ._table ._row._lines label {
+    height: 10px;
+}
 ._attrs label._ptf {
     border-bottom: 6px solid #45698d;
     margin-top: 2px;
@@ -547,6 +554,7 @@ form._extend input._stat {
 ._row._char label,
 ._row._char input {
     font-size: calc(var(--fSize) * 1.8);
+    height: calc(var(--fSize) * 1.8);
     width: calc(var(--fSize) * 2.5);
     padding: 0;
 }

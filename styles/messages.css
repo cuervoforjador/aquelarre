@@ -7,6 +7,8 @@ li.chat-message._extend {
 }
 li.chat-message._extend h4.message-sender {
     font-family: var(--fFont1);
+    font-size: 0.8rem;
+    line-height: 0.5rem;
 }
 li.chat-message._extend._vyc h4.message-sender {
     font-family: var(--vcfFont1);
@@ -97,12 +99,22 @@ li.chat-message._extend ._stats label._field {
     margin-left: 5px;
 }
 li.chat-message._extend .dice-roll span._percent {
-    font-size: 0.85rem;
+    font-size: 1.75rem;
     margin-left: 0.2rem;
+    margin-top: -0.5rem;
 }
 li.chat-message._extend h4.dice-total {
     display: flex;
     justify-content: space-between;
+}
+li.chat-message._extend h4.dice-total .lucky {
+    color: #ffb300;
+    font-size: 1.15rem;
+    width: 1.5rem;
+    position: absolute;
+    left: 0.25rem;
+    top: 0.25rem;
+    text-shadow: 0 0 2px black;
 }
 li.chat-message._extend .dice-roll span._number {
     width: 60%;
@@ -110,7 +122,8 @@ li.chat-message._extend .dice-roll span._number {
     align-content: center;
     justify-content: center;
     align-items: center;
-    font-weight: 900;
+    font-size: 2.5rem;
+    line-height: 2.5rem;
 }
 li.chat-message._extend .dice-roll span._result {
     font-family: var(--fFont1);
@@ -118,6 +131,12 @@ li.chat-message._extend .dice-roll span._result {
     line-height: 1.5rem;
     margin-left: 0.5rem;
     width: 40%;
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;  
+    border-left: 1px solid #0000005c;
+    box-shadow: inset #ffffff 0 0 4px;      
 }
 li.chat-message._extend .success {
     background: #849f61;

@@ -69,7 +69,7 @@ export default class newRoll extends Roll {
       let nPercent = this.percent
       this.mods.map(mod => { nPercent = nPercent + Number(mod.penal) })
       nPercent = nPercent + Number(this.diffLevel.penal)
-      nPercent = nPercent + this.luck.spent
+      let nTotalLuck = this.total - this.luck.spent
 
       const maxCS = Math.ceil(nPercent/10)
       const minCF = Math.ceil(100 - (Math.ceil((100 - nPercent + 1)/10) - 1))
@@ -81,10 +81,10 @@ export default class newRoll extends Roll {
       this.evaluatedResult = {...this.evaluatedResult, ...{
         percentBase: this.percent,
         percentFinal: nPercent,
-        succes: this.total <= nPercent,
-        failure: this.total > nPercent,
-        criticalSuccess: this.total <= this.critical.maxCriticalSuccess,
-        criticalFailure: this.total >= this.critical.minCriticalFailure      
+        succes: nTotalLuck <= nPercent,
+        failure: nTotalLuck > nPercent,
+        criticalSuccess: nTotalLuck <= this.critical.maxCriticalSuccess,
+        criticalFailure: nTotalLuck >= this.critical.minCriticalFailure      
       }}
       if (this.evaluatedResult.criticalSuccess) {
         this.evaluatedResult.succes = true; 
@@ -285,7 +285,9 @@ export default class newRoll extends Roll {
                                           </section>
                                       </div>    
                                   </div>
-                                  <h4 class="dice-total"><span class="_number"> ${this.total} <span class="_percent"> / ${this.evaluatedResult.percentFinal}</span></span><span class="_result ${this.evaluatedResult.class}">${this.evaluatedResult.text}</span></h4>
+                                  <h4 class="dice-total">
+                                        ${this.luck.use ? `<i class="fa-solid fa-horseshoe lucky" data-tooltip="${game.i18n.localize('common.suerteGastada')+': '+this.luck.spent}"></i>` : '' }
+                                        <span class="_number"> ${this.total} <span class="_percent"> / ${this.evaluatedResult.percentFinal}</span></span><span class="_result ${this.evaluatedResult.class}">${this.evaluatedResult.text}</span></h4>
                               </div>
                           </div>`
         break;

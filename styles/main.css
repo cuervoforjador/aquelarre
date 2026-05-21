@@ -45,6 +45,9 @@
 ._row._inverse {
     justify-content: flex-end;
 }
+._row._spaced {
+    justify-content: space-between;
+}
 ._grid {
     width: 100%;
     display: flex;
@@ -121,6 +124,10 @@ input.h4 {
     font-style: italic;
 }
 
+
+input._sInput {
+    width: 6rem;
+}
 
 table._table {
     background: none;

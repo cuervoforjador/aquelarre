@@ -29,7 +29,7 @@ dialog._extend .window-content ._watermark {
 dialog._extend header {
     font-family: var(--fFont1);
     background: var(--aqDarkRed);
-    font-size: calc(var(--fSize) * 1.5);
+    font-size: calc(1rem * 1.5);
 }
 dialog._extend._vyc header {
     font-family: var(--vcfFont1);
@@ -37,17 +37,17 @@ dialog._extend._vyc header {
 }
 dialog._extend footer button {
     font-family: var(--fFont0);
-    font-size: calc(var(--fSize) * 1.1);
+    font-size: calc(1rem * 1.1);
     white-space: nowrap;
     border-radius: 0;
 }
 dialog._extend._vyc footer button {
     font-family: var(--vcfFont1);
-    font-size: calc(var(--fSize) * 1);
+    font-size: calc(1rem * 1);
 }
 .dialog._extend .dialog-content {
-    font-size: var(--fSize);
-    line-height: calc(var(--fSize) * 1.4);
+    font-size: 1rem;
+    line-height: calc(1rem * 1.4);
     text-align: justify;
     color: var(--aqText);
 }
@@ -99,19 +99,19 @@ dialog._extend form ul._main input[type="checkbox"]._selector::after {
     color: var(--vcRed)
 }
 dialog._extend form ul._main li img {
-    width: calc(var(--fSize) * 2);
-    height: calc(var(--fSize) * 2);
+    width: calc(1rem * 2);
+    height: calc(1rem * 2);
 }
 dialog._extend form ul._main li label._title {
     font-family: var(--fFont0);
-    font-size: calc(var(--fSize) * 1.2);
+    font-size: calc(1rem * 1.2);
     width: 100%;
     padding: 0 6px;
 }
 dialog._extend form ul._main li label._title::first-letter {
     color: var(--redLetter);
     font-weight: 900;
-    font-size: calc(var(--fSize) * 1.8);
+    font-size: calc(1rem * 1.8);
 }
 dialog._extend._vyc form ul._main li label._title {
     font-family: var(--vcfFont1);

@@ -41,6 +41,8 @@ export default class extendActorSheet
     actions: {
       _edit:          this.#onEditSheet,
       _play:          this.#onPlaySheet,
+      _rules:         this.#onChangeRules,
+      _textsize:      this.#onChangeTextSize,
       _readKey:       this.#onReadKey,
       _showItem:      this.#onShowItem,
       _checkButton:   this.#onBooleanField,
@@ -62,6 +64,14 @@ export default class extendActorSheet
   static #onPlaySheet(_event, target) {
     this._sheetMode = this.constructor.SHEET_MODES.PLAY
     this.document.sheet.render(true)
+  }
+
+  static #onChangeRules(_event, target) {
+    
+  }
+
+  static #onChangeTextSize(_event, target) {
+    helperSheets.changeTextSize(this.document)
   }
 
   static async #onReadKey(_event, target) {
@@ -180,10 +190,13 @@ export default class extendActorSheet
    */
   async _onRender(context, options) {
     await super._onRender(context, options)
+    helperSheets.adjustTextSize($(this.element), this.document)
     helperSheets.addRulesClass($(this.element), this.document)
     helperSheets.hideTitle($(this.element))
     helperSheets.adjustContent($(this.element))
-    helperSheets.addEditButton($(this.element), this.isPlayMode)    
+    helperSheets.addRulesButton($(this.element))
+    helperSheets.addTextSizeButton($(this.element))
+    helperSheets.addEditButton($(this.element), this.isPlayMode)
     helperSheets.drawSpectrum($(this.element))
     this.activateListeners($(this.element))
     this.activateTab(context, $(this.element))
@@ -211,7 +224,6 @@ export default class extendActorSheet
 
     /** --- TABLES --- */
     html.find('._table tbody tr').on("click", this._clickTableTR.bind(this))
-
   }
     
   /**

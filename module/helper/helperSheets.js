@@ -14,6 +14,7 @@ import sheetProfesion  from "../sheets/item/profesion.js"
 import sheetTableExtend from "../sheets/table/base.js"
 
 import helperContext from "./helperContext.js"
+import helperDialog from "./helperDialog.js"
 
 export default class helperSheets {
 
@@ -192,6 +193,73 @@ export default class helperSheets {
                 <button type="button" class="header-control icon fa-solid fa-unlock"
                         data-tooltip="${sTooltip}" aria-label="${sTooltip}" data-action="_play"></button>`)
         }
+    }
+
+    /**
+     * addRulesButton
+     * @param {*} html 
+     */
+    static addRulesButton(html) {
+        let header = html.find('.window-header')
+        if (header.find('button[data-action="_rules"]').length === 1) return;
+        const sTooltip = game.i18n.localize('common.editarReglas')
+        header.find('button[data-action="close"]').before(`
+            <button type="button" class="header-control icon fa-solid fa-circles-overlap-3"
+                    data-tooltip="${sTooltip}" aria-label="${sTooltip}" data-action="_rules"></button>`)        
+    }
+
+    /**
+     * addTextSizeButton
+     * @param {*} html 
+     */
+    static addTextSizeButton(html) {
+        let header = html.find('.window-header')
+        if (header.find('button[data-action="_textsize"]').length === 1) return;
+        const sTooltip = game.i18n.localize('common.editarTamano')
+        header.find('button[data-action="close"]').before(`
+            <button type="button" class="header-control icon fa-solid fa-text-size"
+                    data-tooltip="${sTooltip}" aria-label="${sTooltip}" data-action="_textsize"></button>`)        
+    }
+
+    /**
+     * adjustTextSize
+     * @param {*} html 
+     * @param {*} document 
+     */
+    static adjustTextSize(html, document) {
+        const size = document.system.control.textSize
+        html[0].style.setProperty('--fSize', size)
+    }
+
+    /**
+     * changeTextSize
+     * @param {*} document 
+     */
+    static async changeTextSize(document) {
+        const rules = document.system.rules
+        const sContent = `<div class="_main">
+                            <div class="_row _spaced">
+                                <label>${game.i18n.localize('common.tamanoLetra')}</label>
+                                <input type="text" name="textsize" class="_sInput" value="${document.system.control.textSize}"/>
+                            </div>
+                          </div>`
+
+        const textSize = await foundry.applications.api.DialogV2.wait({
+            classes: ['_extend', '_'+rules],
+            window: { title: game.i18n.localize("common.tamanoLetra") },
+            content: sContent,
+            buttons: [{
+                label: game.i18n.localize("common.confirmar"),
+                callback: (event, button) => {
+                    return $(event.currentTarget).find('input[name="textsize"]').val()
+                }                
+            }],
+            render: (_event, dialog) => {              
+                helperDialog._setShadowToDialog(dialog)
+            }            
+        })
+        if (!textSize) return
+        document.update({"system.control.textSize": textSize})
     }
 
     /**
