@@ -67,7 +67,7 @@ export default class extendActorSheet
   }
 
   static #onChangeRules(_event, target) {
-    
+    helperSheets.changeRules(this.document)
   }
 
   static #onChangeTextSize(_event, target) {

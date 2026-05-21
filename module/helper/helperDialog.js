@@ -4,6 +4,45 @@ import helperContext from "./helperContext.js"
 export default class helperDialog {
 
     /**
+     * dialogSelectRules
+     * @param {*} actor
+     */
+    static async dialogSelectRules(actor) {
+        const rules = actor.system.rules
+        const Options = await helperContext.getRules()
+        let options = ''
+        for (var s in Options) {
+            const option = Options[s]
+            options += `<li data-key=${option.key}>
+                            <input type="checkbox" class="_selector" ${rules === option.key ? 'checked' : ''}>
+                            <label class="_title">${option.label}</label>                      
+                        </li>`
+        }
+        const content = `<ul class="_main">${options}</ul>`
+
+        const option = await foundry.applications.api.DialogV2.wait({
+            classes: ['_extend', '_'+rules],
+            window: { title: game.i18n.localize("common.rules") },
+            position: { height: 'auto' },            
+            content,
+            buttons: [{
+                label: game.i18n.localize("common.confirmar"),
+                callback: (event, button) => {
+                    const checked = $(event.currentTarget).find('ul._main')
+                                                          .find('input[type="checkbox"]._selector:checked')
+                    if (!checked.length === 0) return null
+                    return checked.parents('li').data('key')
+                }
+            }],
+            render: (_event, dialog) => {               
+                this._setShadowToDialog(dialog)
+                this._setInitialDialogEvents(dialog)  
+            }
+        })      
+        return option
+    }
+
+    /**
      * dialogSelectLore
      * @param {*} rules 
      * @param {*} lore 
@@ -46,7 +85,6 @@ export default class helperDialog {
                 this._setShowCompendiumEvent(dialog)
             }
         })      
-        
         return option
     }
 

@@ -202,11 +202,12 @@ export default class helperContext {
      * @param {*} actor 
      */
     static async deleteAllContext(actor) {
-        for (const sType of ['reino', 'pueblo', 'sociedad', 'estrato', 'posicion', 'competencia']) {
+        for (const sType of ['competencia', 
+                             'posicion', 'estrato', 'sociedad', 'pueblo', 'reino', ]) {
             for (const item of actor.items.filter(e => e.type === sType)) {
                 await item.delete()
             }
-        }
+        }     
     }
 
     /**

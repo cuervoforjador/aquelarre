@@ -274,6 +274,30 @@ export default class helperSheets {
     }
 
     /**
+     * changeRules
+     * @param {*} document 
+     */
+    static async changeRules(document) {
+        const rules0 = document.system.rules
+        const rules = await helperDialog.dialogSelectRules(document)
+        if (!rules || rules === rules0) return
+
+        const confirmation = await foundry.applications.api.DialogV2.confirm({
+            classes: ['_extend', '_'+rules0],
+            window: { title: game.i18n.localize("common.rules") },
+            position: { height: 'auto' },
+            content: `<p>${game.i18n.localize("explain.cambiarReglas")}</p>`,
+            yes: () => {return true},
+            no: () => {return false},
+            defaultYes: false
+        })
+        if (!confirmation) return
+
+        await helperContext.deleteAllContext(document)        
+        await document.update({"system.rules": rules})
+    }
+
+    /**
      * hideTitle
      * @param {*} html 
      */

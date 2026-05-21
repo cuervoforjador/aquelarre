@@ -169,7 +169,8 @@
  "tooltip.soldado":                     "Competencia/Arma de soldados",
  "tooltip.superior":                    "ID del objeto superior del que cuelga",
  "tooltip.villano":                     "Competencia/Arma de villanos",
- 
+
+ "explain.cambiarReglas":               "Al cambiar las reglas se borraran todos los objetos vinculados a las reglas anteriores (lore, compentencias, armas, hechizos, items, etc, etc...)<p>¿Deseas continuar?",
  "explain.rollTable_reino":             "Tabla para elegir el Reino",
  "explain.rollTable_pueblo":            "Tabla para elegir Origen",
  "explain.rollTable_estrato":           "Tabla para elegir Estamento social",
