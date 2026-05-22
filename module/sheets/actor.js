@@ -148,7 +148,9 @@ export default class extendActorSheet
       isGM:         game.user.isGM,
       rules:        helperContext.getRules(),
       myRules:      this.document.system.rules,
-      configRULES:  configRULES[this.document.system.rules]
+      configRULES:  configRULES[this.document.system.rules],
+      mainRenderOptions:  helperSheets.getMainRenderOptions(this),
+      skillRenderOptions: helperSheets.getSkillRenderOptions(this)
     }    
   }
 
@@ -195,7 +197,6 @@ export default class extendActorSheet
     helperSheets.adjustTextSize($(this.element), this.document)
     helperSheets.addRulesClass($(this.element), this.document)
     helperSheets.hideTitle($(this.element))
-    helperSheets.adjustContent($(this.element))
     helperSheets.addRulesButton($(this.element))
     helperSheets.addTextSizeButton($(this.element))
     helperSheets.addEditButton($(this.element), this.isPlayMode)
@@ -214,18 +215,22 @@ export default class extendActorSheet
     await super._onFirstRender(context, options)
   }
 
-  /**
-   * _onAfterRender
-   * @param {*} event 
-   */
-  _onAfterRender(event) {
+  _onResizeMouseDown(event) {
+    event.preventDefault();
+    this._resizableButton.addEventListener(...this._extendHandlers.resizeMove);
+    this._resizableButton.addEventListener(...this._extendHandlers.resizeUp);
     helperSheets.adjustContent($(this.element))
   }
-  _onAfterResize(event) {
+
+  _onResizeMouseMove(event) {
+    event.preventDefault();
     helperSheets.adjustContent($(this.element))
   }
-  _onMoveResize(event) {
-    helperSheets.adjustContent($(this.element), true)
+  _onResizeMouseUp(event) {
+    event.preventDefault();
+    this._resizableButton.removeEventListener(...this._extendHandlers.resizeMove);
+    this._resizableButton.removeEventListener(...this._extendHandlers.resizeUp); 
+    this.actor.sheet.render(true);     
   }
 
   /**
@@ -234,10 +239,18 @@ export default class extendActorSheet
    */
   activateListeners(html) {
 
-    /** --- AFTER RENDER && RESIZE --- */
-    html.ready(this._onAfterRender.bind(this))
-    html.find('.window-resize-handle')[0]?.addEventListener("pointerup", this._onAfterResize.bind(this));
-    html.find('.window-resize-handle')[0]?.addEventListener("pointermove", this._onMoveResize.bind(this));
+    $(window).on( "resize", async e => {
+      if (this.rendered) await this.render(true);
+    });
+
+    //...RESIZING...
+    delete this._extendHandlers;
+    this._extendHandlers = Array();
+    this._resizableButton = html.find('.window-resize-handle')[0];
+    this._extendHandlers["resizeDown"] = ["pointerdown", e => this._onResizeMouseDown(e), false];
+    this._extendHandlers["resizeMove"] = ["pointermove", e => this._onResizeMouseMove(e), false];
+    this._extendHandlers["resizeUp"] = ["pointerup", e => this._onResizeMouseUp(e), false];   
+    this._resizableButton.addEventListener(...this._extendHandlers.resizeDown);    
 
     if ( !this.isEditable || !this.isEditMode) return;
     

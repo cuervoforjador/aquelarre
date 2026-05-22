@@ -15,6 +15,7 @@ import sheetTableExtend from "../sheets/table/base.js"
 
 import helperContext from "./helperContext.js"
 import helperDialog from "./helperDialog.js"
+import helperPxTools from "../../libs/helperPxTools.js"
 
 export default class helperSheets {
 
@@ -154,8 +155,8 @@ export default class helperSheets {
             if (!systemSkill) { addSkills.push({ key: skill.system.key }) }
         })
         if (addSkills.length > 0) {
-            const mUpdateSkills = Array.prototype.push.apply(systemSkills, addSkills)
-            await actor.update({"system.competencias": addSkills})
+            addSkills.map(o => {systemSkills.push(o)})
+            await actor.update({"system.competencias": systemSkills})
         }        
     }
 
@@ -188,13 +189,39 @@ export default class helperSheets {
         const mSkills = actor.items.filter(e => e.type === 'competencia' && e.system.rules === actor.system.rules)
         mSkills.sort((a,b) => a.name.localeCompare(b.name))
 
-        mSkills.map(skill => {
+        let mFolders = []
+        mSkills.filter(e => e.system.superior !== '').map(skill => {
+            if (mFolders.find(s => s === skill.system.superior)) return
+            mFolders.push(skill.system.superior)
+        })
+
+        mSkills.filter(e => e.system.superior === '').map(skill => {
             const actorSkill = actor.system.competencias.find(e => e.key === skill.system.key)
+            const folder = mFolders.find(s => s === skill.system.key)
+            let classes = folder ? (skill.system.folder) ? '_folder _onlyFolder' : '_folder' : ''
             mContext.push({...{
                 key: skill.system.key,
                 item: skill,
-                char: skill.system.caracteristica.toUpperCase()
+                char: skill.system.caracteristica.toUpperCase(),
+                folder: !!folder,
+                subSkill: false,
+                classes: classes
             }, ...actorSkill})
+
+            if (folder) {
+                classes = '_subSkill'
+                mSkills.filter(e => e.system.superior === skill.system.key).map(subSkill => {
+                    const actorSubSkill = actor.system.competencias.find(e => e.key === subSkill.system.key)
+                    mContext.push({...{
+                        key: subSkill.system.key,
+                        item: subSkill,
+                        char: subSkill.system.caracteristica.toUpperCase(),
+                        folder: false,
+                        subSkill: true,
+                        classes: classes
+                    }, ...actorSkill})                    
+                })
+            }
         })
 
         return mContext
@@ -216,58 +243,66 @@ export default class helperSheets {
     }
 
     /**
+     * getMainRenderOptions
+     * @param {*} sheet 
+     * @param {*} html 
+     */
+    static getMainRenderOptions(sheet, html) {
+        const pxUnit = sheet ? helperPxTools.toPX(sheet.document.system.control.textSize) :
+                               helperPxTools.toPX(window.getComputedStyle(html[0]).getPropertyValue('--fSize'))
+        const formHeight = sheet ? sheet.position.height : html.height() + 1.4
+        return {
+            headerHeight: pxUnit * 11 - 15,
+            mainHeight: formHeight - pxUnit * 11
+        }              
+    }
+
+    /**
+     * getSkillRenderOptions
+     * @param {*} sheet 
+     * @returns 
+     */
+    static getSkillRenderOptions(sheet, html) {
+        const pxUnit = sheet ? helperPxTools.toPX(sheet.document.system.control.textSize) :
+                               helperPxTools.toPX(window.getComputedStyle(html[0]).getPropertyValue('--fSize'))
+        const formWidth = sheet ? sheet.position.width -25: html.width() + 1.4 -25
+        const formHeight = sheet ? sheet.position.height : html.height() + 1.4
+        const divStats = pxUnit * 27
+        const divSkills = formWidth - divStats - 5
+        const divRow = pxUnit * 15
+
+        const options = {
+            side: divSkills > divStats,
+            width: divSkills > divRow ? divSkills+'px' : '100%',
+            columns: divSkills > divRow ? Math.trunc(divSkills / divRow) : Math.trunc(formWidth / divRow)
+        }
+        options.columnSize = Math.trunc(100 / options.columns) + '%'
+        options.templateAreas = "'"+'a '.repeat(options.columns).trim()+"'"
+        options.scrolled = options.side ? pxUnit * 32 < (formHeight - pxUnit * 11) : false
+
+        return options
+    }  
+
+    /**
      * adjustContent
      * @param {*} html 
      */
-    static adjustContent(html, lightMode) {
-        let header = html.find('._sheetHeader')
-        let content = html.find('._sheetContent')
-        const nHeight = header.height() + 20
-        html.find('._main').css({height: 'calc(100% - '+nHeight+'px)'})
+    static adjustContent(html) {
+
+        const headerOptions = this.getMainRenderOptions(false, html)
+        html.find('._main').css({height: 'calc(100% - '+headerOptions.headerHeight+'px)'})
 
         //Competencias
         const skills = html.find('section[data-tab="stats"] ._skills')
-        const stats = html.find('section[data-tab="stats"] ._stats')
-        if (skills.length > 0 && stats.width() > 0) {
-            const section = stats.parents('section')
-            const row = skills.find('._skill')
-            if (row.length === 0) return;
-            const rowMinWidth = Number(row.css('minWidth').replace('px', ''))
-            let nRows = 1, nPerc = 100, gridAreas = '';
-            let avalSpace = Math.trunc(section.width() - stats.width()) - 25
-            skills.removeClass('_scrolled')
-            if ( avalSpace < rowMinWidth ) {
-                avalSpace = section.width() - 20
-                skills.addClass('_down')
-                skills.removeClass('_sided')
-            } else {
-                skills.addClass('_sided')
-                skills.removeClass('_down')
-                if (stats.height() < content.height()) skills.addClass('_scrolled')
-            }
-            nRows = Math.trunc(avalSpace / rowMinWidth)
-            nPerc = Math.trunc(100 / nRows)
+        const stats = html.find('section[data-tab="stats"] ._stats')   
+        if (skills.length > 0 && stats.width() > 0) { 
 
-            if (!lightMode) {
-                skills.find("._skill").each((i,e) => {$(e).removeClass('_back')})
-                if (nRows % 2 === 0) {
-                    skills.find("._skill:nth-child("+(2*nRows+'n')+")").each((i,e) => {$(e).addClass('_back')})
-
-                    for (var i = 0; i < nRows / 2; i++) {
-                        const n1 = i*2
-                        const n2 = n1 + nRows + 1
-                        skills.find(`._skill:nth-child(${nRows*2}n-${n1})`).each((i,e) => {$(e).addClass('_back')})
-                        skills.find(`._skill:nth-child(${nRows*2}n-${n2})`).each((i,e) => {$(e).addClass('_back')})
-                    }
-
-                } else {
-                    skills.find("._skill:nth-child(2n)").each((i,e) => {$(e).addClass('_back')})
-                }
-            }
-
-            for (var i=0; i<nRows; i++) { gridAreas += ' a' }
-            skills.css({ 'gridAutoColumns': nPerc+'%', 'width': avalSpace+'px' })
-            section[0].style.setProperty('--skillAreas', "'"+gridAreas+"'")            
+            const skillOptions = this.getSkillRenderOptions(false, html)
+            skills.css({'width': skillOptions.width})
+            skills.css({'gridAutoColumns': skillOptions.columnSize})
+            skills.css({'gridTemplateAreas': skillOptions.templateAreas})
+            if (skillOptions.scrolled) skills.addClass('_scrolled')
+                                  else skills.removeClass('_scrolled')
         }
     }
 

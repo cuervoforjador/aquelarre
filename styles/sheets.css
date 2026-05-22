@@ -4,6 +4,10 @@ form._extend section.window-content {
     background-image: url(../assets/ui/paper.png);
     background-repeat: repeat;    
 }
+form._extend._actor section.window-content {
+    justify-content: space-between;
+    box-shadow: inset 0px 0px 3px 2px #000000c9;    
+}
 form._extend {
     font-family: var(--fFont0);
     font-size: var(--fSize);
@@ -34,6 +38,9 @@ form._extend ._sheetContent {
     padding: 10px;
     color: var(--aqText);
     box-shadow: inset 0px 0px 3px 2px #000000c9;
+}
+form._extend._actor ._sheetContent {
+    box-shadow: none;
 }
 form._extend._vyc ._sheetContent {
     color: var(--vcText);
@@ -313,6 +320,12 @@ form._extend ._sheetHeader {
 }
 form._extend._vyc ._sheetHeader {
     border-bottom: 1px solid var(--vcGreen);
+}
+form._extend._actor ._header._sheetHeader {
+    box-shadow: 1px 8px 7px 2px var(--aqBackRed);
+}
+form._extend._actor._vyc ._header._sheetHeader {
+    box-shadow: 1px 8px 7px 2px var(--vcBackGreen);
 }
 form._extend ._mainHeader {
     display: flex;
@@ -650,7 +663,6 @@ form._extend input._stat {
 /** --- COMPETENCIAS --- */
 form._extend ._skills {
     display: grid;
-    grid-template-areas: var(--skillAreas);
     grid-auto-flow: dense;
     align-content: start;
     align-items: stretch;
@@ -672,11 +684,15 @@ form._extend ._skills ._skill {
     gap: 0.5rem;
     min-width: calc(var(--fSize) * 15);
     padding-right: 0.75rem;
+    padding-left: calc(var(--fSize) * 0.25);
 }
 form._extend ._skills ._skill label._name {
     width: 100%;
     white-space: nowrap;
     overflow: hidden;
+}
+form._extend ._skills ._skill._folder label._name {
+    font-weight: 900;
 }
 form._extend ._skills ._skill h4._title {
     width: calc(100% - 1rem);
@@ -703,12 +719,10 @@ form._extend ._skills ._skill input._skillCheck {
 form._extend ._skills ._skill._back {
     background: #53080817;
 }
-/*
-form._extend ._skills ._skill:nth-child(4n), 
-form._extend ._skills ._skill:nth-child(4n + 1) {
-    background: #53080817;
+form._extend ._skills ._skill._subSkill {
+    padding-left: calc(var(--fSize) * 0.25);
+    border-left: calc(var(--fSize) * 1.4) solid #53080817;
 }
-*/
 
 /** --- OTROS --- */
 form._extend .window-resize-handle {

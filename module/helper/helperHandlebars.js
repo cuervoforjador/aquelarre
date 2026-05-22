@@ -89,5 +89,12 @@ static define() {
                                                            return false
     })
 
+    Handlebars.registerHelper("skillsRenderColumn", (options, index, root) => {
+        const nSkills = root.data.root.skills.length
+        const nColumns = options.columns
+        const nSxC = Math.trunc(nSkills / nColumns) + 1
+        return Math.trunc(index / nSxC) + 1
+    })    
+
 }
 }

@@ -13,6 +13,7 @@ export default class modelCompetencia extends extendItem_Base {
         schema.latin = new api.StringField({ initial: '' })
         schema.superior = new api.StringField({ initial: '' })
         schema.caracteristica = new api.StringField({ initial: '' })
+        schema.folder = new api.BooleanField({ initial: false })
         schema.basica = new api.BooleanField({ initial: false })
         schema.idioma = new api.BooleanField({ initial: false })
         schema.armas = new api.BooleanField({ initial: false })

@@ -23,26 +23,7 @@
             <div class="_grid"> 
                 {{>header_Lore}}
             </div>
-
-{{!-- 
-            <div class="_row _gapped">
-                <div class="_combo">
-                    <label>{{localize 'common.rules'}} :</label>
-                    {{#if isEditable}}
-                        <select name="system.rules" {{{_disabled}}} style="width: calc(var(--fSize) * 10);">
-                        {{selectOptions rules 
-                                        selected=system.rules
-                                        localize=false
-                                        nameAttr="key"
-                                        labelAttr="label" }}
-                        </select>           
-                    {{else}}
-                        <label class="_field">{{sheetRules}}</label>
-                    {{/if}}      
-                </div>                
-            </div>
---}}
-            
+      
             <div class="_row _gapped">
                 {{{navTab 'primary' (array 'stats' 'combat') '_expanded'}}}
             </div>
