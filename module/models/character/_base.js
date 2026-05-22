@@ -13,6 +13,7 @@ export default class extendCharacter_Base extends extend_Base {
         /** --- CONTROL --- */
         schema.control  = new api.SchemaField({
             textSize: new api.StringField({ initial: '1rem' }),
+            importedSkills: new api.BooleanField({ initial: false })
         })
 
         /** --- INFO --- */
@@ -82,6 +83,17 @@ export default class extendCharacter_Base extends extend_Base {
                 reputacion: new api.StringField({ initial: '' })
             })
         })
+
+        /** --- COMPETENCIAS --- */
+        schema.competencias = new api.ArrayField(new api.SchemaField({
+            key: new api.StringField({ initial: '' }),
+            stats: md_stat({min: 0, max: 200}),
+            checked: new api.BooleanField({ initial: false }),
+            profesion: new api.BooleanField({ initial: false }),
+            paterna: new api.BooleanField({ initial: false }),
+            primaria: new api.BooleanField({ initial: false }),
+            secundaria: new api.BooleanField({ initial: false })
+        }))
 
         return schema
     }

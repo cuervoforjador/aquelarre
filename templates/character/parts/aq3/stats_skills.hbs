@@ -1,0 +1,33 @@
+<div class="_skills">
+    <div class="_skill">
+        <h4 class="_title divider">{{localize 'common.competencias'}}</h4>
+    </div>
+    {{#each skills as |skill index|}}
+    <div class="_skill" data-key="{{skill.key}}">
+        <img class="_skillIcon" src="{{assets}}/ui/aq3_compNormal.png" />
+        <label class="_name">{{skill.item.name}} <span class="_sFont">({{skill.char}})</span></label>
+        {{#if ../isEditable}}
+            <input type="number" 
+                    {{{_disabled}}} 
+                    value="{{skill.stats.value}}" 
+                    min="{{skill.stats.value.min}}" 
+                    max="{{skill.stats.value.max}}"
+                    class="_skillValue">
+        {{else}}
+            <label class="_input _roll _skillValue"
+                    data-spectrum="true"
+                    data-action="_roll"
+                    data-target="skill"
+                    data-path="{{skill.key}}"
+                    data-tooltip="{{localize 'tooltip.rollSkill'}}">
+                    <span class="_value _center">{{skill.stats.value}}</span>
+                    <span class="_dice"><i class="fa-sharp fa-light fa-dice-d10"></i></span>
+            </label>
+        {{/if}}
+        <input type="checkbox" 
+               class="_skillCheck"
+               {{{_disabled}}}
+               {{checked skill.checked}}>           
+    </div>
+    {{/each}}
+</div>

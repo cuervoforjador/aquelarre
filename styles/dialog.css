@@ -51,6 +51,16 @@ dialog._extend._vyc footer button {
     text-align: justify;
     color: var(--aqText);
 }
+
+.dialog._extend .dialog-content h4 {
+    font-family: var(--fFont1);
+    color: var(--aqText);
+}
+.dialog._extend._vyc .dialog-content h4 {
+    font-family: var(--vcfFont1);
+    color: var(--vcText);
+}
+
 dialog._extend form.dialog-form {
     display: flex;
     width: 100%;
@@ -122,6 +132,12 @@ dialog._extend button[type="submit"]._selected {
 dialog._extend._vyc button[type="submit"]._selected {
     background: var(--vcGreen);
 }
+
+dialog._extend ._buttons {
+    width: 100%;
+    gap: 5px;
+}
+
 dialog._extend._diffLevels h1.window-title {
     font-size: 1.2rem;
 }

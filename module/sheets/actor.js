@@ -37,7 +37,9 @@ export default class extendActorSheet
       height: "600" 
     },
     form: {  submitOnChange: true },
-    window: {  resizable: true },
+    window: {  
+      resizable: true
+    },
     actions: {
       _edit:          this.#onEditSheet,
       _play:          this.#onPlaySheet,
@@ -203,10 +205,39 @@ export default class extendActorSheet
   }
 
   /**
+   * _onFirstRender
+   * @param {*} context 
+   * @param {*} options 
+   * @override
+   */  
+  async _onFirstRender (context, options) {
+    await super._onFirstRender(context, options)
+  }
+
+  /**
+   * _onAfterRender
+   * @param {*} event 
+   */
+  _onAfterRender(event) {
+    helperSheets.adjustContent($(this.element))
+  }
+  _onAfterResize(event) {
+    helperSheets.adjustContent($(this.element))
+  }
+  _onMoveResize(event) {
+    helperSheets.adjustContent($(this.element), true)
+  }
+
+  /**
    * activateListeners
    * @param {*} html 
    */
   activateListeners(html) {
+
+    /** --- AFTER RENDER && RESIZE --- */
+    html.ready(this._onAfterRender.bind(this))
+    html.find('.window-resize-handle')[0]?.addEventListener("pointerup", this._onAfterResize.bind(this));
+    html.find('.window-resize-handle')[0]?.addEventListener("pointermove", this._onMoveResize.bind(this));
 
     if ( !this.isEditable || !this.isEditMode) return;
     
@@ -225,7 +256,7 @@ export default class extendActorSheet
     /** --- TABLES --- */
     html.find('._table tbody tr').on("click", this._clickTableTR.bind(this))
   }
-    
+
   /**
    * activateTab
    * @param {*} context 

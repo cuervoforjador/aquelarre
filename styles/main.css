@@ -9,6 +9,8 @@
 
 :root {
     --fSize: 1rem;
+    --skillAreas: 'a';
+
     --fFont0: "Almendra", serif;
     --fFont1: "corvux", serif;    
     --fFont2: "Almendra", serif; /* "Modesto Condensed", serif; */
@@ -88,6 +90,9 @@ input.h4 {
 ._xsFont {
     font-size: calc(var(--fSize) * 0.7)!important;    
 }
+._sFont {
+    font-size: calc(var(--fSize) * 0.85)!important;    
+}
 
 ._lessBottom {
     margin-bottom: -1px;
@@ -127,6 +132,10 @@ input.h4 {
 
 input._sInput {
     width: 6rem;
+}
+._scrolled {
+    height: 100%;
+    overflow-y: auto;
 }
 
 table._table {

@@ -140,6 +140,67 @@ export default class helperSheets {
     }
 
     /**
+     * checkSkills
+     * @param {*} actor 
+     */
+    static async checkSkills(actor) {
+        const mSkills = actor.items.filter(e => e.type === 'competencia')
+        if (mSkills.length === 0 && !actor.system.control.importedSkills) await this._importSkills(actor)
+        
+        let addSkills = []
+        let systemSkills = actor.system.competencias
+        mSkills.map(skill => {
+            let systemSkill = actor.system.competencias.find(e => e.key === skill.system.key)
+            if (!systemSkill) { addSkills.push({ key: skill.system.key }) }
+        })
+        if (addSkills.length > 0) {
+            const mUpdateSkills = Array.prototype.push.apply(systemSkills, addSkills)
+            await actor.update({"system.competencias": addSkills})
+        }        
+    }
+
+    /**
+     *_importSkills
+     * @param {*} actor 
+     */
+    static async _importSkills(actor) {
+        const rules = actor.system.rules
+        const mSkills = (await helperContext.getFromCompendium(rules, 'competencia')).filter(e => e.system.basica)
+        let skillsInfo = ""
+        mSkills.map(skill => {
+            skillsInfo += skillsInfo !== "" ? ', ' + skill.name : skill.name
+        })
+        const content = `<h4 class="_title divider">${game.i18n.localize('RULES.'+rules)}</h4>
+                         <p>${game.i18n.localize("explain.newSkills")}</p>
+                         <p><strong>${game.i18n.localize("common.competencias")}: </strong> ${skillsInfo}</p>`
+        await helperDialog.dialogDescription(null, content, game.i18n.localize('competencias'), rules, 500)
+        
+        await Item.create(mSkills, {parent: actor})
+        actor.update({"system.control.importedSkills": true})
+    }
+
+    /**
+     * systemSkills
+     * @param {*} actor 
+     */
+    static systemSkills(actor) {
+        let mContext = []
+        const mSkills = actor.items.filter(e => e.type === 'competencia' && e.system.rules === actor.system.rules)
+        mSkills.sort((a,b) => a.name.localeCompare(b.name))
+
+        mSkills.map(skill => {
+            const actorSkill = actor.system.competencias.find(e => e.key === skill.system.key)
+            mContext.push({...{
+                key: skill.system.key,
+                item: skill,
+                char: skill.system.caracteristica.toUpperCase()
+            }, ...actorSkill})
+        })
+
+        return mContext
+    }
+
+    /**
      * drawSpectrum
      * @param {*} html 
      */
@@ -158,13 +219,56 @@ export default class helperSheets {
      * adjustContent
      * @param {*} html 
      */
-    static adjustContent(html) {
+    static adjustContent(html, lightMode) {
         let header = html.find('._sheetHeader')
+        let content = html.find('._sheetContent')
         const nHeight = header.height() + 20
         html.find('._main').css({height: 'calc(100% - '+nHeight+'px)'})
-        //html.find('._sheetHeader .portrait').css({
-        //                height: 'calc('+nHeight+'px - 20px)',
-        //                width: 'calc('+nHeight+'px - 20px)' })
+
+        //Competencias
+        const skills = html.find('section[data-tab="stats"] ._skills')
+        const stats = html.find('section[data-tab="stats"] ._stats')
+        if (skills.length > 0 && stats.width() > 0) {
+            const section = stats.parents('section')
+            const row = skills.find('._skill')
+            if (row.length === 0) return;
+            const rowMinWidth = Number(row.css('minWidth').replace('px', ''))
+            let nRows = 1, nPerc = 100, gridAreas = '';
+            let avalSpace = Math.trunc(section.width() - stats.width()) - 25
+            skills.removeClass('_scrolled')
+            if ( avalSpace < rowMinWidth ) {
+                avalSpace = section.width() - 20
+                skills.addClass('_down')
+                skills.removeClass('_sided')
+            } else {
+                skills.addClass('_sided')
+                skills.removeClass('_down')
+                if (stats.height() < content.height()) skills.addClass('_scrolled')
+            }
+            nRows = Math.trunc(avalSpace / rowMinWidth)
+            nPerc = Math.trunc(100 / nRows)
+
+            if (!lightMode) {
+                skills.find("._skill").each((i,e) => {$(e).removeClass('_back')})
+                if (nRows % 2 === 0) {
+                    skills.find("._skill:nth-child("+(2*nRows+'n')+")").each((i,e) => {$(e).addClass('_back')})
+
+                    for (var i = 0; i < nRows / 2; i++) {
+                        const n1 = i*2
+                        const n2 = n1 + nRows + 1
+                        skills.find(`._skill:nth-child(${nRows*2}n-${n1})`).each((i,e) => {$(e).addClass('_back')})
+                        skills.find(`._skill:nth-child(${nRows*2}n-${n2})`).each((i,e) => {$(e).addClass('_back')})
+                    }
+
+                } else {
+                    skills.find("._skill:nth-child(2n)").each((i,e) => {$(e).addClass('_back')})
+                }
+            }
+
+            for (var i=0; i<nRows; i++) { gridAreas += ' a' }
+            skills.css({ 'gridAutoColumns': nPerc+'%', 'width': avalSpace+'px' })
+            section[0].style.setProperty('--skillAreas', "'"+gridAreas+"'")            
+        }
     }
 
     /**
@@ -242,6 +346,13 @@ export default class helperSheets {
                                 <label>${game.i18n.localize('common.tamanoLetra')}</label>
                                 <input type="text" name="textsize" class="_sInput" value="${document.system.control.textSize}"/>
                             </div>
+                          </div>
+                          <div class="_row _buttons">
+                            <button type="button" data-size="1rem">1rem</button>
+                            <button type="button" data-size="1.25rem">1.25rem</button>
+                            <button type="button" data-size="1.50rem">1.50rem</button>
+                            <button type="button" data-size="1.75rem">1.75rem</button>
+                            <button type="button" data-size="2.00rem">2.00rem</button>
                           </div>`
 
         const textSize = await foundry.applications.api.DialogV2.wait({
@@ -256,6 +367,10 @@ export default class helperSheets {
             }],
             render: (_event, dialog) => {              
                 helperDialog._setShadowToDialog(dialog)
+                $(dialog.element).find('button[type="button"]').on("click", _e => {
+                    _e.stopPropagation()
+                    $(_e.delegateTarget).parents('.dialog-content').find('input[name="textsize"]').val($(_e.delegateTarget).data('size'))
+                })
             }            
         })
         if (!textSize) return
@@ -294,7 +409,8 @@ export default class helperSheets {
         if (!confirmation) return
 
         await helperContext.deleteAllContext(document)        
-        await document.update({"system.rules": rules})
+        await document.update({"system.rules": rules, 
+                               "system.control.importedSkills": false})
     }
 
     /**

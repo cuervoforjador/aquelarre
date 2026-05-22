@@ -55,6 +55,15 @@ form._extend nav.tabs {
 form._extend section.tab.active {
     height: calc( 100% - 10px);
 }
+form._extend._actor section.tab.active {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: stretch; 
+    overflow-x: hidden;
+    overflow-y: auto;       
+}
+
 
 /** --- CONTROLES GENERAL --- */
 form._extend input:disabled, 
@@ -383,11 +392,51 @@ form._extend._vyc ._sheetContent h4 {
     font-size: calc(var(--fSize) * 1.25);
 }
 
+form._extend ._box._exper {
+    margin-top: calc(var(--fSize) * 1);
+    width: 100%;
+    display: flex;
+    align-content: center;
+    align-items: center;
+}
+
 form._extend label._subTitle {
     font-size: calc(var(--fSize) * 1.2);
     line-height: calc(var(--fSize) * 1.15);
     color: var(--aqRed2);
-    font-weight: 100;    
+    font-weight: 100;
+}
+form._extend ._stats ._box._exper ._subTitle._pta {
+    width: calc(var(--fSize) * 8);
+    white-space: break-spaces;
+    font-size: calc(var(--fSize) * 1.1);
+    line-height: calc(var(--fSize) * 1);
+    text-align: center;
+    padding: 0;
+    margin: 0;
+}
+form._extend ._stats ._box._exper ._logo {
+    width: 100%;
+    height: calc(var(--fSize) * 10);
+    position: absolute;
+    top: calc(var(--fSize) * 8);
+    z-index: -1;
+    opacity: 0.2;
+}
+form._extend ._stats ._box._exper input._pta {
+    width: calc(var(--fSize) * 5);
+    height: calc(var(--fSize) * 2.2);
+    font-size: calc(var(--fSize) * 2.3);
+}
+form._extend ._stats ._box._exper label._stat._pta {
+    margin: 5px 0;
+    border: 2px solid #000;
+    font-size: calc(var(--fSize) * 2);
+    line-height: calc(var(--fSize) * 2.2);
+    height: calc(var(--fSize) * 2.2);
+    padding: 0 0 calc(var(--fSize) * 0.2) 0;
+    text-align: center;
+    width: calc(var(--fSize) * 6);    
 }
 
 /** --- TIRADAS --- */
@@ -418,38 +467,37 @@ form._extend label._subTitle {
 
 /** --- CARACTERÍSTICAS --- */
 form._extend ._stats {
-    width: 100%;
-    height: 100%;
     display: flex;
     flex-direction: row;
     align-content: flex-start;
     align-items: flex-start;
+    height: fit-content;
 }
-form._extend ._stats ._left,
-form._extend ._stats ._right {
+form._extend ._stats ._wrap {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
     align-items: center;
     align-content: center;
+    /* width: calc(var(--fSize) * 25); */
 }
-form._extend ._stats ._left h4._title {
+form._extend ._stats h4._title {
     width: 100%;
     margin: 0;
     font-size: calc(var(--fSize) * 1.3);
 }
-form._extend ._stats ._left ._attrs {
+form._extend ._stats ._attrs {
     padding-left: 20px;
 }
 
     /** --- CUSTO PARA AQ3 --- */
-    form._extend._aq3 ._stats ._left ._row._char._header label:first-child,
-    form._extend._aq3 ._stats ._left ._row._char label._charTitle {
+    form._extend._aq3 ._stats ._row._char._header label:first-child,
+    form._extend._aq3 ._stats ._row._char label._charTitle {
         width: calc(var(--fSize) * 8);
         text-align: left;
         padding-left: 5px;
     }
-    form._extend._aq3 ._stats ._left ._row._char label._charTitle span._bold {
+    form._extend._aq3 ._stats ._row._char label._charTitle span._bold {
         margin-right: 1px;
     }
     form._extend._aq3 ._stats ._box {
@@ -457,22 +505,6 @@ form._extend ._stats ._left ._attrs {
         padding: 0;
     }
 
-form._extend ._stats ._right {
-    width: calc(var(--fSize)*10);
-}
-form._extend ._stats ._right ._logo {
-    width: 100%;
-    height: calc(var(--fSize) * 10);
-}
-form._extend ._stats ._right input._pta {
-    width: calc(var(--fSize) * 7);
-    height: calc(var(--fSize) * 4);
-    font-size: calc(var(--fSize) * 3);
-}
-form._extend ._stats ._right ._subTitle._pta {
-    white-space: break-spaces;
-    text-align: center;
-}
 
 ._table._status ._row {
     align-content: center;
@@ -614,6 +646,69 @@ form._extend input._stat {
     border-bottom: 2px solid #000000ab;
     font-size: calc(var(--fSize) * 1.4);
 }
+
+/** --- COMPETENCIAS --- */
+form._extend ._skills {
+    display: grid;
+    grid-template-areas: var(--skillAreas);
+    grid-auto-flow: dense;
+    align-content: start;
+    align-items: stretch;
+    justify-items: stretch; 
+}
+form._extend ._skills._sided {
+    padding-left: 10px;    
+}
+form._extend ._skills._down {
+    margin-top: 15px;
+    padding-top: 10px;   
+}
+form._extend ._skills ._skill {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0.5rem;
+    min-width: calc(var(--fSize) * 15);
+    padding-right: 0.75rem;
+}
+form._extend ._skills ._skill label._name {
+    width: 100%;
+    white-space: nowrap;
+    overflow: hidden;
+}
+form._extend ._skills ._skill h4._title {
+    width: calc(100% - 1rem);
+    padding: 0;
+    margin: 0;
+    margin-bottom: calc(var(--fSize) * 0.2);
+}
+form._extend ._skills ._skill img._skillIcon {
+    width: var(--fSize);
+    height: var(--fSize);
+}
+form._extend ._skills ._skill input._skillValue,
+form._extend ._skills ._skill label._skillValue {
+    font-size: calc(var(--fSize) * 1.25);
+    width: calc(var(--fSize) * 2.5);
+    line-height: calc(var(--fSize) * 1.4);
+    height: calc(var(--fSize) * 1.4);
+    text-align: center;
+    border-bottom: 2px solid #000;
+}
+form._extend ._skills ._skill input._skillCheck {
+    height: calc(var(--fSize) * 1);
+}
+form._extend ._skills ._skill._back {
+    background: #53080817;
+}
+/*
+form._extend ._skills ._skill:nth-child(4n), 
+form._extend ._skills ._skill:nth-child(4n + 1) {
+    background: #53080817;
+}
+*/
 
 /** --- OTROS --- */
 form._extend .window-resize-handle {

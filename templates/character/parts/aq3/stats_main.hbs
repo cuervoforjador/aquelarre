@@ -1,5 +1,5 @@
 <div class="_stats">
-    <div class="_left">
+    <div class="_wrap">
         <h4 class="_title divider">{{localize 'common.caracteristicas'}}</h4>
         <div class="_row">
 
@@ -12,21 +12,9 @@
             <div class="_attrs">
                 {{>stats_health_aq3}}
                 {{>stats_rrirr_aq3}}
+                {{>stats_exper_aq3}}
             </div>
 
         </div>
-    </div>
-    <div class="_right">
-        <div class="_logo"></div>
-
-        <!-- PUNTOS DE APRENDIZAJE -->
-        <label class="_subTitle _pta">{{localize 'ATTR.pta'}}</label>
-        <input type="number" 
-                class="_stat _center _pta"
-                {{{_disabled}}}
-                name="system.atributos.pta.value" 
-                value="{{system.atributos.pta.value}}" 
-                min="0" 
-                max="666">  
     </div>
 </div>

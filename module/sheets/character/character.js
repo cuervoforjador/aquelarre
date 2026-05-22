@@ -48,6 +48,10 @@ export default class extendCharacterSheet extends extendActorSheet {
 
     context.info = {...context.info, ...helperSheets.readLoreContext(this.document)}
 
+    //Competencias
+    await helperSheets.checkSkills(this.document)
+    context.skills = helperSheets.systemSkills(this.document)
+
     context.tabs = this._prepareTabs("primary")
     return context
   }
@@ -74,6 +78,8 @@ export default class extendCharacterSheet extends extendActorSheet {
     if ( !this.isEditable || !this.isEditMode) return;
 
     html.find('._charTotal').on("change", sheetHandler._onChangeCharTotal.bind(this))
+    html.find('._skillValue').on("change", sheetHandler._onChangeSkillValue.bind(this))
+    html.find('._skillCheck').on("change", sheetHandler._onChangeSkillCheck.bind(this))
   }  
 
   /**

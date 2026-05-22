@@ -26,6 +26,8 @@ static define() {
     Handlebars.registerHelper("mult", (a, b) => a * b)
     Handlebars.registerHelper("toUpperCase", (a) => a.toUpperCase())
 
+    Handlebars.registerHelper("assets", () => 'systems/'+SYSTEM_ID+'/assets')
+
     Handlebars.registerHelper("_disabled", (...args) => {
         const isEditable = args[0].data.root.isEditable
         return (isEditable) ? '' : 'disabled="disabled"'
@@ -34,6 +36,13 @@ static define() {
     Handlebars.registerHelper("translate", (key, docs) => {
         return Object.keys(docs).map((key) => docs[key]).find(e => e.key === key)?.label
     })
+
+    Handlebars.registerHelper("_value", (...args) => {
+        const sPath = args.slice(0, -1).join('.')
+        let oData = args[args.length - 1].data.root
+        sPath.split('.').map(s => { oData = oData[s]})
+        return oData
+    })    
 
     Handlebars.registerHelper("navTab", (...args) => {
         const group = args[0]
