@@ -39,7 +39,22 @@ export default class helperRolls {
                             subtitle: game.i18n.localize('ATTR.'+path.split('.')[0]) })
 
                 break;
-                break;
+
+            case 'skill':  
+                const skill = actor.items.find(e => e.type === 'competencia' && e.system.key === path)
+                const stats = actor.system.competencias.find(e => e.key === path)
+                if (!skill || !stats) return
+
+                await this.simpleRoll({
+                            actor: actor,
+                            formula: '1D100', 
+                            percent: stats.stats.value, 
+                            useluck: useLuck,
+                            title: skill.name,
+                            subtitle: game.i18n.localize('common.base')+': '+stats.stats.value+'%',
+                            img: skill.img })
+
+                break;                
         }
 
     }
@@ -50,7 +65,7 @@ export default class helperRolls {
      * @param {*} percent 
      * @param {*} title 
      */
-    static async simpleRoll({actor=null, formula='', percent=0, useluck=true, title='', subtitle=''}) {
+    static async simpleRoll({actor=null, formula='', percent=0, useluck=true, title='', subtitle='', img=''}) {
 
         const diceRoll = new newRoll('1D100', { 
             actor: actor,
@@ -59,7 +74,8 @@ export default class helperRolls {
             percent: percent,
             useluck: useluck,
             title: title,
-            subtitle: subtitle
+            subtitle: subtitle,
+            img: img
         });
         await diceRoll.rollit()
 

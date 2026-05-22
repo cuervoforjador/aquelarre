@@ -4,6 +4,7 @@ import sheetHandler from "./handler.js"
 import helperSheets from "../helper/helperSheets.js"
 import helperContext from "../helper/helperContext.js";
 import helperRolls from "../helper/helperRolls.js";
+import helperDialog from "../helper/helperDialog.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api
 export default class extendActorSheet 
@@ -47,6 +48,7 @@ export default class extendActorSheet
       _textsize:      this.#onChangeTextSize,
       _readKey:       this.#onReadKey,
       _showItem:      this.#onShowItem,
+      _showDescr:     this.#onShowDescr,
       _checkButton:   this.#onBooleanField,
       _addRow:        this.#onAddRow,
       _deleteRow:     this.#onDeleteRow,
@@ -90,6 +92,14 @@ export default class extendActorSheet
     const item = this.document.items.get(sId)
     if (!item) return
     item.sheet.render(true)
+  }
+
+  static async #onShowDescr(_event, target) {
+    _event.stopPropagation()
+    const sId = $(target).data('id')
+    const item = this.document.items.get(sId) 
+    if (!item) return
+    helperDialog.dialogDescription(item)
   }
 
   static async #onBooleanField(_event, target) {

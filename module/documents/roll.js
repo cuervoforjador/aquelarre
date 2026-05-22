@@ -13,6 +13,7 @@ export default class newRoll extends Roll {
   get actor() { return this.data.actor ? this.data.actor : null }
   get title() { return this.data.title ? this.data.title : '' }
   get subtitle() { return this.data.subtitle ? this.data.subtitle : '' }
+  get img() { return this.data.img ? this.data.img : '' }
 
   critical = {
     maxCriticalSuccess: 1,
@@ -197,6 +198,7 @@ export default class newRoll extends Roll {
     let sHeader = ""
     let sResult = ""    
     let dices = ""
+    const sImg = this.img !== '' ? `<div class="_backImg" style="background-image: url(${this.img})"></div>` : ''
     this.terms.map(die => {
       dices += `<li class="roll die ${die.denomination}">${die.total}</li>`
     })
@@ -211,14 +213,18 @@ export default class newRoll extends Roll {
                               <img src="${this.actor.img}">
                               <div class="_subHeader">
                                 <h2>${this.title}</h2>
-                                <h4>${this.subtitle}</h4>
+                                ${this.subtitle !== '' ? '<h4>'+this.subtitle+'</h4>' : ''}
+                                <h4>${game.i18n.localize('common.dificultad')}: ${this.diffLevel.title}</h4>
                               </div>
+                              ${sImg}
                         </div>` :
                         `<div class="_header">
                             <div class="_totalHeader">
                                 <h2>${this.title}</h2>
-                                <h4>${this.subtitletitle}</h4>                              
+                                ${this.subtitle !== '' ? '<h4>'+this.subtitle+'</h4>' : ''}
+                                <h4>${game.i18n.localize('common.dificultad')}: ${this.diffLevel.title}</h4>
                             </div>
+                            ${sImg}
                         </div>`
 
         const sLuckStats = `<div class="_row">
@@ -232,8 +238,8 @@ export default class newRoll extends Roll {
                       <div class="_row">
                         <label>${game.i18n.localize('common.suerteActual')}:</label>
                         <label class="_field">${this.luck.end}</label>
-                      </div>                                                              
-                      `
+                      </div>`
+
         sResult +=      `<div class="dice-roll" data-action="expandRoll">
                               <div class="dice-result">
                                   <div class="dice-formula" style="">${this.formula}</div>

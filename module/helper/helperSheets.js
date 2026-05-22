@@ -209,7 +209,6 @@ export default class helperSheets {
             }, ...actorSkill})
 
             if (folder) {
-                classes = '_subSkill'
                 mSkills.filter(e => e.system.superior === skill.system.key).map(subSkill => {
                     const actorSubSkill = actor.system.competencias.find(e => e.key === subSkill.system.key)
                     mContext.push({...{
@@ -218,8 +217,8 @@ export default class helperSheets {
                         char: subSkill.system.caracteristica.toUpperCase(),
                         folder: false,
                         subSkill: true,
-                        classes: classes
-                    }, ...actorSkill})                    
+                        classes: '_subSkill'
+                    }, ...actorSubSkill})                    
                 })
             }
         })

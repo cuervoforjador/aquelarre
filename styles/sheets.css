@@ -686,6 +686,9 @@ form._extend ._skills ._skill {
     padding-right: 0.75rem;
     padding-left: calc(var(--fSize) * 0.25);
 }
+form._extend ._skills ._skill a._name {
+    width: 100%;
+}
 form._extend ._skills ._skill label._name {
     width: 100%;
     white-space: nowrap;
@@ -741,8 +744,8 @@ a[data-action="_showStatus"] label {
 a[data-action="_showItem"]:hover label,
 a[data-action="_showDescr"]:hover label,
 a[data-action="_showStatus"]:hover label {
-    background: var(--color-warm-2);
-    color: var(--color-light-1);
+    background: linear-gradient(45deg, #cf7f1b4a, transparent);
+    color: #7f2a2a;
 }
 ._logo {
     background-image: url(../assets/ui/logo.png);

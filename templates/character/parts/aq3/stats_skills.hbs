@@ -14,12 +14,20 @@
         {{#if skill.item.system.folder}}
 
             <div class="_skillIcon _empty"></div>
-            <label class="_name _onlyFolder">{{skill.item.name}}</label>
+            <a class="_name"
+               data-action="{{#if ../isEditable}}_showItem{{else}}_showDescr{{/if}}" 
+               data-id="{{skill.item.id}}">
+                <label class="_name _onlyFolder">{{skill.item.name}}</label>
+            </a>
 
         {{else}}
 
             <img class="_skillIcon" src="{{assets}}/ui/aq3_compNormal.png" />
-            <label class="_name">{{skill.item.name}} <span class="_sFont">({{skill.char}})</span></label>
+            <a class="_name"
+               data-action="{{#if ../isEditable}}_showItem{{else}}_showDescr{{/if}}" 
+               data-id="{{skill.item.id}}">
+                <label class="_name">{{skill.item.name}} <span class="_sFont">({{skill.char}})</span></label>
+            </a>
             {{#if ../isEditable}}
                 <input type="number" 
                         {{{_disabled}}} 
