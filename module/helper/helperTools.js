@@ -9,12 +9,12 @@ export default class helperTools {
     static getActor(actorId, tokenId) {
 
         if (!tokenId && tokenId !== '') {
-            if (!actorId || actorId === '') return
-            return game.actors.get(actorId)
-        } else {
             const scene = game.scenes.active
             if (!scene) return null
-            return scene.tokens.get(tokenId).actor
+            return scene.tokens.get(tokenId).actor            
+        } else {
+            if (!actorId || actorId === '') return
+            return game.actors.get(actorId)
         }
         return null
     }
