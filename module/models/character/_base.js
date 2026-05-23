@@ -89,6 +89,7 @@ export default class extendCharacter_Base extends extend_Base {
             key: new api.StringField({ initial: '' }),
             stats: md_stat({min: 0, max: 200}),
             checked: new api.BooleanField({ initial: false }),
+            normal: new api.BooleanField({ initial: true }),
             profesion: new api.BooleanField({ initial: false }),
             paterna: new api.BooleanField({ initial: false }),
             primaria: new api.BooleanField({ initial: false }),

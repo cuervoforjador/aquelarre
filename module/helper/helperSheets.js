@@ -150,6 +150,7 @@ export default class helperSheets {
         
         let addSkills = []
         let systemSkills = actor.system.competencias
+        
         mSkills.map(skill => {
             let systemSkill = actor.system.competencias.find(e => e.key === skill.system.key)
             if (!systemSkill) { addSkills.push({ key: skill.system.key }) }
@@ -158,6 +159,26 @@ export default class helperSheets {
             addSkills.map(o => {systemSkills.push(o)})
             await actor.update({"system.competencias": systemSkills})
         }        
+
+        let changed = false
+        const competencias = actor.system.competencias
+        mSkills.map(skill => {
+            const base = actor.system.caracteristicas[skill.system.caracteristica].value
+            let systemSkill = competencias.find(e => e.key === skill.system.key)
+            let stats = systemSkill.stats
+            const min = (systemSkill.primaria) ? base*3 : base
+            const value = this._checkMinMax(stats.value, stats.min, stats.max)
+
+            if ((stats.min !== min) || (stats.value !== value)) changed = true
+            stats.min = min
+            stats.value = value
+        })
+        if (changed) {
+            await actor.update({"system.competencias": competencias})
+        }
+            
+            
+       
     }
 
     /**
@@ -199,6 +220,14 @@ export default class helperSheets {
             const actorSkill = actor.system.competencias.find(e => e.key === skill.system.key)
             const folder = mFolders.find(s => s === skill.system.key)
             let classes = folder ? (skill.system.folder) ? '_folder _onlyFolder' : '_folder' : ''
+            
+            /*
+            const base = actor.system.caracteristicas[skill.system.caracteristica].value
+            let stats = actorSkill.stats
+            stats.min = (actorSkill.primaria) ? base*3 : base
+            stats.value = this._checkMinMax(stats.value, stats.min, stats.max)
+            */
+
             mContext.push({...{
                 key: skill.system.key,
                 item: skill,
@@ -209,8 +238,17 @@ export default class helperSheets {
             }, ...actorSkill})
 
             if (folder) {
+
                 mSkills.filter(e => e.system.superior === skill.system.key).map(subSkill => {
                     const actorSubSkill = actor.system.competencias.find(e => e.key === subSkill.system.key)
+
+                    /*
+                    const base = actor.system.caracteristicas[subSkill.system.caracteristica].value
+                    let stats = actorSubSkill.stats
+                    stats.min = (actorSubSkill.primaria) ? base*3 : base
+                    stats.value = this._checkMinMax(stats.value, stats.min, stats.max)                    
+                    */
+
                     mContext.push({...{
                         key: subSkill.system.key,
                         item: subSkill,

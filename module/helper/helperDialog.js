@@ -4,6 +4,47 @@ import helperContext from "./helperContext.js"
 export default class helperDialog {
 
     /**
+     * dialogSelectOptions
+     * @param {*} rules 
+     * @param {*} title 
+     * @param {*} options 
+     * @param {*} position 
+     */
+    static async dialogSelectOptions(rules, title, options, position={height: 'auto'}) {
+        let _options = ''
+        options.map(option => {
+            const sImg = option.img ? `<img src="${option.img}" class="_iconImage"/>` : ''
+            _options += `<li data-key=${option.key}>
+                            <input type="checkbox" class="_selector" ${rules === option.key ? 'checked' : ''}>
+                            ${sImg}
+                            <label class="_title">${option.label}</label>                      
+                        </li>`
+        })
+        const content = `<ul class="_main">${_options}</ul>`
+
+        const option = await foundry.applications.api.DialogV2.wait({
+            classes: ['_extend', '_'+rules],
+            window: { title: title },
+            position: position,            
+            content,
+            buttons: [{
+                label: game.i18n.localize("common.confirmar"),
+                callback: (event, button) => {
+                    const checked = $(event.currentTarget).find('ul._main')
+                                                          .find('input[type="checkbox"]._selector:checked')
+                    if (!checked.length === 0) return null
+                    return checked.parents('li').data('key')
+                }
+            }],
+            render: (_event, dialog) => {               
+                this._setShadowToDialog(dialog)
+                this._setInitialDialogEvents(dialog)  
+            }
+        })      
+        return option
+    }
+
+    /**
      * dialogSelectRules
      * @param {*} actor
      */

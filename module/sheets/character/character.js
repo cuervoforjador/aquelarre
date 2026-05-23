@@ -1,5 +1,6 @@
 import { SYSTEM_ID } from "../../config/uiConstants.js"
 import { configRULES } from "../../config/rules.js";
+import { aqConfig } from "../../config/config.js";
 import extendActorSheet from "../actor.js";
 import helperContext from "../../helper/helperContext.js";
 import helperSheets from "../../helper/helperSheets.js";
@@ -20,8 +21,9 @@ export default class extendCharacterSheet extends extendActorSheet {
       height: 700 
     },
     actions: {
-      _editLore:    this.#onEditLore,
-      _showStatus:  this.#onShowStatus
+      _editLore:              this.#onEditLore,
+      _showStatus:            this.#onShowStatus,
+      _changeSkillStatus:     this.#onChangeSkillStatus
     }    
   }
 
@@ -130,6 +132,41 @@ export default class extendCharacterSheet extends extendActorSheet {
                      <p>${game.i18n.localize('explain.'+key)}</p>`
                             
     helperDialog.dialogDescription(null, content, game.i18n.localize('common.'+key), this.document.system.rules, 300)
+  }
+
+  /**
+   * onChangeSkillStatus
+   * @param {*} _event 
+   * @param {*} target 
+   */
+  static async #onChangeSkillStatus(_event, target) {
+    _event.stopPropagation()
+    const id = $(target).data('id')
+    const item = this.document.items.get($(target).data('id'))
+    if (!item) return
+    const key = item.system.key
+    const competencias = this.document.system.competencias
+    let stats = competencias.find(e => e.key === key)
+    const rules = this.document.system.rules
+    let options = [];
+    const position = {
+      left: _event.x - 100,
+      top: _event.y - 100
+    };
+    aqConfig.skills.status.map(s => {
+      options.push({
+        key: s,
+        label: game.i18n.localize('common.'+s),
+        img: "systems/"+SYSTEM_ID+"/assets/ui/"+rules+'_comp_'+s+'.png'
+      })
+    })
+    const option = await helperDialog.dialogSelectOptions(rules, item.name, options, position)
+    
+    aqConfig.skills.status.map(s => {
+        if (s === option) stats[s] = true
+                     else stats[s] = false
+    })
+    await this.document.update({'system.competencias': competencias})
   }
 
 }

@@ -686,9 +686,7 @@ form._extend ._skills ._skill {
     padding-right: 0.75rem;
     padding-left: calc(var(--fSize) * 0.25);
 }
-form._extend ._skills ._skill a._name {
-    width: 100%;
-}
+form._extend ._skills ._skill a._name,
 form._extend ._skills ._skill label._name {
     width: 100%;
     white-space: nowrap;
@@ -703,9 +701,13 @@ form._extend ._skills ._skill h4._title {
     margin: 0;
     margin-bottom: calc(var(--fSize) * 0.2);
 }
-form._extend ._skills ._skill img._skillIcon {
-    width: var(--fSize);
+form._extend ._skills ._skill img._skillIcon, 
+form._extend ._skills ._skill a._skillIcon {
+    min-width: var(--fSize);
     height: var(--fSize);
+}
+form._extend ._skills ._skill a._skillIcon:hover img {
+    filter: invert(1);
 }
 form._extend ._skills ._skill input._skillValue,
 form._extend ._skills ._skill label._skillValue {

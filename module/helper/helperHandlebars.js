@@ -1,5 +1,6 @@
 import { SYSTEM_ID } from "../config/uiConstants.js"
 import { configRULES } from "../config/rules.js"
+import { aqConfig } from "../config/config.js"
 
 export default class helperHandlebars {
 
@@ -95,6 +96,12 @@ static define() {
         const nSxC = Math.trunc(nSkills / nColumns) + 1
         return Math.trunc(index / nSxC) + 1
     })    
+
+    Handlebars.registerHelper("skillsStatus", (skill, root) => {
+        const rules = root.data.root.system.rules
+        const s = aqConfig.skills.status.find(s => skill[s])
+        return "systems/"+SYSTEM_ID+"/assets/ui/"+rules+'_comp_'+s+'.png'
+    })      
 
 }
 }
