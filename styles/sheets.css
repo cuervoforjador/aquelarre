@@ -232,8 +232,29 @@ form._extend._vyc input[name="name"]:disabled {
 ._combo label {
     white-space: nowrap;
 }
-._mainHeader ._combo label {
+form._extend._actor ._mainHeader ._combo label {
     color: var(--color-light-3);    
+}
+form._extend._actor ._mainHeader ._menu {
+    position: absolute;
+    width: calc(100% - var(--fSize) * 10);
+    top: calc(100% - var(--fSize) * 1.5);
+}
+form._extend._actor ._mainHeader ._menu .tabs a {
+    background-image: url(../assets/ui/paper.png);
+    padding: calc(var(--fSize) * 0) calc(var(--fSize) * 0.5);
+    color: #00000094;
+    border: 1px solid var(--aqRed2);
+    text-transform: uppercase;
+    box-shadow: #00000080 0 0 8px 3px;
+}
+form._extend._actor ._mainHeader ._menu .tabs a.active {
+    color: #000000;
+    font-weight: 900;
+    box-shadow: #000000AA 0 0 8px 3px;
+}
+form._extend._actor ._mainHeader ._menu .tabs {
+    gap: calc(var(--fSize) * 0.4);
 }
 ._combo label._field {
     color: var(--aqText2);
@@ -350,7 +371,7 @@ form._extend ._sheetHeader .portrait {
 }
 form._extend._actor ._sheetHeader .portrait {
     height: 100%;
-    width: 120px;
+    width: calc(var(--fSize) * 8);
 }
 form._extend ._sheetHeader .portrait {
     width: 75px;
@@ -658,6 +679,12 @@ form._extend input._stat {
 ._box._extraChars ._row input {
     border-bottom: 2px solid #000000ab;
     font-size: calc(var(--fSize) * 1.4);
+}
+._row._extra {
+    margin-top: calc(var(--fSize) * 1);
+    gap: calc(var(--fSize) * 0.5);
+    align-content: center;
+    align-items: center;
 }
 
 /** --- COMPETENCIAS --- */

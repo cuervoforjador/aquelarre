@@ -18,7 +18,7 @@ export default class extendCharacter_Base extends extend_Base {
 
         /** --- INFO --- */
         schema.info  = new api.SchemaField({
-            edad: new api.NumberField({ nullable: true, initial: null }),
+            edad: new api.NumberField({ nullable: true, initial: 25 }),
             altura: new api.NumberField({ nullable: true, initial: null }),
             peso: new api.NumberField({ nullable: true, initial: null }),
             reino: md_lore({label: 'common.reino', hint: 'common.reino'}),
@@ -35,22 +35,22 @@ export default class extendCharacter_Base extends extend_Base {
 
         /** --- CARACTERÍSTICAS --- */
         schema.caracteristicas = new api.SchemaField({
-            fue: md_stat({label: 'CHAR.fueShort', hint: 'CHAR.fue'}),
-            agi: md_stat({label: 'CHAR.agiShort', hint: 'CHAR.agi'}),
-            hab: md_stat({label: 'CHAR.habShort', hint: 'CHAR.hab'}),
-            res: md_stat({label: 'CHAR.resShort', hint: 'CHAR.res'}),
-            per: md_stat({label: 'CHAR.perShort', hint: 'CHAR.per'}),
-            tem: md_stat({label: 'CHAR.temShort', hint: 'CHAR.tem'}),
-            com: md_stat({label: 'CHAR.comShort', hint: 'CHAR.com'}),
-            cul: md_stat({label: 'CHAR.culShort', hint: 'CHAR.cul'}),
-            asp: md_stat({label: 'CHAR.aspShort', hint: 'CHAR.asp'}),
+            fue: md_stat({value: 10, label: 'CHAR.fueShort', hint: 'CHAR.fue'}),
+            agi: md_stat({value: 10, label: 'CHAR.agiShort', hint: 'CHAR.agi'}),
+            hab: md_stat({value: 10, label: 'CHAR.habShort', hint: 'CHAR.hab'}),
+            res: md_stat({value: 10, label: 'CHAR.resShort', hint: 'CHAR.res'}),
+            per: md_stat({value: 10, label: 'CHAR.perShort', hint: 'CHAR.per'}),
+            tem: md_stat({value: 10, label: 'CHAR.temShort', hint: 'CHAR.tem'}),
+            com: md_stat({value: 10, label: 'CHAR.comShort', hint: 'CHAR.com'}),
+            cul: md_stat({value: 10, label: 'CHAR.culShort', hint: 'CHAR.cul'}),
+            asp: md_stat({value: 10, label: 'CHAR.aspShort', hint: 'CHAR.asp'}),
         })  
         
         /** --- ATRIBUTOS --- */
         schema.atributos = new api.SchemaField({
             sue: md_stat({label: 'ATTR.sue', hint: 'ATTR.sue'}),                    //Suerte
-            rr: md_stat({label: 'ATTR.rr', hint: 'ATTR.rr'}),                       //Racionalidad
-            irr: md_stat({label: 'ATTR.irr', hint: 'ATTR.irr'}),                    //Irracionalidad
+            rr: md_stat({value: 50, label: 'ATTR.rr', hint: 'ATTR.rr'}),            //Racionalidad
+            irr: md_stat({value: 50, label: 'ATTR.irr', hint: 'ATTR.irr'}),         //Irracionalidad
             ptv: md_stat({label: 'ATTR.ptv', hint: 'ATTR.ptv'}),                    //Puntos de Vida
             ptf: md_stat({label: 'ATTR.ptf', hint: 'ATTR.ptf'}),                    //Puntos de Fe
             ptc: md_stat({label: 'ATTR.ptc', hint: 'ATTR.ptc'}),                    //Puntos de Concentración

@@ -14,6 +14,19 @@ export default class sheetHandler {
   }
 
   /**
+   * _onChangeRrIrr
+   * @param {*} event 
+   */
+  static async _onChangeRrIrr(event) {
+    const target = event.currentTarget
+    const char = target.name.split('.')[2]
+    const antiChar = char === 'rr' ? 'irr' : 'rr'
+    const path = "system.atributos."+antiChar+".value"
+    const value = 100 - target.valueAsNumber
+    await this.actor.update({[path]: value < 0 ? 0 : value });
+  }
+
+  /**
    * _onChangeSkillValue
    * @param {*} event 
    */

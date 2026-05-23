@@ -30,3 +30,14 @@
         <label class="_input _italic">{{configRULES.unitPeso}}</label>        
     </div>        
 </div>
+
+{{#if isEditable}}
+<div class="_row _extra">
+    <button type="button"
+            class="icon fas fa-gear" 
+            data-action="_resetAttr" 
+            data-tooltip="{{localize 'tooltip.resetAttr'}}">
+    </button>
+    <label>{{localize 'common.resetAttr'}}</label>
+</div>
+{{/if}}

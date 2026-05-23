@@ -23,7 +23,8 @@ export default class extendCharacterSheet extends extendActorSheet {
     actions: {
       _editLore:              this.#onEditLore,
       _showStatus:            this.#onShowStatus,
-      _changeSkillStatus:     this.#onChangeSkillStatus
+      _changeSkillStatus:     this.#onChangeSkillStatus,
+      _resetAttr:             this.#onResetAttributes,
     }    
   }
 
@@ -80,6 +81,8 @@ export default class extendCharacterSheet extends extendActorSheet {
     if ( !this.isEditable || !this.isEditMode) return;
 
     html.find('._charTotal').on("change", sheetHandler._onChangeCharTotal.bind(this))
+    html.find('._charRR').on("change", sheetHandler._onChangeRrIrr.bind(this))
+    html.find('._charIRR').on("change", sheetHandler._onChangeRrIrr.bind(this))
     html.find('._skillValue').on("change", sheetHandler._onChangeSkillValue.bind(this))
     html.find('._skillCheck').on("change", sheetHandler._onChangeSkillCheck.bind(this))
   }  
@@ -167,6 +170,21 @@ export default class extendCharacterSheet extends extendActorSheet {
                      else stats[s] = false
     })
     await this.document.update({'system.competencias': competencias})
+  }
+
+  /**
+   * onResetAttributes
+   * @param {*} _event 
+   * @param {*} target 
+   */
+  static async #onResetAttributes(_event, target) {
+    this.document.update({
+      "system.atributos.ptv.value": this.document.system.atributos.ptv.max,
+      "system.atributos.ptf.value": this.document.system.atributos.ptf.max,
+      "system.atributos.ptc.value": this.document.system.atributos.ptc.max,
+      "system.atributos.sue.value": this.document.system.atributos.sue.max
+    })
+    
   }
 
 }

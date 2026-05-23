@@ -220,13 +220,6 @@ export default class helperSheets {
             const actorSkill = actor.system.competencias.find(e => e.key === skill.system.key)
             const folder = mFolders.find(s => s === skill.system.key)
             let classes = folder ? (skill.system.folder) ? '_folder _onlyFolder' : '_folder' : ''
-            
-            /*
-            const base = actor.system.caracteristicas[skill.system.caracteristica].value
-            let stats = actorSkill.stats
-            stats.min = (actorSkill.primaria) ? base*3 : base
-            stats.value = this._checkMinMax(stats.value, stats.min, stats.max)
-            */
 
             mContext.push({...{
                 key: skill.system.key,
@@ -241,14 +234,6 @@ export default class helperSheets {
 
                 mSkills.filter(e => e.system.superior === skill.system.key).map(subSkill => {
                     const actorSubSkill = actor.system.competencias.find(e => e.key === subSkill.system.key)
-
-                    /*
-                    const base = actor.system.caracteristicas[subSkill.system.caracteristica].value
-                    let stats = actorSubSkill.stats
-                    stats.min = (actorSubSkill.primaria) ? base*3 : base
-                    stats.value = this._checkMinMax(stats.value, stats.min, stats.max)                    
-                    */
-
                     mContext.push({...{
                         key: subSkill.system.key,
                         item: subSkill,
@@ -304,7 +289,7 @@ export default class helperSheets {
                                helperPxTools.toPX(window.getComputedStyle(html[0]).getPropertyValue('--fSize'))
         const formWidth = sheet ? sheet.position.width -25: html.width() + 1.4 -25
         const formHeight = sheet ? sheet.position.height : html.height() + 1.4
-        const divStats = pxUnit * 27
+        const divStats = pxUnit * 29.5
         const divSkills = formWidth - divStats - 5
         const divRow = pxUnit * 15
 

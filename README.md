@@ -36,20 +36,20 @@ Estado actual: :heavy_check_mark: Completado
 ## Características
 ### :white_check_mark::white_check_mark::white_check_mark: Implementación
 Estado actual: :heavy_check_mark: Completado
-### :black_square_button::black_square_button::black_square_button: Dependencia en función de las Reglas
-Estado actual: :heavy_plus_sign: En desarrollo
-### :black_square_button::black_square_button::black_square_button: Tiradas de Características
-Estado actual: :heavy_plus_sign: En desarrollo
+### :white_check_mark::white_check_mark::white_check_mark: Dependencia en función de las Reglas
+Estado actual: :heavy_check_mark: Completado
+### :white_check_mark::white_check_mark::white_check_mark: Tiradas de Características
+Estado actual: :heavy_check_mark: Completado
 
 ## Competencias
 ### :white_check_mark::white_check_mark::white_check_mark: Implementación
 Estado actual: :heavy_check_mark: [Ver Item Competencia](https://github.com/cuervoforjador/aquelarre/wiki/Competencias-(Item))
 ### :white_check_mark::white_check_mark::white_check_mark: Repositorio (Competencias)
 Estado actual: :heavy_check_mark: [Ver Item Competencia](https://github.com/cuervoforjador/aquelarre/wiki/Competencias-(Repositorio))
-### :black_square_button::black_square_button::black_square_button: Integración en la Ficha de Personaje
-Estado actual: :heavy_multiplication_x: Pendiente
-### :black_square_button::black_square_button::black_square_button: Tiradas por Competencia
-Estado actual: :heavy_multiplication_x: Pendiente
+### :white_check_mark::white_check_mark::white_check_mark: Integración en la Ficha de Personaje
+Estado actual: :heavy_check_mark: Completado
+### :white_check_mark::white_check_mark::white_check_mark: Tiradas por Competencia
+Estado actual: :heavy_check_mark: Completado
 
 ## Contexto
 ### :white_check_mark::white_check_mark::white_check_mark: Implementación Sociedad
@@ -80,32 +80,33 @@ Estado actual: :heavy_multiplication_x: Pendiente
 Estado actual: :heavy_multiplication_x: Pendiente
 
 ## Atributos
-### :black_square_button::black_square_button::black_square_button: Racionalidad e Irracionalidad
-Estado actual: :heavy_multiplication_x: Pendiente
-### :black_square_button::black_square_button::black_square_button: Suerte
-Estado actual: :heavy_multiplication_x: Pendiente
-### :black_square_button::black_square_button::black_square_button: Puntos de Vida
-Estado actual: :heavy_multiplication_x: Pendiente
-### :black_square_button::black_square_button::black_square_button: Estatus de salud, Herida grave
-Estado actual: :heavy_multiplication_x: Pendiente
-### :black_square_button::black_square_button::black_square_button: Modif. al Daño
-Estado actual: :heavy_multiplication_x: Pendiente
-### :black_square_button::black_square_button::black_square_button: Iniciativa
-Estado actual: :heavy_multiplication_x: Pendiente
+
+### :white_check_mark::white_check_mark::white_check_mark: Racionalidad e Irracionalidad
+Estado actual: :heavy_check_mark: Completado
+### :white_check_mark::white_check_mark::white_check_mark: Suerte
+Estado actual: :heavy_check_mark: Completado
+### :white_check_mark::white_check_mark::white_check_mark: Puntos de Vida
+Estado actual: :heavy_check_mark: Completado
+### :white_check_mark::white_check_mark::white_check_mark: Estatus de salud, Herida grave
+Estado actual: :heavy_check_mark: Completado
+### :black_square_button::black_square_button::white_check_mark: Modif. al Daño
+Estado actual: :heavy_multiplication_x: En desarrollo
+### :black_square_button::black_square_button::white_check_mark: Iniciativa
+Estado actual: :heavy_multiplication_x: En desarrollo
 
 ## Armas
-### :black_square_button::black_square_button::black_square_button: Implementación
-Estado actual: :heavy_multiplication_x: Pendiente
-### :black_square_button::black_square_button::black_square_button: Repositorio (Armas)
-Estado actual: :heavy_multiplication_x: Pendiente
-### :black_square_button::black_square_button::black_square_button: Integración en la Ficha de Personaje
-Estado actual: :heavy_multiplication_x: Pendiente
+### :black_square_button::black_square_button::white_check_mark: Implementación
+Estado actual: :heavy_multiplication_x: En desarrollo
+### :black_square_button::black_square_button::white_check_mark: Repositorio (Armas)
+Estado actual: :heavy_multiplication_x: En desarrollo
+### :black_square_button::black_square_button::white_check_mark: Integración en la Ficha de Personaje
+Estado actual: :heavy_multiplication_x: En desarrollo
 
 ## Localizaciones
-### :black_square_button::black_square_button::black_square_button: Implementación
-Estado actual: :heavy_multiplication_x: Pendiente
-### :black_square_button::black_square_button::black_square_button: Repositorio (Localizaciones)
-Estado actual: :heavy_multiplication_x: Pendiente
+### :black_square_button::black_square_button::white_check_mark: Implementación
+Estado actual: :heavy_multiplication_x: En desarrollo
+### :black_square_button::black_square_button::white_check_mark: Repositorio (Localizaciones)
+Estado actual: :heavy_multiplication_x: En desarrollo
 
 ## Armaduras
 ### :black_square_button::black_square_button::black_square_button: Implementación
