@@ -33,14 +33,19 @@ export default class helperTemplates {
 
             stats_main_aq4: `${character}/parts/aq4/stats_main.hbs`,
             stats_chars_aq4: `${character}/parts/aq4/stats_chars.hbs`,
+            stats_percents_aq4: `${character}/parts/aq4/stats_percents.hbs`,
+            stats_extra_aq4: `${character}/parts/aq4/stats_extra.hbs`,
             stats_health_aq4: `${character}/parts/aq4/stats_health.hbs`,
             stats_rrirr_aq4: `${character}/parts/aq4/stats_rrirr.hbs`,
+            stats_exper_aq4: `${character}/parts/aq4/stats_exper.hbs`,
             stats_skills_aq4: `${character}/parts/aq4/stats_skills.hbs`,
 
             stats_main_vyc: `${character}/parts/vyc/stats_main.hbs`,
             stats_chars_vyc: `${character}/parts/vyc/stats_chars.hbs`,
+            stats_extra_vyc: `${character}/parts/vyc/stats_extra.hbs`,
             stats_health_vyc: `${character}/parts/vyc/stats_health.hbs`,
             stats_rrirr_vyc: `${character}/parts/vyc/stats_rrirr.hbs`,
+            stats_exper_vyc: `${character}/parts/vyc/stats_exper.hbs`,
             stats_skills_vyc: `${character}/parts/vyc/stats_skills.hbs`,
 
             // --- ITEMS ---

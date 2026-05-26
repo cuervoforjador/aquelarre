@@ -145,6 +145,21 @@ form._extend._vyc h3.divider::after,
 form._extend._vyc h4.divider::after {
     border-top: 4px ridge var(--vcGreen);
 }
+form._extend._aq4 h4.divider::before,
+form._extend._aq4 h4.divider::after {
+    border: 0;
+    background-size: contain;
+    background-repeat: no-repeat;
+    mask: none;
+    height: calc(var(--fSize) * 1);
+}
+
+form._extend._aq4 h4.divider::before {
+    background-image: url(../assets/ui/aq4_flower1.png);
+}
+form._extend._aq4 h4.divider::after {
+    background-image: url(../assets/ui/aq4_flower2.png);
+}
 
 form._extend input[name="name"]:disabled {
     color: var(--aqText2);
@@ -538,6 +553,223 @@ form._extend ._stats ._attrs {
         border: none;
         padding: 0;
     }
+
+    /** --- CUSTO PARA AQ4 --- */
+    form._extend._aq4 ._stats ._box {
+        border: none;
+    }    
+    form._extend._aq4 ._stats ._table {
+        row-gap: 0;
+    }
+    form._extend._aq4 ._stats h4._title {
+        margin: calc(var(--fSize) * 1) 0 calc(var(--fSize) * 0.25) 0;
+        font-size: calc(var(--fSize) * 1);
+        border-bottom: 1px solid #000;
+        padding-bottom: calc(var(--fSize) * 0.3);
+    }    
+    form._extend._aq4 ._table._chars ._row {
+        gap: 0;
+        justify-content: flex-end;
+    } 
+    form._extend._aq4 ._table._chars ._row._char._header label {
+        height: calc(var(--fSize) * 1.7);
+        width: calc(var(--fSize) * 3);
+    }
+    form._extend._aq4 ._table._chars ._row._char label._charTitle {
+        color: var(--aqRed2);
+        font-weight: 900;        
+        width: calc(var(--fSize) * 4);
+        padding-right: calc(var(--fSize) * 0.75);        
+    }
+    form._extend._aq4 ._table._chars input._charTotal, 
+    form._extend._aq4 ._table._chars input._charValue,
+    form._extend._aq4 ._table._chars label._charValue {
+        margin: 0;
+        border: none;
+        border-top: 1.5px solid #000000b0;
+        border-left: 1.5px solid #000000b0;
+        width: calc(var(--fSize) * 3.2);
+        font-size: calc(var(--fSize) * 1.6);
+        line-height: calc(var(--fSize) * 1.6);
+        height: calc(var(--fSize) * 1.8);
+        text-align: center;
+    }       
+    form._extend._aq4 ._table._chars ._row:last-child input._charTotal,
+    form._extend._aq4 ._table._chars ._row:last-child input._charValue,
+    form._extend._aq4 ._table._chars ._row:last-child label._charValue {
+        border-bottom: 1.5px solid #000000b0;
+    }
+    form._extend._aq4 ._table._chars label._charValue {
+        border-right: 1.5px solid #000000b0;
+    }
+    form._extend._aq4 ._table._subChars input, 
+    form._extend._aq4 ._table._subChars ._input {
+        width: calc(var(--fSize) * 3.35);
+        height: calc(var(--fSize) * 2);
+        line-height: calc(var(--fSize) * 2);
+    }    
+    form._extend._aq4 ._table._subChars label._charTitle {
+        width: calc(var(--fSize) * 7.25)!important;
+        padding: 0;
+        text-align: center;
+        text-transform: uppercase;
+    }    
+    form._extend._aq4 ._table._chars._subChars {
+        padding-top: 0;
+    }
+    form._extend._aq4 ._table._chars._subChars input._charValue {
+        border-right: 1.5px solid #000000b0;
+    }
+    form._extend._aq4 ._table._percents {
+        margin-top: calc(var(--fSize) * 2);
+    }    
+    form._extend._aq4 ._table._percents ._row label {
+        font-size: calc(var(--fSize) * 1);
+        width: calc(var(--fSize) * 3.5);
+    }    
+    form._extend._aq4 ._table._percents ._row._header {
+        border-bottom: 2px solid var(--aqRed);
+    }    
+    form._extend._aq4 ._table._percents ._row._header label {
+        font-weight: 900;
+    }    
+    form._extend._aq4 ._table._percents ._row:nth-child(even) {
+        background: #691f1726;
+    }    
+    form._extend._aq4 ._stats ._note {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        margin-top: calc(var(--fSize) * 1);
+    }
+    form._extend._aq4 ._stats ._note ._strong {
+        width: 43%;
+        text-align: right;
+        padding-right: calc(var(--fSize) * 0.5);
+        font-weight: 900;
+    } 
+    form._extend._aq4 ._stats ._logo {
+        height: calc(var(--fSize) * 8);
+        position: relative;
+        margin-bottom: calc(var(--fSize) * -2);
+        top: calc(var(--fSize) * -1);        
+        transition: 0.8s;
+    }
+    form._extend._aq4 ._stats ._logo._clickable:hover {
+        cursor: pointer;
+        filter: blur(2px) grayscale(0.8);
+    }       
+    form._extend._aq4 ._rrirr {
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        top: calc(var(--fSize) * -2.5);        
+    }
+    form._extend._aq4 ._rrirr label._title {
+        font-size: calc(var(--fSize) * 1.5);
+        font-family: var(--fFont1);
+        font-weight: 900;
+        width: 100%;
+        text-align: center;        
+    }    
+    form._extend._aq4 ._rrirr label._title._xsSize {
+        width: calc(var(--fSize) * 3.5) !important;
+        font-size: calc(var(--fSize) * 0.75);
+    }    
+    form._extend._aq4 ._rrirr label._input, 
+    form._extend._aq4 ._rrirr input {
+        border: 2px solid var(--aqRed);
+        border-radius: calc(var(--fSize) * 0.4);
+        text-align: center;
+        font-size: calc(var(--fSize) * 2);
+        line-height: calc(var(--fSize) * 2);
+        padding: 0;
+        margin: 0;
+        height: calc(var(--fSize) * 2);
+        margin-bottom: calc(var(--fSize) * 0.75);
+    }
+    form._extend._aq4 ._rrirr label._charHG {
+        height: calc(var(--fSize) * 1.8);
+        font-size: calc(var(--fSize) * 1.35);
+        line-height: calc(var(--fSize) * 1.35);
+        border-radius: 0;
+    }    
+    form._extend._aq4 ._healthWrap {
+        margin-right: calc(var(--fSize) * 1);
+    }         
+    form._extend._aq4 ._health,
+    form._extend._aq4 ._status {
+        display: flex;
+        flex-wrap: wrap;
+        width: calc(var(--fSize) * 10);
+        align-content: flex-start;
+        align-items: flex-start;        
+    }
+    form._extend._aq4 ._health ._numberBox {
+        width: calc(var(--fSize) * 2);
+        line-height: calc(var(--fSize) * 1.25);
+        display: flex;
+        align-content: center;
+        justify-content: center;
+        transition: 0.5s;
+        border-radius: 0;
+    }
+    form._extend._aq4 ._health ._row {
+        justify-content: center;
+    }
+    form._extend._aq4 ._health ._numberBox label {
+        font-size: calc(var(--fSize) * 1.25);
+        width: 100%;
+        text-align: center;        
+    } 
+    form._extend._aq4 ._health a,
+    form._extend._aq4 ._health a ._numberBox,
+    form._extend._aq4 ._health a label {
+        cursor: pointer!important;
+    }
+    form._extend._aq4 ._health label._disabled {
+        opacity: 0.35;
+    }  
+    form._extend._aq4 ._health a:hover label::before,  
+    form._extend._aq4 ._health label._selected::before {
+        background-image: url(../assets/ui/aq3_comp_primaria.png);
+        background-size: contain;
+        background-repeat: no-repeat;
+        background-position: center;
+        content: ' ';
+        width: calc(var(--fSize) * 2);
+        height: calc(var(--fSize) * 1.5);
+        display: block;
+        position: relative;
+        margin-bottom: calc(var(--fSize) * -1.5);
+        margin-right: calc(var(--fSize) * -2);
+        z-index: -1;
+    }
+    form._extend._aq4 ._health ._central label {
+        text-align: center;
+        padding: calc(var(--fSize) * 0.35) 0 0 0;
+        margin: 0;
+    }    
+    form._extend._aq4 ._health a:hover ._central label::before,
+    form._extend._aq4 ._health ._central label._selected::before {
+        left: calc(50% - var(--fSize));
+    }
+    form._extend._aq4 ._status label, 
+    form._extend._aq4 ._status input {
+        height: var(--fSize);
+        line-height: var(--fSize);
+        display: flex;
+        align-content: center;
+        align-items: center;
+    } 
+    form._extend._aq4 ._status {
+        margin-right: calc(var(--fSize) * 0.75);
+        margin-top: calc(var(--fSize) * 1.5);
+    }       
+    form._extend._aq4 ._status input._statusValue {
+        text-align: right;
+        border-bottom: 1.5px solid #000;
+    }    
 
 
 ._table._status ._row {

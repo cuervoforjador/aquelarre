@@ -24,7 +24,12 @@ static define() {
     Handlebars.registerHelper("neg", n => -n)
     Handlebars.registerHelper("abs", n => Math.abs(n))
     Handlebars.registerHelper("add", (a, b) => a + b)
+    Handlebars.registerHelper("rest", (a, b) => a - b)
     Handlebars.registerHelper("mult", (a, b) => a * b)
+    Handlebars.registerHelper("zeros", (v, n) => {
+        const pad = new Array(1 + n).join('0')
+        return (pad+v).slice(-pad.length);
+    })
     Handlebars.registerHelper("toUpperCase", (a) => a.toUpperCase())
 
     Handlebars.registerHelper("assets", () => 'systems/'+SYSTEM_ID+'/assets')

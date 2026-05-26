@@ -7,6 +7,7 @@ import helperSheets from "../../helper/helperSheets.js";
 import helperDialog from "../../helper/helperDialog.js";
 import helperTables from "../../helper/helperTables.js";
 import sheetHandler from "../handler.js";
+import helperTools from "../../helper/helperTools.js";
 
 export default class extendCharacterSheet extends extendActorSheet {
 
@@ -25,6 +26,7 @@ export default class extendCharacterSheet extends extendActorSheet {
       _showStatus:            this.#onShowStatus,
       _changeSkillStatus:     this.#onChangeSkillStatus,
       _resetAttr:             this.#onResetAttributes,
+      _hitsPoints:            this.#onClickHitsPoints
     }    
   }
 
@@ -50,6 +52,8 @@ export default class extendCharacterSheet extends extendActorSheet {
     context.caracteristicas = helperContext.getCaracteristicas()
 
     context.info = {...context.info, ...helperSheets.readLoreContext(this.document)}
+    context.m10 = helperTools.numberArray(10)
+    context.m20 = helperTools.numberArray(20)
 
     //Competencias
     await helperSheets.checkSkills(this.document)
@@ -173,6 +177,19 @@ export default class extendCharacterSheet extends extendActorSheet {
   }
 
   /**
+   * onClickHitsPoints
+   * @param {*} _event 
+   * @param {*} target 
+   */
+  static async #onClickHitsPoints(_event, target) {
+    _event.stopPropagation()
+    const ptv = $(target).data('value')
+    await this.document.update({
+       "system.atributos.ptv.value": ptv
+    })
+  }
+
+  /**
    * onResetAttributes
    * @param {*} _event 
    * @param {*} target 
@@ -184,7 +201,6 @@ export default class extendCharacterSheet extends extendActorSheet {
       "system.atributos.ptc.value": this.document.system.atributos.ptc.max,
       "system.atributos.sue.value": this.document.system.atributos.sue.max
     })
-    
   }
 
 }

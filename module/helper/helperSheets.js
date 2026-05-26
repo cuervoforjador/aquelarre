@@ -66,6 +66,7 @@ export default class helperSheets {
 
         let _attrs = system.atributos,
             _chars = system.caracteristicas;
+        const rules = system.rules;
 
         //Características
         for (var s in _chars) {
@@ -122,15 +123,44 @@ export default class helperSheets {
 
         //Estatus de Vida
         const ptv =  system.atributos.ptv
-        for (var s in system.salud.estado) {
-            let status = system.salud.estado[s]
-            status.checked = false
 
-            const low = ptv.total - Math.ceil(ptv.total * status.low)
-            const high = ptv.total - Math.ceil(ptv.total * status.high)
-            status.value = high
-            if (ptv.value <= high && ptv.value > low) status.checked = true
+        if (rules === 'aq3') {
+            for (var s in system.salud.estado) {
+                let status = system.salud.estado[s]
+                status.checked = false
+
+                const low = ptv.total - Math.ceil(ptv.total * status.low)
+                const high = ptv.total - Math.ceil(ptv.total * status.high)
+                status.value = high
+                if (ptv.value <= high && ptv.value > low) status.checked = true
+            }
+        } else {
+            let _high = ptv.total
+            let _low = Math.ceil(ptv.total / 2)
+            
+            for (var s in system.salud.estado) {
+                let status = system.salud.estado[s]
+                status.checked = false
+
+                var low = Math.ceil(ptv.total/2)*2 - Math.ceil(ptv.total * status.low)
+                var high = Math.ceil(ptv.total/2)*2 - Math.ceil(ptv.total * status.high)
+                
+                switch (s) {
+                    case 'sano':
+                        high = ptv.total; low = Math.ceil(ptv.total / 2);
+                        break;
+                    case 'inconsciente':
+                        high = 0; low = -1 * ptv.total;
+                        break;
+                    case 'muerto':
+                        high = -1 * ptv.total;  low: -100;
+                        break;                                                
+                }
+                status.value = high 
+                if (ptv.value <= high && ptv.value > low) status.checked = true
+            }
         }
+        system.salud.heridaGrave = Math.ceil(ptv.total / 2)
 
         return system
     }
@@ -176,9 +206,14 @@ export default class helperSheets {
         if (changed) {
             await actor.update({"system.competencias": competencias})
         }
-            
-            
-       
+    }
+
+    /**
+     * heridaGrave
+     * @param {*} system 
+     */
+    static heridaGrave(system) {
+
     }
 
     /**
@@ -300,7 +335,18 @@ export default class helperSheets {
         }
         options.columnSize = Math.trunc(100 / options.columns) + '%'
         options.templateAreas = "'"+'a '.repeat(options.columns).trim()+"'"
-        options.scrolled = options.side ? pxUnit * 32 < (formHeight - pxUnit * 11) : false
+        
+        //Scrolled - Depende del tipo de ficha
+        const rules = sheet ? sheet.actor.system.rules :
+                              html.prop('class').split(' ').splice(-1)[0].replace('_', '');
+
+        options.scrolled = rules === 'aq3' ? 
+                                options.side ? pxUnit * 32 < (formHeight - pxUnit * 11) : false :
+                           rules === 'aq4' ?
+                                options.side ? pxUnit * 40 < (formHeight - pxUnit * 11) : false :
+                           rules === 'vyc' ?
+                                options.side ? pxUnit * 40 < (formHeight - pxUnit * 11) : false : 
+                           false;
 
         return options
     }  

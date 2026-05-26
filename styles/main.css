@@ -136,6 +136,18 @@ input._sInput {
     overflow-y: auto;
 }
 
+._100 {
+    width: 100%;
+}
+._2columns {
+    display: flex;
+    flex-direction: row;
+}
+._1columns {
+    display: flex;
+    flex-direction: column;
+}
+
 table._table {
     background: none;
     border: 1px solid #0000002e;

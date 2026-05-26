@@ -147,18 +147,18 @@ export default class extendActorSheet
   async _prepareContext() {
 
     return {
-      fields:       this.document.schema.fields,
-      systemFields: this.document.system.schema.fields,
-      actor:        this.document,
-      system:       helperSheets.checkStats(this.document.system),
-      source:       this.document.toObject(),
-      isEditMode:   this.isEditMode,
-      isPlayMode:   this.isPlayMode,
-      isEditable:   this.isEditable && this._sheetMode === 0,
-      isGM:         game.user.isGM,
-      rules:        helperContext.getRules(),
-      myRules:      this.document.system.rules,
-      configRULES:  configRULES[this.document.system.rules],
+      fields:             this.document.schema.fields,
+      systemFields:       this.document.system.schema.fields,
+      actor:              this.document,
+      system:             helperSheets.checkStats(this.document.system),
+      source:             this.document.toObject(),
+      isEditMode:         this.isEditMode,
+      isPlayMode:         this.isPlayMode,
+      isEditable:         this.isEditable && this._sheetMode === 0,
+      isGM:               game.user.isGM,
+      rules:              helperContext.getRules(),
+      myRules:            this.document.system.rules,
+      configRULES:        configRULES[this.document.system.rules],
       mainRenderOptions:  helperSheets.getMainRenderOptions(this),
       skillRenderOptions: helperSheets.getSkillRenderOptions(this)
     }    

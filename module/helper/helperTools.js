@@ -18,4 +18,12 @@ export default class helperTools {
         }
         return null
     }
+
+    /**
+     * numberArray
+     * @param {*} max 
+     */
+    static numberArray(max) {
+        return Array(max).fill().map((x,i)=>i)        
+    }
 }
