@@ -209,14 +209,6 @@ export default class helperSheets {
     }
 
     /**
-     * heridaGrave
-     * @param {*} system 
-     */
-    static heridaGrave(system) {
-
-    }
-
-    /**
      *_importSkills
      * @param {*} actor 
      */
@@ -280,6 +272,11 @@ export default class helperSheets {
                 })
             }
         })
+
+        //Las competencias de arma van al final
+        mContext.sort((a,b) => (!a.item.system.armas*1 > !b.item.system.armas*1)*-1)
+        const nIndex = mContext.findIndex(e => e.item.system.armas)
+        mContext.splice(nIndex, 0, {blank: true});
 
         return mContext
     }
