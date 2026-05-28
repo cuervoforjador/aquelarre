@@ -124,6 +124,9 @@ form._extend input[type="checkbox"]::before {
 form._extend input[type="checkbox"]::after {
     color: var(--aqRed);
 }
+form._extend._vyc input[type="checkbox"]::after {
+    color: var(--vcDarkGreen);
+}
 
 form._extend h1.divider::before, 
 form._extend h2.divider::before, 
@@ -144,21 +147,6 @@ form._extend._vyc h2.divider::after,
 form._extend._vyc h3.divider::after, 
 form._extend._vyc h4.divider::after {
     border-top: 4px ridge var(--vcGreen);
-}
-form._extend._aq4 h4.divider::before,
-form._extend._aq4 h4.divider::after {
-    border: 0;
-    background-size: contain;
-    background-repeat: no-repeat;
-    mask: none;
-    height: calc(var(--fSize) * 1);
-}
-
-form._extend._aq4 h4.divider::before {
-    background-image: url(../assets/ui/aq4_flower1.png);
-}
-form._extend._aq4 h4.divider::after {
-    background-image: url(../assets/ui/aq4_flower2.png);
 }
 
 form._extend input[name="name"]:disabled {
@@ -249,6 +237,9 @@ form._extend._vyc input[name="name"]:disabled {
 }
 form._extend._actor ._mainHeader ._combo label {
     color: var(--color-light-3);    
+}
+form._extend._actor ._mainHeader ._combo label._field {
+    color: #ece2d4;
 }
 form._extend._actor ._mainHeader ._menu {
     position: absolute;
@@ -555,6 +546,20 @@ form._extend ._stats ._attrs {
     }
 
     /** --- CUSTO PARA AQ4 --- */
+    form._extend._aq4 h4.divider::before,
+    form._extend._aq4 h4.divider::after {
+        border: 0;
+        background-size: contain;
+        background-repeat: no-repeat;
+        mask: none;
+        height: calc(var(--fSize) * 1);
+    }    
+    form._extend._aq4 h4.divider::before {
+        background-image: url(../assets/ui/aq4_flower1.png);
+    }
+    form._extend._aq4 h4.divider::after {
+        background-image: url(../assets/ui/aq4_flower2.png);
+    }    
     form._extend._aq4 ._stats ._box {
         border: none;
     }    
@@ -771,6 +776,155 @@ form._extend ._stats ._attrs {
         border-bottom: 1.5px solid #000;
     }    
 
+    /** --- CUSTO PARA VYC --- */
+    form._extend._vyc h4.divider {
+        font-weight: 100;
+    }    
+    form._extend._vyc h4.divider::before,
+    form._extend._vyc h4.divider::after {
+        border: 0;
+        background-size: contain;
+        background-repeat: repeat-x;
+        height: calc(var(--fSize) * 1);
+    }    
+    form._extend._vyc h4.divider::before {
+        background-image: url(../assets/ui/vyc_flower.png);
+    }
+    form._extend._vyc h4.divider::after {
+        background-image: url(../assets/ui/vyc_flower.png);
+    }    
+    form._extend._vyc ._stats,
+    form._extend._vyc ._skills {
+        margin-top: 5px;
+    }
+    form._extend._vyc ._stats ._row._char._header label:first-child,
+    form._extend._vyc ._stats ._row._char label._charTitle {
+        width: calc(var(--fSize) * 8);
+        text-align: left;
+        padding-left: 5px;
+        font-size: calc(var(--fSize) * 1.1);
+        line-height: calc(var(--fSize) * 1.5);
+        height: calc(var(--fSize) * 1.5);        
+    }
+    form._extend._vyc ._stats ._row._char label._charTitle {
+        color: #000000d9;
+        font-family: var(--vcfFont1);
+        font-style: italic;
+    }
+    form._extend._vyc ._stats ._row._char label._charTitle span._bold {
+        font-weight: 100;
+        color: #000000;      
+        font-style: normal;
+    }
+    form._extend._vyc ._stats ._box {
+        border: none;
+        padding: 0;
+    }   
+    form._extend._vyc ._row._char input._charTotal, 
+    form._extend._vyc ._row._char ._input._charTotal, 
+    form._extend._vyc ._row._char input._charValue, 
+    form._extend._vyc ._row._char ._input._charValue,
+    form._extend._vyc ._row._char input._charValue, 
+    form._extend._vyc ._row._char ._input._charValue {
+        border: 1.5px solid #7817171c;
+        border-bottom: 1.5px solid #7817176e;
+        border-right: 1.5px solid #4a0e0e52;
+        font-size: calc(var(--fSize) * 1.4);
+        line-height: calc(var(--fSize) * 1.5);
+        height: calc(var(--fSize) * 1.6);     
+    }
+    form._extend._vyc ._table._chars ._row:nth-child(even) {
+        background: #691f1712;
+    }   
+    form._extend._vyc ._aspect {
+        margin-top: calc(var(--fSize) * 1.5);
+    }    
+    form._extend._vyc ._aspect label._charTitle {
+        width: auto!important;
+        font-size: calc(var(--fSize) * 1.05)!important;
+    }
+    form._extend._vyc ._aspect label._mod {
+        text-align: right;
+        margin-right: calc(var(--fSize) * -0, 5);
+    }    
+    form._extend._vyc ._rrirr {
+        display: flex;
+        flex-direction: row;
+        width: calc(var(--fSize) * 13.5);
+        margin-top: calc(var(--fSize) * 1); 
+    }
+    form._extend._vyc ._rrirr label._charTitle {
+        width: calc(100% - var(--fSize) * 3)!important;
+        line-height: calc(var(--fSize) * 1.8);
+        -webkit-mask-image: linear-gradient(270deg, transparent 0%, black 60%);
+        mask-image: linear-gradient(270deg, transparent 0%, black 60%); 
+        font-style: normal !important;
+        font-weight: 900;       
+    }
+    form._extend._vyc ._rrirr ._input,
+    form._extend._vyc ._rrirr input {
+        width: calc(var(--fSize) * 3);
+    }
+    form._extend._vyc ._rrirr label._rr {
+        border-bottom: 4px solid #263e9c63
+    }
+    form._extend._vyc ._rrirr label._irr {
+        border-bottom: 4px solid #d40b0b69;
+        margin-left: 0.5rem;
+    }    
+    form._extend._vyc ._attr label._attrTitle {
+        font-size: calc(var(--fSize) * 1.15);
+        line-height: calc(var(--fSize) * 2);
+        width: calc(var(--fSize) * 8);
+        font-family: var(--vcfFont1);
+        font-style: italic;
+    }    
+    form._extend._vyc ._attrs label._xsSize._charTitle {
+        width: calc(var(--fSize) * 6.4) !important;
+        font-size: calc(var(--fSize) * 1) !important;
+        padding-left: 0 !important;
+    }    
+    form._extend._vyc ._table._percents {
+        margin-top: calc(var(--fSize) * 2);
+    }    
+    form._extend._vyc ._table._percents ._row label {
+        font-size: calc(var(--fSize) * 0.9);
+        width: calc(var(--fSize) * 3.5);
+    }    
+    form._extend._vyc ._table._percents ._row._header {
+        border-bottom: 2px solid #b9888852;
+    }      
+    form._extend._vyc ._table._percents ._row:nth-child(even) {
+        background: #6d1d1d14;
+    } 
+    form._extend._vyc ._stats ._note {
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        margin-top: calc(var(--fSize) * 1);
+    }
+    form._extend._vyc ._stats ._note ._strong {
+        width: 43%;
+        text-align: right;
+        padding-right: calc(var(--fSize) * 0.5);
+    } 
+    form._extend._vyc ._attrs ._table._status label {
+        font-size: calc(var(--fSize) * 0.9);
+        font-family: var(--vcfFont1);
+        font-style: italic;
+    }    
+    form._extend._vyc ._attrs ._table._status input._statusValue {
+        border: 1px solid #00000000;
+        border-bottom: 1.5px solid #490b0b4a;
+        border-right: 1.5px solid #490b0b4a;
+        font-size: calc(var(--fSize) * 1.2);
+        padding-bottom: calc(var(--fSize) * 0.3);
+        color: #8b3535;
+    }    
+
+
+
+
 
 ._table._status ._row {
     align-content: center;
@@ -847,7 +1001,7 @@ form._extend input._stat {
     background: #691f1726;
 }
 ._table._noRowsColor ._row:nth-child(even) {
-    background: none;
+    background: none!important;
 }
 ._row._char label,
 ._row._char input {

@@ -139,6 +139,10 @@ input._sInput {
 ._100 {
     width: 100%;
 }
+._50 {
+    width: 50%;
+}
+
 ._2columns {
     display: flex;
     flex-direction: row;

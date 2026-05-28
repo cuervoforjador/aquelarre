@@ -21,6 +21,14 @@
                 max="{{system.atributos.ptv.max}}"
                 class="_charValue">  
     </div>
+    <div class="_row _char _expanded">
+        <label class="_xsSize _charTitle">{{localize 'common.heridaGrave'}}</label>  
+        <input type="number"
+                disabled="disabled"
+                name="system.salud.heridaGrave"
+                value="{{system.salud.heridaGrave}}"
+                class="_charValue">               
+    </div>
 </div>
 <div class="_box _table _status">
     {{#each system.salud.estado as |status key|}}
