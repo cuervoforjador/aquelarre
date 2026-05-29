@@ -101,7 +101,9 @@
       "posicion": {},
       "profesion": {},
       "competencia": {},
-      "item": {}
+      "item": {},
+      "arma": {},
+      "armadura": {}
     }
   }
 

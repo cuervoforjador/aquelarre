@@ -9,7 +9,9 @@ export const configRULES = {
         verExtraLore: false,        // Muestra los campos Edad, Altura, Peso
         unitAltura: 'varas',        // Unidad de altura
         unitPeso: 'libras',         // Unidad de peso
-        chars: ['fue', 'agi', 'hab', 'res', 'per', 'com', 'cul']
+        chars: ['fue', 'agi', 'hab', 'res', 'per', 'com', 'cul'],
+        armasFUE: true,             // Las armas tienen que tener una FUE mínima para ser usadas
+        armasRES: true              // Los escudos tienen una resistencia cuantificada
     },
     aq4: {
         estratoRoll: false,
@@ -20,7 +22,9 @@ export const configRULES = {
         verExtraLore: true,
         unitAltura: 'varas',
         unitPeso: 'libras',
-        chars: ['fue', 'agi', 'hab', 'res', 'per', 'tem', 'com', 'cul']
+        chars: ['fue', 'agi', 'hab', 'res', 'per', 'tem', 'com', 'cul'],
+        armasFUE: false,
+        armasRES: false
     },
     vyc: {
         estratoRoll: true,
@@ -31,6 +35,8 @@ export const configRULES = {
         verExtraLore: true,
         unitAltura: 'varas',
         unitPeso: 'libras',
-        chars: ['fue', 'agi', 'hab', 'res', 'per', 'tem', 'com', 'cul']
+        chars: ['fue', 'agi', 'hab', 'res', 'per', 'tem', 'com', 'cul'],
+        armasFUE: false,
+        armasRES: false
     },
 }

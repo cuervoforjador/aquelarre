@@ -5,6 +5,8 @@ import extendCharacterNPCSheet from "../sheets/character/npc.js"
 
 import sheetItem from "../sheets/item/item.js"
 import sheetCompetencia  from "../sheets/item/competencia.js"
+import sheetArma  from "../sheets/item/arma.js"
+import sheetArmadura  from "../sheets/item/armadura.js"
 import sheetSociedad  from "../sheets/item/sociedad.js"
 import sheetPueblo  from "../sheets/item/pueblo.js"
 import sheetReino  from "../sheets/item/reino.js"
@@ -46,6 +48,8 @@ export default class helperSheets {
 
         vI.registerSheet(SYSTEM_ID, sheetItem, { types: ["item"], makeDefault: true, label: "sheet.item" })
         vI.registerSheet(SYSTEM_ID, sheetCompetencia, { types: ["competencia"], makeDefault: true, label: "sheet.competencia" })
+        vI.registerSheet(SYSTEM_ID, sheetArma, { types: ["arma"], makeDefault: true, label: "sheet.arma" })
+        vI.registerSheet(SYSTEM_ID, sheetArmadura, { types: ["armadura"], makeDefault: true, label: "sheet.armadura" })
         vI.registerSheet(SYSTEM_ID, sheetSociedad, { types: ["sociedad"], makeDefault: true, label: "sheet.sociedad" })
         vI.registerSheet(SYSTEM_ID, sheetPueblo, { types: ["pueblo"], makeDefault: true, label: "sheet.pueblo" })
         vI.registerSheet(SYSTEM_ID, sheetReino, { types: ["reino"], makeDefault: true, label: "sheet.reino" })
@@ -55,7 +59,6 @@ export default class helperSheets {
 
         const vT = foundry.documents.collections.RollTables
         vT.registerSheet(SYSTEM_ID, sheetTableExtend, { types: ["base"], makeDefault: true, label: "sheet.lore" })
-
     }
 
     /**

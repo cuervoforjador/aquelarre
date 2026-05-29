@@ -1,6 +1,7 @@
 import { SYSTEM_ID } from "../config/uiConstants.js"
 import { configRULES } from "../config/rules.js"
 import extendCharacter_Character from "../models/character/character.js"
+import { aqConfig } from "../config/config.js"
 
 export default class helperContext {
 
@@ -41,6 +42,33 @@ export default class helperContext {
         }
         return mReturn
     }
+
+    /**
+     * getCompetencias
+     * @param {*} rules 
+     */
+    static async getCompetencias(rules) {
+        return this.getFromCompendium(rules, 'competencia')
+    }
+
+    /**
+     * getCompetenciasArmas
+     * @param {*} rules 
+     */
+    static async getCompetenciasArmas(rules) {
+        return (await this.getCompetencias(rules)).filter(e => e.system.armas)
+    }
+    static async getCompetenciasArmasSheet(rules) {
+        let oReturn = {}
+        const mSkills = await this.getCompetenciasArmas(rules)
+        mSkills.map(o => {
+            oReturn[o.system.key] = {
+                key: o.system.key,
+                label: o.name
+            }
+        })
+        return oReturn
+    }    
 
     /**
      * getSociedades
@@ -168,6 +196,28 @@ export default class helperContext {
     static async getLoreReinos(rules) {
         const mDocs = await this.getFromCompendium(rules, 'reino')
         return {...{null: {key:'', label:''}}, ...this._toObject(mDocs)}
+    }
+
+    /**
+     * getArmasTamanos
+     * @param {*} rules 
+     */
+    static getArmasTamanos(rules) {
+        let mReturn = []
+        for (var s in aqConfig.armas.tamanos) {
+            mReturn.push({
+                key: s,
+                label: game.i18n.localize(aqConfig.armas.tamanos[s].label)
+            })
+        }
+        return mReturn
+    }
+    static getArmasTamanosSheet(rules) {
+        let oReturn = {}
+        this.getArmasTamanos(rules).map(o => {
+            oReturn[o.key] = o
+        })
+        return oReturn
     }
 
     /**

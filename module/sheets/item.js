@@ -118,6 +118,8 @@ export default class extendItem0Sheet
   /** @override */
   async _prepareContext() {
     
+    const richDescription = await extendItem0Sheet.textImplentation('descripcion', this.document);
+
     return {
       fields:               this.document.schema.fields,
       systemFields:         this.document.system.schema.fields,
@@ -128,7 +130,7 @@ export default class extendItem0Sheet
       rules:                helperContext.getRules(),
       myRules:              this.document.system.rules,
 
-      _richDescripcion:     await extendItem0Sheet.textImplentation('descripcion', this.document)
+      _richDescripcion:     richDescription
     }
   }
 
@@ -178,6 +180,7 @@ export default class extendItem0Sheet
     helperSheets.addEditButton($(this.element), this.isPlayMode)
     this.activateListeners($(this.element))
     this.activateTab(context, $(this.element))
+    this.addCustomTextButtons(context, $(this.element))
   }
 
   /**
@@ -217,6 +220,36 @@ export default class extendItem0Sheet
         $(e).addClass(tab.cssClass)
       })
     }}
+  }
+
+  /**
+   * addCustomTextButtons
+   * @param {*} context 
+   * @param {*} html 
+   */
+  addCustomTextButtons(context, html) {
+    const menu = html.find('.menu-container menu.editor-menu')
+    if (menu.find('li._fromPDF').length === 0) {
+      menu.append(`<li class="_custom _fromPDF">
+                      <button type="button" data-action="fromPDF" data-tooltip="Arreglar Texto">
+                        <i class="fa-solid fa-text fa-fw"></i>
+                      </button>
+                   </li>`)
+      menu.find('li._fromPDF button').on("click", (event, data) => {
+        let content = $(event.delegateTarget).parents('prose-mirror').find('.editor-content')
+        let sContent = content.html()
+        sContent = sContent.replaceAll('<p>', '')
+        let mContent = sContent.split('</p>')
+        let sFinal = ""
+        mContent.map(s => {
+          if (sFinal.slice(-1) === '-') sFinal = sFinal.slice(0, -1) + s
+          else sFinal = sFinal === '' ? s : sFinal + ' ' + s
+        })
+        sFinal = sFinal.replaceAll('. ', '.</p><p>')
+        sFinal = '<p>'+sFinal+'</p>'
+        content.html(sFinal)
+      })
+    }
   }
 
   /**

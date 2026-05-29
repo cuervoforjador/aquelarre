@@ -49,6 +49,8 @@ export default class helperTemplates {
             // --- ITEMS ---
             main_Item: `${item}/main/item.hbs`,
             main_Competencia: `${item}/main/competencia.hbs`,
+            main_Arma: `${item}/main/arma.hbs`,
+            main_Armadura: `${item}/main/armadura.hbs`,
             main_Sociedad: `${item}/main/sociedad.hbs`,
             main_Pueblo: `${item}/main/pueblo.hbs`,
             main_Reino: `${item}/main/reino.hbs`,
@@ -62,6 +64,8 @@ export default class helperTemplates {
             item_background: `${item}/headers/_background.hbs`,
             
             header_Competencia: `${item}/headers/competencia.hbs`,
+            header_Arma: `${item}/headers/arma.hbs`,
+            header_Armadura: `${item}/headers/armadura.hbs`,
             header_Sociedad: `${item}/headers/sociedad.hbs`,
             header_Pueblo: `${item}/headers/pueblo.hbs`,
             header_Reino: `${item}/headers/reino.hbs`,

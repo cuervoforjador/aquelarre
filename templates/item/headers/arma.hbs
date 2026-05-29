@@ -1,0 +1,109 @@
+<div class="_header _sheetHeader">
+
+    {{>item_background}}
+    {{>item_header}}
+        
+    {{!-- PROPERTIES --}}
+    <div class="_row _gapped _marginTop _spaced">
+        <div class="_combo">
+            <label>{{localize 'common.competencia'}} :</label>
+            <select name="system.competencia.key" {{{_disabled}}} style="width: calc(var(--fSize) * 10);">
+            {{selectOptions competencias 
+                            selected=system.competencia.key
+                            localize=false
+                            nameAttr="key"
+                            labelAttr="label" }}
+            </select>       
+        </div>  
+        <div class="_combo">
+            <div class="_combo">
+                <label>{{localize 'common.dano'}} :</label>
+                <input type="text"
+                    {{{_disabled}}} 
+                    class="_sSize"
+                    name="system.dano" 
+                    value="{{system.dano}}">                 
+            </div>
+            <div class="_combo">
+                <label>{{localize 'common.tamano'}} :</label>
+                <select name="system.tamano" {{{_disabled}}} style="width: calc(var(--fSize) * 7);">
+                {{selectOptions tamanos 
+                                selected=system.tamano
+                                localize=false
+                                nameAttr="key"
+                                labelAttr="label" }}
+                </select>       
+            </div> 
+            {{#if configRULES.armasRES}}
+            <div class="_combo">
+                <label>{{localize 'CHAR.resShort'}} :</label>
+                <input type="number"
+                    {{{_disabled}}} 
+                    class="_xsSize _marginRight"
+                    name="system.resistenciaActual" 
+                    value="{{system.resistenciaActual}}">
+                <label>/</label>
+                <input type="number"
+                    {{{_disabled}}} 
+                    class="_xsSize _marginRight"
+                    name="system.resistencia" 
+                    value="{{system.resistencia}}">                                  
+            </div>
+            {{/if}}                
+        </div>   
+
+    </div>
+    <div class="_row _gapped _marginTop _spaced">
+        <div class="_combo _smallGapped">
+            
+            {{#if configRULES.armasFUE}}
+            <div class="_combo">
+                <label>{{localize 'CHAR.fueShort'}} :</label>
+                <input type="number"
+                    {{{_disabled}}} 
+                    class="_xsSize _marginRight"
+                    name="system.fuerza" 
+                    value="{{system.fuerza}}">                 
+            </div>
+            {{/if}}
+
+            {{{checkButton 'system.dosmanos' 'common.dosManos' 'fa-hands-praying'}}}
+            {{{checkButton 'system.auxiliar' 'common.auxiliar' 'fa-dagger'}}}
+            {{{checkButton 'system.escudo' 'common.escudo' 'fa-shield-halved'}}}
+            {{{checkButton 'system.adistancia' 'common.aDistancia' 'fa-bow-arrow'}}}
+            {{{checkButton 'system.fuego' 'common.armaFuego' 'fa-fire'}}}
+        </div>
+        {{#if system.adistancia}}
+        <div class="_combo _gapped">
+            <div class="_combo">
+                <label>{{localize 'common.recarga'}} :</label>
+                <input type="number"
+                    {{{_disabled}}} 
+                    class="_xsSize"
+                    name="system.recarga" 
+                    value="{{system.recarga}}">     
+            </div>            
+            <div class="_combo">
+                <label>{{localize 'common.alcance'}} :</label>
+                <input type="number"
+                    {{{_disabled}}} 
+                    class="_xsSize"
+                    name="system.alcance.corto" 
+                    value="{{system.alcance.corto}}">
+                <input type="number"
+                    {{{_disabled}}} 
+                    class="_xsSize"
+                    name="system.alcance.medio" 
+                    value="{{system.alcance.medio}}">
+                <input type="number"
+                    {{{_disabled}}} 
+                    class="_xsSize _marginRight"
+                    name="system.alcance.largo" 
+                    value="{{system.alcance.largo}}"> 
+            </div>
+            {{{checkButton 'system.alcance.fue' 'tooltip.alcanceFUE' 'fa-bicep'}}}                                                             
+        </div>
+        {{/if}}
+    </div>
+ 
+</div>

@@ -3,6 +3,8 @@ import extendCharacter_NPC from "../models/character/npc.js"
 
 import modelItem from "../models/item/item.js"
 import modelCompetencia from "../models/item/competencia.js"
+import modelArma from "../models/item/arma.js"
+import modelArmadura from "../models/item/armadura.js"
 import modelSociedad from "../models/item/sociedad.js"
 import modelPueblo from "../models/item/pueblo.js"
 import modelReino from "../models/item/reino.js"
@@ -29,6 +31,8 @@ export default class helperModels {
 
         CONFIG.Item.dataModels.item = modelItem
         CONFIG.Item.dataModels.competencia = modelCompetencia
+        CONFIG.Item.dataModels.arma = modelArma
+        CONFIG.Item.dataModels.armadura = modelArmadura
         CONFIG.Item.dataModels.sociedad = modelSociedad
         CONFIG.Item.dataModels.pueblo = modelPueblo
         CONFIG.Item.dataModels.reino = modelReino
