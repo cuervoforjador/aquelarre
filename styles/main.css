@@ -223,3 +223,13 @@ table._table select {
     font-family: var(--vcfFont1);
     font-size: calc(var(--fSize) * 2.35);
 }
+
+section.directory._extend._vyc section.window-content {
+
+    font-family: var(--vcfFont1);
+    font-size: calc(var(--fSize) * 1.15);
+}
+section.directory._extend._vyc li.directory-item img.thumbnail {
+    border-right: 0.3rem solid #ffa900d9;
+    padding-right: 1px;
+}

@@ -1168,3 +1168,15 @@ a[data-action="_showStatus"]:hover label {
     background-repeat: no-repeat;
     background-position: center;
 }
+
+/** DESCRIPCIONES */
+._item._extend table {
+    background: none;
+}
+._item._extend img {
+    border: 1.5px solid #00000042;
+}
+._item._extend table td {
+    padding: 0.5rem 0.5rem 0 0;
+    align-content: flex-start;
+}

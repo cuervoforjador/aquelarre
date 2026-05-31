@@ -37,5 +37,7 @@ export default class hooksFolders {
         $(html).find('.header-banner img').attr("src", sBackground)   
         $(html).find('.header-banner').addClass('_systemPack')
         $(html).find('.header-banner').addClass('_'+sRules)
+        $(html).addClass('_extend')
+        $(html).addClass('_'+sRules)
     }
 }
