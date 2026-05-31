@@ -323,7 +323,7 @@ form._extend ._sheetHeader ._headerBackground {
     background-repeat: no-repeat;
     background-size: 100%;
     background-position: center;
-    opacity: 0.15;    
+    opacity: 0.5;    
 }
 form._extend._actor ._sheetHeader ._headerBackground {
     opacity: 0.45;
@@ -347,6 +347,9 @@ form._extend ._sheetHeader {
 }
 form._extend._vyc ._sheetHeader {
     border-bottom: 1px solid var(--vcGreen);
+}
+form._extend._item ._sheetHeader {
+    padding: 20px 10px 20px 10px;
 }
 form._extend._actor ._header._sheetHeader {
     box-shadow: 1px 8px 7px 2px var(--aqBackRed);
@@ -413,13 +416,49 @@ form._extend._vyc .editor h4 {
     color: var(--vcText);
 }
 form._extend._vyc blockquote p,
-form._extend._vyc em {
+dialog._extend._vyc blockquote p {
     font-family: var(--vcfFont0);
     text-align: right;
     color: var(--vcRed);
     width: 100%;
     display: flex;
     justify-content: flex-end;
+    margin: 0;
+}
+form._extend ._sheetContent ._properties {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 0.5rem;
+}
+form._extend ._sheetContent ._buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.15rem;
+    margin-bottom: 0.5rem;
+    background: #35080821;
+    padding: 0.35rem;
+    justify-content: flex-end;
+    border: 1px solid #0000002b;
+}
+form._extend ._sheetContent ._properties button.icon {
+    display: none;
+}
+form._extend ._sheetContent ._properties button.icon._checked,
+form._extend ._sheetContent ._properties ._editable button.icon {
+    display: flex;
+}
+form._extend ._sheetContent ._properties ._row {
+    align-items: center;
+    align-content: center;
+}
+form._extend ._sheetContent ._properties ._row label:nth-child(1) {
+    min-width: calc(var(--fSize) * 7);
+    text-align: right;
+}
+form._extend ._sheetContent ._properties input, 
+form._extend ._sheetContent ._properties ._input, 
+form._extend ._sheetContent ._properties select {
+    height: calc(var(--fSize) * 1.5);
 }
 form._extend ._sheetContent h4 {
     font-family: var(--fFont1);

@@ -176,7 +176,7 @@ export default class extendItem0Sheet
     await super._onRender(context, options)    
     helperSheets.addRulesClass($(this.element), this.document)
     helperSheets.hideTitle($(this.element))
-    helperSheets.adjustContent($(this.element))
+    //helperSheets.adjustContent($(this.element))
     helperSheets.addEditButton($(this.element), this.isPlayMode)
     this.activateListeners($(this.element))
     this.activateTab(context, $(this.element))
