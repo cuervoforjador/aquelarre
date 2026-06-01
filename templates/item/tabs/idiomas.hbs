@@ -41,7 +41,7 @@
             {{#each system.idiomas as |entry key|}}
             <tr data-key="{{entry.key}}">
                 <td>{{translate entry.key ../idiomas}}</td>
-                <td class="_sSize _right">{{entry.value}}</td>
+                <td class="_mSize _right">{{entry.value}}</td>
                 <td class="_mSize">{{entry.formula}}</td>
                 {{#if ../isEditable}}
                 <td class="_button"><button type="button" {{{_disabled}}}

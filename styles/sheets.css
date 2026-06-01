@@ -460,6 +460,11 @@ form._extend ._sheetContent ._properties ._input,
 form._extend ._sheetContent ._properties select {
     height: calc(var(--fSize) * 1.5);
 }
+form._extend ._sheetContent ._properties ._menu {
+    background: #000000ab;
+    padding: 0.15rem 0.5rem;
+    border: 1.5px solid #ffffffd9;
+}
 form._extend ._sheetContent h4 {
     font-family: var(--fFont1);
     color: var(--aqText);

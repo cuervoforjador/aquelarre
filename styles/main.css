@@ -230,6 +230,6 @@ section.directory._extend._vyc section.window-content {
     font-size: calc(var(--fSize) * 1.15);
 }
 section.directory._extend._vyc li.directory-item img.thumbnail {
-    border-right: 0.3rem solid #ffa900d9;
+    border-right: 0.3rem solid #286744d9;
     padding-right: 1px;
 }

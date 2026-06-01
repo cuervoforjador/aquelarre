@@ -3,33 +3,4 @@
     {{>item_background}}
     {{>item_header}}
 
-    {{!-- PROPERTIES --}}
-    <div class="_row _gapped _marginTop">
-        <div class="_combo">
-            <label>{{localize 'common.femenino'}} :</label>
-            <input type="text" 
-                {{{_disabled}}}
-                name="system.femenino" 
-                value="{{system.femenino}}" 
-                data-tooltip="{{localize 'tooltip.femenino'}}">                 
-        </div>     
-        {{#if configRULES.posicionRoll}}   
-        <div class="_combo">
-            <label>{{localize 'common.desde'}} :</label>
-            <input type="number"
-                {{{_disabled}}} 
-                class="_sSize"
-                name="system.roll.low" 
-                value="{{system.roll.low}}">                 
-        </div>
-        <div class="_combo">
-            <label>{{localize 'common.hasta'}} :</label>
-            <input type="number"
-                {{{_disabled}}} 
-                class="_sSize"
-                name="system.roll.high" 
-                value="{{system.roll.high}}">                 
-        </div> 
-        {{/if}}      
-    </div>    
 </div>
