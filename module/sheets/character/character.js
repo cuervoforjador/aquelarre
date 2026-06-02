@@ -58,6 +58,7 @@ export default class extendCharacterSheet extends extendActorSheet {
     //Competencias
     await helperSheets.checkSkills(this.document)
     context.skills = helperSheets.systemSkills(this.document)
+    context.weapons = helperSheets.itemsWeapons(this.document, rules)
 
     context.tabs = this._prepareTabs("primary")
     return context

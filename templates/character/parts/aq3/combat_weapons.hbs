@@ -1,0 +1,67 @@
+<div class="_weapons">
+    
+    <h4 class="_title divider">{{localize 'common.armas'}}</h4>
+    <table class="_list">
+
+        <thead>
+            <tr class="_header">
+                <th><label>{{localize 'common.arma'}}</label></th>
+                <th><label>{{localize 'common.competencia'}}</label></th>
+                <th><label style="calc(var(--fSize) * 2.5)" class="_center2">%</label></th>
+                <th><label style="calc(var(--fSize) * 6)" class="_center2">{{localize 'common.dano'}}</label></th>
+                <th><label>{{localize 'common.tamano'}}</label></th>
+                <th><label>{{localize 'common.recarga'}}</label></th>
+                <th><label>{{localize 'common.alcance'}}</label></th>
+            </tr>
+        </thead>
+
+        <tbody>
+            {{#each weapons as |weapon index|}}
+            <tr class="_weapon">
+
+                <td><a class="_name"
+                       data-action="{{#if ../isEditable}}_showItem{{else}}_showDescr{{/if}}" 
+                       data-id="{{weapon.item.id}}">
+                        <label class="_name _lSize">{{weapon.item.name}}</label>
+                    </a></td>
+                <td><label>({{weapon.competencia.name}})</label></td>
+                <td>
+                    {{#if ../isEditable}}
+                        <label class="_input _skillValue _center2 _noBorder">{{weapon.percent}}</label>
+                    {{else}}
+                        <label class="_input _roll _skillValue"
+                                data-spectrum="true"
+                                data-action="_roll"
+                                data-target="skill"
+                                data-path="{{weapon.competencia.system.key}}"
+                                data-tooltip="{{localize 'tooltip.rollSkill'}}">
+                                <span class="_value _center">{{weapon.percent}}</span>
+                                <span class="_dice"><i class="fa-sharp fa-light fa-dice-d10"></i></span>
+                        </label>                    
+                    {{/if}}
+                </td>
+                <td>
+                    {{#if ../isEditable}}
+                        <label class="_input _damageValue _center2 _noBorder">{{weapon.item.system.dano}}</label>
+                    {{else}}
+                        <label class="_input _roll _damageValue"
+                                data-action="_roll"
+                                data-target="damage"
+                                data-value="{{weapon.item.system.dano}}"
+                                data-tooltip="{{localize 'tooltip.rollDamage'}}">
+                                <span class="_value _center">{{weapon.item.system.dano}}</span>
+                                <span class="_dice"><i class="fa-sharp fa-light fa-dice-d10"></i></span>
+                        </label>                    
+                    {{/if}}
+                </td>
+                <td><label class="_italic">{{weapon.tamano}}</label></td>
+                <td><label>{{weapon.item.system.recarga}}</label></td>
+                <td><label>{{weapon.alcance}}</label></td>
+
+            </tr>
+            {{/each}}
+        </tbody>
+
+    </table>
+
+</div>

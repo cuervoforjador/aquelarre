@@ -115,6 +115,11 @@ input.h4 {
 ._center {
     text-align: center;
 }
+._center2 {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+}
 ._right {
     text-align: right;
 }
@@ -127,6 +132,15 @@ input.h4 {
 }
 ._italic {
     font-style: italic;
+}
+._med {
+    font-size: calc(var(--fSize)*1.25);
+}
+._big {
+    font-size: calc(var(--fSize)*1.5);
+}
+._noBorder {
+    border-color: #00000000 !important;
 }
 input._sInput {
     width: 6rem;

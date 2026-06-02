@@ -968,7 +968,7 @@ form._extend ._stats ._attrs {
 
 
 
-
+/** TABLAS */
 
 ._table._status ._row {
     align-content: center;
@@ -1031,6 +1031,47 @@ form._extend ._stats ._attrs {
     margin-bottom: 2px;
 }
 
+
+._extend table._list {
+    background: none;
+}
+._extend table._list thead {
+    background: none;
+    border: none;
+    border-bottom: 1px solid #00000021;
+}
+._extend table._list thead tr,
+._extend table._list tr:nth-child(even) {
+    background: #80525224;
+}
+._extend table._list th, 
+._extend table._list td {
+    padding: calc(var(--fSize) * 0.3) calc(var(--fSize) * 0.5);
+}
+._extend table._list th label {
+    font-size: calc(var(--fSize) * 0.9);
+    font-style: italic;
+}
+._extend table._list label._name {
+    font-size: calc(var(--fSize) * 1);
+    font-weight: 900;
+}
+._extend table._list ._skillValue,
+._extend table._list ._damageValue {
+    border: 2px solid #7a12122e;
+    height: calc(var(--fSize) * 1.65);
+    font-size: calc(var(--fSize) * 1.5);
+    margin-top: calc(var(--fSize) * -0.1);
+    margin-bottom: calc(var(--fSize) * -0.2);
+    padding-bottom: calc(var(--fSize) * 1.7);
+    display: flex;
+}
+._extend table._list ._damageValue {
+    width: calc(var(--fSize) * 6);
+    font-size: calc(var(--fSize) * 1.25);
+}
+
+    
 
 form._extend input._stat {
     margin: 5px;
@@ -1166,8 +1207,9 @@ form._extend ._skills ._skill a._skillIcon {
 form._extend ._skills ._skill a._skillIcon:hover img {
     filter: invert(1);
 }
-form._extend ._skills ._skill input._skillValue,
-form._extend ._skills ._skill label._skillValue {
+form._extend input._skillValue,
+form._extend label._skillValue {
+    display: flex;
     font-size: calc(var(--fSize) * 1.25);
     width: calc(var(--fSize) * 2.5);
     line-height: calc(var(--fSize) * 1.4);

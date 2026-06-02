@@ -30,6 +30,8 @@ export default class helperTemplates {
             stats_rrirr_aq3: `${character}/parts/aq3/stats_rrirr.hbs`,
             stats_exper_aq3: `${character}/parts/aq3/stats_exper.hbs`,
             stats_skills_aq3: `${character}/parts/aq3/stats_skills.hbs`,
+            combat_weapons_aq3: `${character}/parts/aq3/combat_weapons.hbs`,
+            combat_mods_aq3: `${character}/parts/aq3/combat_mods.hbs`,
 
             stats_main_aq4: `${character}/parts/aq4/stats_main.hbs`,
             stats_chars_aq4: `${character}/parts/aq4/stats_chars.hbs`,
@@ -38,6 +40,8 @@ export default class helperTemplates {
             stats_rrirr_aq4: `${character}/parts/aq4/stats_rrirr.hbs`,
             stats_exper_aq4: `${character}/parts/aq4/stats_exper.hbs`,
             stats_skills_aq4: `${character}/parts/aq4/stats_skills.hbs`,
+            combat_weapons_aq4: `${character}/parts/aq4/combat_weapons.hbs`,
+            combat_mods_aq4: `${character}/parts/aq4/combat_mods.hbs`,
 
             stats_main_vyc: `${character}/parts/vyc/stats_main.hbs`,
             stats_chars_vyc: `${character}/parts/vyc/stats_chars.hbs`,
@@ -45,6 +49,8 @@ export default class helperTemplates {
             stats_health_vyc: `${character}/parts/vyc/stats_health.hbs`,            
             stats_percents_vyc: `${character}/parts/vyc/stats_percents.hbs`,
             stats_skills_vyc: `${character}/parts/vyc/stats_skills.hbs`,
+            combat_weapons_vyc: `${character}/parts/vyc/combat_weapons.hbs`,
+            combat_mods_vyc: `${character}/parts/vyc/combat_mods.hbs`,
 
             // --- ITEMS ---
             main_Item: `${item}/main/item.hbs`,

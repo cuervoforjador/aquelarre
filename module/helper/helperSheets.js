@@ -18,6 +18,7 @@ import sheetTableExtend from "../sheets/table/base.js"
 import helperContext from "./helperContext.js"
 import helperDialog from "./helperDialog.js"
 import helperPxTools from "../../libs/helperPxTools.js"
+import { aqConfig } from "../config/config.js"
 
 export default class helperSheets {
 
@@ -235,7 +236,7 @@ export default class helperSheets {
      * systemSkills
      * @param {*} actor 
      */
-    static systemSkills(actor) {
+    static systemSkills(actor, rules) {
         let mContext = []
         const mSkills = actor.items.filter(e => e.type === 'competencia' && e.system.rules === actor.system.rules)
         mSkills.sort((a,b) => a.name.localeCompare(b.name))
@@ -282,6 +283,38 @@ export default class helperSheets {
         mContext.splice(nIndex, 0, {blank: true});
 
         return mContext
+    }
+
+    /**
+     * itemsWeapons
+     * @param {*} actor 
+     * @param {*} rules
+     */
+    static itemsWeapons(actor, rules) {
+        let mReturn = []
+        let mItems = actor.items.filter(e => e.type === 'arma' && e.system.rules === rules)
+        mItems.sort((a,b) => a.name.localeCompare(b.name))
+        mItems.map(item => {
+            const competencia = actor.items.find(e => e.type === 'competencia'
+                                                   && e.system.rules === rules
+                                                   && e.system.key === item.system.competencia.key)
+            const systemCompetencia = actor.system.competencias.find(e => e.key === item.system.competencia.key)
+            mReturn.push({
+                item: item,
+                competencia: competencia,
+                systemCompetencia: systemCompetencia,
+                percent: systemCompetencia?.stats.value,
+                tamano: game.i18n.localize(aqConfig.armas.tamanos[item.system.tamano].label),
+                alcance: item.system.adistancia ? 
+                            !item.system.alcance.fue ? 
+                                item.system.alcance.corto+'/'+
+                                item.system.alcance.medio+'/'+
+                                item.system.alcance.largo :
+                                game.i18n.localize('CHAR.fue') :
+                            ''
+            })
+        })
+        return mReturn
     }
 
     /**
