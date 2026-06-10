@@ -30,7 +30,7 @@ export default class modelArma extends extendItem_Base {
             medio: new api.NumberField({ nullable: true, initial: null }),
             largo: new api.NumberField({ nullable: true, initial: null }),
             fue: new api.BooleanField({ initial: false })
-        })        
+        })
 
         return schema;
     }

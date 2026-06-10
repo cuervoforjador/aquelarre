@@ -7,8 +7,8 @@ export default class helperTokens {
 
         CONFIG.Actor.trackableAttributes = {
             character: {
-                bar:   ["attributes.health.points"],
-                value: ["primary.strength", "primary.constitution"],
+                bar:   ["atributos.ptv","atributos.rr","atributos.irr."],
+                value: ["caracteristicas.fue", "caracteristicas.agi", "caracteristicas.hab", "caracteristicas.res", "caracteristicas.per", "caracteristicas.tem", "caracteristicas.com", "caracteristicas.cul", "caracteristicas.asp"],
             },
             npc: {
                 bar:   ["attributes.health.points"],

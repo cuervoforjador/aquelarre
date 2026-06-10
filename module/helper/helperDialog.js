@@ -4,6 +4,19 @@ import helperContext from "./helperContext.js"
 export default class helperDialog {
 
     /**
+     * error
+     * @param {*} sI18nPath 
+     */
+    static async error(sI18nPath) {
+        await foundry.applications.api.DialogV2.prompt({
+            classes: ['_extend', '_error'],
+            window: { title: game.i18n.localize('common.error') },
+            content: game.i18n.localize(sI18nPath),
+            ok: { label: game.i18n.localize('common.aceptar') }
+        });
+    }
+
+    /**
      * dialogSelectOptions
      * @param {*} rules 
      * @param {*} title 
@@ -12,13 +25,24 @@ export default class helperDialog {
      */
     static async dialogSelectOptions(rules, title, options, position={height: 'auto'}) {
         let _options = ''
+        let _buttonClassSelected = ''
         options.map(option => {
             const sImg = option.img ? `<img src="${option.img}" class="_iconImage"/>` : ''
-            _options += `<li data-key=${option.key}>
-                            <input type="checkbox" class="_selector" ${rules === option.key ? 'checked' : ''}>
-                            ${sImg}
-                            <label class="_title">${option.label}</label>                      
+            const sInput = option.input ?
+                           `<div class="_input">
+                                <label>${option.inputField.label}</label>
+                                <input type="text" value="${option.inputField.value}"/>
+                            </div>` : ''
+
+            _options += `<li data-key="${option.key}" ${option.input ? ` class="${option.inputField.class}"` : ''}>
+                            <div class="_wrap">
+                                <input type="checkbox" class="_selector" ${!!option.checked ? 'checked' : ''}>
+                                ${sImg}
+                                <label class="_title">${option.label}</label>
+                            </div>
+                            ${sInput}
                         </li>`
+            if (!!option.checked) _buttonClassSelected = '_selected'
         })
         const content = `<ul class="_main">${_options}</ul>`
 
@@ -29,10 +53,17 @@ export default class helperDialog {
             content,
             buttons: [{
                 label: game.i18n.localize("common.confirmar"),
+                class: _buttonClassSelected, 
                 callback: (event, button) => {
                     const checked = $(event.currentTarget).find('ul._main')
                                                           .find('input[type="checkbox"]._selector:checked')
                     if (!checked.length === 0) return null
+                    const oInput = checked.parents('li').find('._input input')
+                    if (oInput.length > 0) return {
+                                               inputResponse: true,
+                                               inputValue: oInput.val(),
+                                               key: checked.parents('li').data('key')
+                                           }
                     return checked.parents('li').data('key')
                 }
             }],
@@ -133,10 +164,11 @@ export default class helperDialog {
      * dialogDescription
      * @param {*} document 
      */
-    static async dialogDescription(document=null, content='', title='', rules=null, width=550) {
+    static async dialogDescription(document=null, content='', title='', rules=null, width=550, img='') {
         const sRules = rules ? rules : document?.system.rules
         const sContent = document ? document.system.descripcion : content
         const sTitle = document ? document.name : title
+        const sImg = img !== '' ? img : document.img
 
         const dialog = await foundry.applications.api.DialogV2.prompt({
             classes: ['_extend', '_description', '_'+sRules],
@@ -146,7 +178,7 @@ export default class helperDialog {
             ok: {},
             render: (_event, dialog) => {
                 this._setShadowToDialog(dialog)   
-                this._setWaterMarkToDialog(dialog, document)             
+                this._setWaterMarkToDialog(dialog, document, sImg)             
                 this._setNoFooter(dialog)
             }
         })
@@ -166,9 +198,10 @@ export default class helperDialog {
         $(dialog.element).find('.window-content').prepend(`<div class="_shadow"></div>`)  
     }
 
-    static _setWaterMarkToDialog(dialog, document) {
-        if (!document) return
-        $(dialog.element).find('.window-content').prepend(`<div class="_watermark" style="background-image: url(${document.img})"></div>`)        
+    static _setWaterMarkToDialog(dialog, document, sImg='') {
+        if (!document && sImg==='') return
+        const img = document ? document.img : sImg
+        $(dialog.element).find('.window-content').prepend(`<div class="_watermark" style="background-image: url(${img})"></div>`)        
     }
 
     static _setNoFooter(dialog) {
@@ -201,11 +234,11 @@ export default class helperDialog {
     }
 
     static _checkOnlyMe(li) {
-        li.parent().find('li').each((i,e) => {
+        li.parent().find('li').each((i,e) => {            
             if ($(e).data('key') === li.data('key')) return
             $(e).find('input._selector').prop('checked', false)
         })
-        li.find('input._selector').prop('checked', true)        
+        li.find('input._selector').prop('checked', true)      
     }
 
 }

@@ -32,15 +32,14 @@ export default class helperContext {
      */
     static getCaracteristicas() {
 
-        let mReturn = {};
+        let oReturn = {};
         const schema = extendCharacter_Character.defineSchema();
         for (var s in schema.caracteristicas.fields) {
             const label = game.i18n.localize(schema.caracteristicas.fields[s].label) +
                           ' (' + game.i18n.localize(schema.caracteristicas.fields[s].hint) + ')'
-            //mReturn.push({ key: s, label: label });
-            mReturn[s] = { key: s, label: label };
+            oReturn[s] = { key: s, label: label };
         }
-        return mReturn
+        return oReturn
     }
 
     /**
@@ -48,8 +47,20 @@ export default class helperContext {
      * @param {*} rules 
      */
     static async getCompetencias(rules) {
-        return this.getFromCompendium(rules, 'competencia')
+        const mSkills = await this.getFromCompendium(rules, 'competencia')
+        mSkills.sort((a,b) => a.name.localeCompare(b.name))
+        return mSkills           
     }
+    static async getCompetenciasObject(rules) {
+        let oReturn = {};
+        (await this.getCompetencias(rules)).map(e => {
+            oReturn[e.system.key] = {
+                key: e.system.key,
+                label: e.name + ' (' + game.i18n.localize('CHAR.'+e.system.caracteristica) + ')'
+            }
+        })
+        return oReturn
+    }    
 
     /**
      * getCompetenciasArmas
@@ -218,6 +229,71 @@ export default class helperContext {
             oReturn[o.key] = o
         })
         return oReturn
+    }
+
+    /**
+     * getArmadurasTipos
+     * @param {*} rules 
+     */
+    static getArmadurasTipos(rules) {
+        let mReturn = []
+        for (var s in aqConfig.armaduras.tipos) {
+            mReturn.push({
+                key: s,
+                label: game.i18n.localize(aqConfig.armaduras.tipos[s].label)
+            })
+        }
+        return mReturn
+    }
+    static getArmadurasTiposSheet(rules) {
+        let oReturn = {}
+        this.getArmadurasTipos(rules).map(o => {
+            oReturn[o.key] = o
+        })
+        return oReturn
+    }
+
+    /**
+     * getLocalizacionesTipos
+     * @param {*} rules 
+     */
+    static getLocalizacionesTipos(rules) {
+        let oReturn = {}
+        for (var s in aqConfig.localizaciones) {
+            oReturn[s] = {
+                key: s,
+                label: game.i18n.localize('common.'+s)
+            }
+        }
+        return oReturn
+    }
+
+    /**
+     * getLocalizaciones
+     * @param {*} rules 
+     * @param {*} option (Actor / location Type)
+     */
+    static getLocalizaciones(rules, option) {
+        if (option === '') option = 'humanoide'
+        const location = typeof option === 'string' ? option : option.system.info.localizacion
+        return aqConfig.localizaciones[location]
+    }
+    static getMLocalizaciones(rules, option) {
+        const locations = this.getLocalizaciones(rules, option)
+        let mReturn = []
+        for (var s in locations.partes) { mReturn.push({...locations.partes[s], ...{key: s}}) }
+        return mReturn
+    }
+    static getLocalizacionesPartes(rules, option) {
+        let oReturn = {}
+        const locations = this.getLocalizaciones(rules, option)  
+        for (var s in locations.partes) {
+            oReturn[s] = {
+                key: s,
+                label: game.i18n.localize('common.'+s)
+            }
+        }
+        return oReturn              
     }
 
     /**

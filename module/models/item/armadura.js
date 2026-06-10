@@ -10,11 +10,24 @@ export default class modelArmadura extends extendItem_Base {
     static defineSchema() {        
         const schema = super.defineSchema();
 
-        schema.femenino = new api.StringField({ initial: '' })
-        schema.roll = new api.SchemaField({
-            low: new api.NumberField({ nullable: true, initial: null }),
-            high: new api.NumberField({ nullable: true, initial: null })
-        })
+        schema.tipo =  new api.StringField({ initial: '' })
+        schema.proteccion = new api.NumberField({ nullable: true, initial: null })
+        schema.resistencia = new api.NumberField({ nullable: true, initial: null })
+        schema.resistenciaTotal = new api.NumberField({ nullable: true, initial: null })
+        schema.fuerza = new api.NumberField({ nullable: true, initial: null })
+        schema.localizacion = new api.StringField({ initial: 'humanoide' })
+        schema.localizaciones = new api.ArrayField(new api.SchemaField({
+            key: new api.StringField({ initial: '' })
+        }))
+        schema.penalizaciones = new api.ArrayField(new api.SchemaField({
+            key: new api.StringField({ initial: '' }),
+            penal: new api.StringField({ initial: '' })
+        }))          
+        schema.penalIniciativa = new api.NumberField({ nullable: true, initial: null })
+        schema.penalMovimiento = new api.NumberField({ nullable: true, initial: null })
+
+        schema.enUso = new api.BooleanField({ initial: true })
+
         return schema;
     }
 

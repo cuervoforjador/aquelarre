@@ -30,5 +30,13 @@ export default class newActor extends Actor {
     }
   }
 
+  /**
+   * getCompetencia
+   * @param {*} key 
+   * @returns 
+   */
+  getCompetencia(key) {
+    return this.items.find(e => e.type === 'competencia' && e.system.key === key)
+  }
 
 }

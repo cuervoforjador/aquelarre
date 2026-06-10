@@ -42,6 +42,16 @@
                 data-id="{{skill.item.id}}">
                     <label class="_name">{{skill.item.name}} <span class="_sFont">({{skill.char}})</span></label>
                 </a>
+                {{#unless (eq skill.stats.penal 0)}}
+                {{#unless ../isEditable}}
+                    <button type="button"
+                            class="icon showPenals fas fa-badge" 
+                            data-action="_showPenals" 
+                            data-key="{{skill.key}}"
+                            data-tooltip="{{localize 'common.verPenalizaciones'}}">
+                    </button>
+                {{/unless}}
+                {{/unless}}
                 {{#if ../isEditable}}
                     <input type="number" 
                             {{{_disabled}}} 
@@ -56,7 +66,7 @@
                             data-target="skill"
                             data-path="{{skill.key}}"
                             data-tooltip="{{localize 'tooltip.rollSkill'}}">
-                            <span class="_value _center">{{skill.stats.value}}</span>
+                            <span class="_value _center">{{skill.stats.total}}<span class="_sFont"> %</span></span>
                             <span class="_dice"><i class="fa-sharp fa-light fa-dice-d10"></i></span>
                     </label>
                 {{/if}}

@@ -31,7 +31,9 @@ export default class helperTemplates {
             stats_exper_aq3: `${character}/parts/aq3/stats_exper.hbs`,
             stats_skills_aq3: `${character}/parts/aq3/stats_skills.hbs`,
             combat_weapons_aq3: `${character}/parts/aq3/combat_weapons.hbs`,
+            combat_armors_aq3: `${character}/parts/aq3/combat_armors.hbs`,
             combat_mods_aq3: `${character}/parts/aq3/combat_mods.hbs`,
+            combat_location_aq3: `${character}/parts/aq3/combat_location.hbs`,
 
             stats_main_aq4: `${character}/parts/aq4/stats_main.hbs`,
             stats_chars_aq4: `${character}/parts/aq4/stats_chars.hbs`,
@@ -41,7 +43,9 @@ export default class helperTemplates {
             stats_exper_aq4: `${character}/parts/aq4/stats_exper.hbs`,
             stats_skills_aq4: `${character}/parts/aq4/stats_skills.hbs`,
             combat_weapons_aq4: `${character}/parts/aq4/combat_weapons.hbs`,
+            combat_armors_aq4: `${character}/parts/aq4/combat_armors.hbs`,
             combat_mods_aq4: `${character}/parts/aq4/combat_mods.hbs`,
+            combat_location_aq4: `${character}/parts/aq4/combat_location.hbs`,
 
             stats_main_vyc: `${character}/parts/vyc/stats_main.hbs`,
             stats_chars_vyc: `${character}/parts/vyc/stats_chars.hbs`,
@@ -50,7 +54,9 @@ export default class helperTemplates {
             stats_percents_vyc: `${character}/parts/vyc/stats_percents.hbs`,
             stats_skills_vyc: `${character}/parts/vyc/stats_skills.hbs`,
             combat_weapons_vyc: `${character}/parts/vyc/combat_weapons.hbs`,
+            combat_armors_vyc: `${character}/parts/vyc/combat_armors.hbs`,
             combat_mods_vyc: `${character}/parts/vyc/combat_mods.hbs`,
+            combat_location_vyc: `${character}/parts/vyc/combat_location.hbs`,
 
             // --- ITEMS ---
             main_Item: `${item}/main/item.hbs`,
@@ -82,7 +88,9 @@ export default class helperTemplates {
             tab_Idiomas: `${item}/tabs/idiomas.hbs`,
             tab_Pueblos: `${item}/tabs/pueblos.hbs`,
             tab_Estratos: `${item}/tabs/estratos.hbs`,
-            tab_Posiciones: `${item}/tabs/posiciones.hbs`
+            tab_Posiciones: `${item}/tabs/posiciones.hbs`,
+            tab_Localizaciones: `${item}/tabs/localizaciones.hbs`,
+            tab_Penalizaciones: `${item}/tabs/penalizaciones.hbs`
         })
     }
 }

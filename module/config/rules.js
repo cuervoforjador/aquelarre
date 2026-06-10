@@ -10,8 +10,10 @@ export const configRULES = {
         unitAltura: 'varas',        // Unidad de altura
         unitPeso: 'libras',         // Unidad de peso
         chars: ['fue', 'agi', 'hab', 'res', 'per', 'com', 'cul'],
-        armasFUE: true,             // Las armas tienen que tener una FUE mínima para ser usadas
-        armasRES: true              // Los escudos tienen una resistencia cuantificada
+        armasFUE: true,             // Las armas tienen una FUE mínima
+        armasRES: true,             // Los escudos tienen una resistencia cuantificada
+        armadurasFUE: true,         // Las armaduras tienen una FUE mínima
+        armadurasRES: true          // Las armaduras tienen una resistencia cuantificada        
     },
     aq4: {
         estratoRoll: false,
@@ -24,7 +26,9 @@ export const configRULES = {
         unitPeso: 'libras',
         chars: ['fue', 'agi', 'hab', 'res', 'per', 'tem', 'com', 'cul'],
         armasFUE: false,
-        armasRES: false
+        armasRES: false,
+        armadurasFUE: false,
+        armadurasRES: false        
     },
     vyc: {
         estratoRoll: true,
@@ -37,6 +41,8 @@ export const configRULES = {
         unitPeso: 'libras',
         chars: ['fue', 'agi', 'hab', 'res', 'per', 'tem', 'com', 'cul'],
         armasFUE: false,
-        armasRES: false
+        armasRES: false,
+        armadurasFUE: false,
+        armadurasRES: false           
     },
 }

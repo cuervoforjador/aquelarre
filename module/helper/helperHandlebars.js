@@ -22,6 +22,7 @@ static define() {
     Handlebars.registerHelper("lte", (a, b) => a <= b)
     
     Handlebars.registerHelper("neg", n => -n)
+    Handlebars.registerHelper("not", n => !n)
     Handlebars.registerHelper("abs", n => Math.abs(n))
     Handlebars.registerHelper("add", (a, b) => a + b)
     Handlebars.registerHelper("rest", (a, b) => a - b)
@@ -65,7 +66,7 @@ static define() {
         const path = args[0]
         const tooltip = game.i18n.localize(args[1])
         const icon = args[2]
-        const document = args[3].data.root
+        const document = args.length > 4 ? args[3] : args[3].data.root
         const isEditable = document.isEditable        
         let property = document;
         path.split('.').map(s => {property = property[s]})

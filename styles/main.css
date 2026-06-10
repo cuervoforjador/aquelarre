@@ -1,10 +1,19 @@
 
-@import url('https://fonts.googleapis.com/css2?family=Almendra+Display&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=IM+Fell+Great+Primer+SC&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=IM+Fell+English+SC&family=IM+Fell+English:ital@0;1&display=swap');
+@font-face {
+  font-family: Almendra;
+  src: url(Almendra-Regular.ttf);
+}
 @font-face {
   font-family: corvux;
   src: url(corvux.ttf);
+}
+@font-face {
+  font-family: IM Fell English;
+  src: url(IMFellEnglish-Regular.ttf);
+}
+@font-face {
+  font-family: IM Fell English SC;
+  src: url(IMFellEnglishSC-Regular.ttf);
 }
 
 :root {
@@ -49,6 +58,17 @@
 }
 ._row._spaced {
     justify-content: space-between;
+}
+._row._props {
+    display: flex;
+    align-content: center;
+    align-items: center;
+}
+._row._props input,
+._row._props select {
+    font-size: calc(var(--fSize) * 1);
+    height: calc(var(--fSize) * 1.5);
+    line-height: calc(var(--fSize) * 1.5);
 }
 ._grid {
     width: 100%;
@@ -133,6 +153,9 @@ input.h4 {
 ._italic {
     font-style: italic;
 }
+._pointer {
+    cursor: pointer;
+}
 ._med {
     font-size: calc(var(--fSize)*1.25);
 }
@@ -148,6 +171,13 @@ input._sInput {
 ._scrolled {
     height: 100%;
     overflow-y: auto;
+}
+
+._bad {
+    background: #ff000033;
+}
+._good {
+    background: #40893333;
 }
 
 ._100 {
@@ -246,4 +276,22 @@ section.directory._extend._vyc section.window-content {
 section.directory._extend._vyc li.directory-item img.thumbnail {
     border-right: 0.3rem solid #286744d9;
     padding-right: 1px;
+}
+
+/** EFFECTS */
+.blink {
+  animation: blinker 0.5s linear infinite;
+}
+.glowBlink {
+  animation: color-pulse 1s infinite alternate;
+}
+@keyframes blinker {
+  50% {
+    opacity: 0;
+  }
+}
+@keyframes color-pulse {
+  0% { color: #000000; }
+  50% { color: #b21414; }
+  100% { color: #000000; }
 }

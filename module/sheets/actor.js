@@ -52,7 +52,9 @@ export default class extendActorSheet
       _checkButton:   this.#onBooleanField,
       _addRow:        this.#onAddRow,
       _deleteRow:     this.#onDeleteRow,
-      _roll:          this.#onRoll
+      _roll:          this.#onRoll,
+      _deleteItem:    this.#onDeleteItem,
+      _updateItem:    this.#onUpdateItem,
     }
   }
 
@@ -134,10 +136,28 @@ export default class extendActorSheet
   }  
 
   static async #onRoll(_event, target) {
-    const sTarget = $(target).data('target')
-    const sPath = $(target).data('path')
-    const useLuck = $(target).data('useluck')
-    helperRolls.roll(this.document, sTarget, sPath, useLuck)
+      helperRolls.roll({
+        actor: this.document,
+        target: $(target).data('target'),
+        item: this.document.items.get($(target).data('item')),
+        path: $(target).data('path'),
+        formula: $(target).data('formula'),
+        useLuck: $(target).data('useluck') ? $(target).data('useluck') : true
+      })
+  }
+
+  static async #onDeleteItem(_event, target) {
+    _event.stopPropagation()
+    const item = this.document.items.get($(target).data('id'))
+    await item.delete()    
+  }
+
+  static async #onUpdateItem(_event, target) {
+    _event.stopPropagation()
+    const item = this.document.items.get($(target).data('id'))
+    const path = $(target).data('path')
+    const bValue = this._access(item, path)
+    await item.update({[path]: !bValue})
   }
 
   /**

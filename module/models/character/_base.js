@@ -30,7 +30,8 @@ export default class extendCharacter_Base extends extend_Base {
             profesionPaterna: md_lore({label: 'common.profesionPaterna', hint: 'common.profesionPaterna'}),
             familia: md_text({label: 'common.familia', hint: 'common.familia'}),
             descripcion: md_text({label: 'common.descripcion', hint: 'common.descripcion'}),            
-            limpiezaSangre: new api.NumberField({ nullable: true, initial: 0 })
+            limpiezaSangre: new api.NumberField({ nullable: true, initial: 0 }),
+            localizacion: new api.StringField({ initial: 'humanoide' })
         })
 
         /** --- CARACTERÍSTICAS --- */

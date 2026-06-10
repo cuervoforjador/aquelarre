@@ -1,6 +1,7 @@
 import { SYSTEM_ID } from "../config/uiConstants.js"
 import newRoll from "../documents/roll.js";
 import helperContext from "./helperContext.js"
+import helperCombat from "./helperCombat.js"
 
 export default class helperRolls {
 
@@ -8,77 +9,85 @@ export default class helperRolls {
      * roll
      * @param {*} actor 
      * @param {*} target 
-     * @param {*} path 
+     * @param {*} path
+     * @param {*} value
      * @param {*} useLuck 
      */
-    static async roll(actor, target, path, useLuck=true) {
-        
+    static async roll(options={actor, target:'', item:null, path:'', formula:'', useLuck:true}) {
+       
         let percent = 0
-
-        switch(target) {
+        switch(options.target) {
             case 'char':
-                percent = Number(actor.system.caracteristicas[path].value)*5
-                await this.simpleRoll({
-                            actor: actor,
-                            formula: '1D100', 
-                            percent: percent, 
-                            useluck: useLuck,
-                            title: game.i18n.localize('common.rollChar'),
-                            subtitle: game.i18n.localize('CHAR.'+path) + ' x5' })
-
+                percent = Number(options.actor.system.caracteristicas[options.path].value)*5
+                await this.statRoll({...options, ...{
+                    formula: '1D100',
+                    percent,
+                    title: game.i18n.localize('CHAR.'+options.path) + ' x5',
+                    subtitle: game.i18n.localize('common.rollChar') }})
                 break;
 
             case 'attr':                
-                percent = Number(this._access(actor.system.atributos, path))
-                await this.simpleRoll({
-                            actor: actor,
-                            formula: '1D100', 
-                            percent: percent, 
-                            useluck: useLuck,
-                            title: game.i18n.localize('common.rollAttr'),
-                            subtitle: game.i18n.localize('ATTR.'+path.split('.')[0]) })
-
+                percent = Number(this._access(options.actor.system.atributos, options.path))
+                await this.statRoll({...options, ...{
+                    formula: '1D100',
+                    percent,
+                    title: game.i18n.localize('ATTR.'+options.path.split('.')[0]),
+                    subtitle: game.i18n.localize('common.rollAttr') }})
                 break;
 
             case 'skill':  
-                const skill = actor.items.find(e => e.type === 'competencia' && e.system.key === path)
-                const stats = actor.system.competencias.find(e => e.key === path)
+                const skill = options.actor.items.find(e => e.type === 'competencia' && e.system.key === options.path)
+                const stats = options.actor.system.competencias.find(e => e.key === options.path)
                 if (!skill || !stats) return
 
-                await this.simpleRoll({
-                            actor: actor,
-                            formula: '1D100', 
-                            percent: stats.stats.value, 
-                            useluck: useLuck,
-                            title: skill.name,
-                            subtitle: game.i18n.localize('common.base')+': '+stats.stats.value+'%',
-                            img: skill.img })
+                await this.statRoll({...options, ...{
+                    formula: '1D100',
+                    item: skill,
+                    stats: stats.stats,
+                    percent: stats.stats.total,
+                    title: skill.name,
+                    subtitle: skill.name+': '+stats.stats.total+'%',
+                    img: skill.img }})
+                break;  
+            
+            case 'damage':
+                const tokenTarget = await helperCombat.selectTokenTarget(options.actor);
+                if (!tokenTarget) return
 
-                break;                
+                await this.damageRoll({...options, ...{
+                    title: options.item.name,
+                    subtitle: tokenTarget.actor.name,
+                    targetToken: tokenTarget,
+                    targetActor: tokenTarget.actor,
+                    img: options.item.img }})
+                break;
         }
 
     }
 
     /**
-     * simpleRoll
-     * @param {*} formula 
-     * @param {*} percent 
-     * @param {*} title 
+     * statRoll
+     * @param {*} options 
      */
-    static async simpleRoll({actor=null, formula='', percent=0, useluck=true, title='', subtitle='', img=''}) {
-
-        const diceRoll = new newRoll('1D100', { 
-            actor: actor,
+    static async statRoll(options={actor: null, formula: '', percent: 0, useluck: true, title: '', subtitle: '', img: ''}) {
+        const diceRoll = new newRoll('1D100', {...options, ...{
             rollType: 'simple',
-            useDiffLevel: true,
-            percent: percent,
-            useluck: useluck,
-            title: title,
-            subtitle: subtitle,
-            img: img
-        });
-        await diceRoll.rollit()
+            useDiffLevel: true
+        }})
+        await diceRoll.rollStat()
+    }
 
+    /**
+     * damageRoll
+     * @param {*} options 
+     */
+    static async damageRoll(options={actor: null, formula: '', title: '', subtitle: '', img: ''}) {
+        const diceRoll = new newRoll(options.formula, {...options, ...{
+            rollType: 'damage',
+            targeted: true,
+            useLocation: true
+        }});
+        await diceRoll.rollDamage()
     }
 
     /**

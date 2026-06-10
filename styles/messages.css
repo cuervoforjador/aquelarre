@@ -51,6 +51,10 @@ li.chat-message._extend .dice-roll.expanded .dice-tooltip {
     background: #ffffff8a;
     padding: 5px;
 }
+li.chat-message._extend .dice-roll.expanded .dice-tooltip .tooltip-part ._row {
+    align-content: center;
+    align-items: center;
+}
 li.chat-message._extend._vyc .dice-roll.expanded .dice-tooltip {
     border: 1px solid var(--vcGreen);
     background: #ffffff8a;
@@ -70,6 +74,7 @@ li.chat-message._extend ._header {
 li.chat-message._extend ._header img {
     width: 22%;
     padding: 4px;
+    z-index: 1;
 }
 li.chat-message._extend ._header ._subHeader {
     display: flex;
@@ -99,7 +104,18 @@ li.chat-message._extend ._subHeader h4 {
     margin-top: 4px;
     font-weight: 100;
 }
-
+li.chat-message._extend ._targeted ._actor {
+    display: flex;
+    background: linear-gradient(45deg, #00000091, transparent);
+    color: #FFF;
+    padding: 0.1rem 0.35rem;
+}
+li.chat-message._extend ._targeted ._target {
+    display: flex;
+    justify-content: flex-end;
+    background: linear-gradient(270deg, #d73c3c91, transparent);
+    padding: 0.1rem 0.35rem;
+}
 li.chat-message._extend ._stats {
     display: flex;
     flex-direction: column;
@@ -149,6 +165,11 @@ li.chat-message._extend .dice-roll span._result {
     border-left: 1px solid #0000005c;
     box-shadow: inset #ffffff 0 0 4px;      
 }
+li.chat-message._extend .dice-roll span._result.location {
+    font-size: 0.85rem;
+    width: 80%;
+    background: #ff000047;
+}
 li.chat-message._extend .success {
     background: #849f61;
     color: #000;
@@ -164,4 +185,15 @@ li.chat-message._extend .criticalSuccess {
 li.chat-message._extend .criticalFailure {
     background: #ff0000;
     color: #ffffff;
+}
+li.chat-message._extend .dice-result label._label {
+    margin-right: 0.3rem;
+    overflow: hidden !important;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    max-width: 80%;
+}
+li.chat-message._extend .dice-result label._field {
+    font-size: 1.1rem;
+    line-height: 1rem;
 }

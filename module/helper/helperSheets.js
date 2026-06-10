@@ -19,6 +19,7 @@ import helperContext from "./helperContext.js"
 import helperDialog from "./helperDialog.js"
 import helperPxTools from "../../libs/helperPxTools.js"
 import { aqConfig } from "../config/config.js"
+import { configRULES } from "../config/rules.js"
 
 export default class helperSheets {
 
@@ -206,10 +207,63 @@ export default class helperSheets {
             if ((stats.min !== min) || (stats.value !== value)) changed = true
             stats.min = min
             stats.value = value
+            stats.penal = this.checkSkillPenal(actor, skill.system.key)
+            stats.total = stats.value + stats.penal
         })
         if (changed) {
             await actor.update({"system.competencias": competencias})
         }
+    }
+
+    /**
+     * checkSkillPenal
+     * @param {*} actor 
+     * @param {*} key 
+     */
+    static checkSkillPenal(actor, key) {        
+        const actorSkill = actor.system.competencias.find(e => e.key === key)
+        const skill = actor.items.find(e => e.type === 'competencia' && e.system.key === key)
+
+        let nPenal = Number(actorSkill.penal)
+        if (isNaN(nPenal)) nPenal = 0
+
+        //Armaduras
+        actor.items.filter(e => e.type === 'armadura' && e.system.rules === actor.system.rules && e.system.enUso).map(skill => {
+            skill.system.penalizaciones.filter(e => e.key === key).map(skillPenal => {
+                nPenal += Number(skillPenal.penal)
+            })
+        })
+
+        return nPenal
+    }  
+    
+    /**
+     * getSkillPenals
+     * @param {*} actor 
+     * @param {*} key 
+     */
+    static getSkillPenals(actor, key) {
+        const skill = actor.items.find(e => e.type === 'competencia' && e.system.key === key)
+        let mPenals = []
+
+        //Armaduras
+        actor.items.filter(e => e.type === 'armadura' && e.system.rules === actor.system.rules && e.system.enUso).map(armadura => {
+            armadura.system.penalizaciones.filter(e => e.key === key).map(skillPenal => {
+                mPenals.push({label: armadura.name, field: skillPenal.penal})
+            })
+        })  
+        
+        return mPenals
+    }
+
+    /**
+     * getActorSkills
+     * @param {*} actor 
+     */
+    static getActorSkills(actor) {
+        const mSkills = actor.items.filter(e => e.type === 'competencia', e.system.rules === actor.system.rules)
+        mSkills.sort((a,b) => a.name.localeCompare(b.name))
+        return mSkills
     }
 
     /**
@@ -286,6 +340,30 @@ export default class helperSheets {
     }
 
     /**
+     * systemShields
+     * @param {*} actor 
+     * @param {*} rules 
+     */
+    static systemShields(actor, rules) {
+        let oReturn = {};
+        const sLocalType = actor.system.info.localizacion ? actor.system.info.localizacion : 'humanoide'
+        const locations = aqConfig.localizaciones[sLocalType].partes
+        for (var s in locations) {
+            const armaduras = actor.items.filter(e => e.type === 'armadura' 
+                                                   && e.system.rules === rules
+                                                   && e.system.enUso
+                                                   && e.system.localizaciones.find(e2 => e2.key === s))
+            let nProteccion = 0
+            armaduras.map(e => nProteccion += e.system.proteccion)                                                   
+            oReturn[s] = {
+                label: game.i18n.localize('common.'+s),
+                value: nProteccion
+            }
+        }
+        return oReturn
+    }
+
+    /**
      * itemsWeapons
      * @param {*} actor 
      * @param {*} rules
@@ -303,7 +381,7 @@ export default class helperSheets {
                 item: item,
                 competencia: competencia,
                 systemCompetencia: systemCompetencia,
-                percent: systemCompetencia?.stats.value,
+                percent: systemCompetencia?.stats.total,
                 tamano: game.i18n.localize(aqConfig.armas.tamanos[item.system.tamano].label),
                 alcance: item.system.adistancia ? 
                             !item.system.alcance.fue ? 
@@ -315,6 +393,50 @@ export default class helperSheets {
             })
         })
         return mReturn
+    }
+
+    /**
+     * itemsArmors
+     * @param {*} actor 
+     * @param {*} rules
+     */
+    static itemsArmors(actor, rules) {
+        let mReturn = []
+        let mItems = actor.items.filter(e => e.type === 'armadura' && e.system.rules === rules)
+        mItems.sort((a,b) => a.name.localeCompare(b.name))
+        mItems.map(item => {
+
+            mReturn.push({
+                item: item,
+                proteccion: item.system.proteccion,
+                localizaciones: this._descrLocalizaciones(item.system.localizaciones),
+                modIniciativa: item.system.penalIniciativa && item.system.penalIniciativa !== '' ? item.system.penalIniciativa : '-',
+                penalizaciones: item.system.penalizaciones.length > 0
+            })
+        })
+        return mReturn
+    }
+
+    static _descrLocalizaciones(mLocalizaciones) {
+        let mDescr = [];
+        if (mLocalizaciones.find(e => e.key === 'cabeza')) mDescr.push(game.i18n.localize('common.cabeza'))
+    
+        if (mLocalizaciones.find(e => e.key === 'pecho') && 
+            mLocalizaciones.find(e => e.key === 'abdomen')) mDescr.push(game.i18n.localize('common.torso'))
+        else if (mLocalizaciones.find(e => e.key === 'pecho')) mDescr.push(game.i18n.localize('common.pecho'))
+        else if (mLocalizaciones.find(e => e.key === 'abdomen')) mDescr.push(game.i18n.localize('common.abdomen'))
+
+        if (mLocalizaciones.find(e => e.key === 'brazoIzquierdo') && 
+            mLocalizaciones.find(e => e.key === 'brazoDerecho')) mDescr.push(game.i18n.localize('common.brazos'))
+        else if (mLocalizaciones.find(e => e.key === 'brazoIzquierdo')) mDescr.push(game.i18n.localize('common.brazoIzquierdo'))
+        else if (mLocalizaciones.find(e => e.key === 'brazoDerecho')) mDescr.push(game.i18n.localize('common.brazoDerecho'))
+
+        if (mLocalizaciones.find(e => e.key === 'piernaIzquierda') && 
+            mLocalizaciones.find(e => e.key === 'piernaDerecha')) mDescr.push(game.i18n.localize('common.piernas'))
+        else if (mLocalizaciones.find(e => e.key === 'piernaIzquierda')) mDescr.push(game.i18n.localize('common.piernaIzquierda'))
+        else if (mLocalizaciones.find(e => e.key === 'piernaDerecha')) mDescr.push(game.i18n.localize('common.piernaDerecha'))
+
+        return mDescr.join(', ')
     }
 
     /**

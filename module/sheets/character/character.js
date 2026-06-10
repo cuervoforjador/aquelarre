@@ -26,7 +26,10 @@ export default class extendCharacterSheet extends extendActorSheet {
       _showStatus:            this.#onShowStatus,
       _changeSkillStatus:     this.#onChangeSkillStatus,
       _resetAttr:             this.#onResetAttributes,
-      _hitsPoints:            this.#onClickHitsPoints
+      _hitsPoints:            this.#onClickHitsPoints,
+      _navToSkill:            this.#onNavToSkill,
+      _navToItem:             this.#onNavToItem,
+      _showPenals:            this.#onShowPenals
     }    
   }
 
@@ -49,16 +52,20 @@ export default class extendCharacterSheet extends extendActorSheet {
   async _prepareContext() {
     const rules = this.document.system.rules
     const context = await super._prepareContext()
+    context.configRULES = configRULES[rules]
+
     context.caracteristicas = helperContext.getCaracteristicas()
 
     context.info = {...context.info, ...helperSheets.readLoreContext(this.document)}
     context.m10 = helperTools.numberArray(10)
     context.m20 = helperTools.numberArray(20)
 
-    //Competencias
     await helperSheets.checkSkills(this.document)
     context.skills = helperSheets.systemSkills(this.document)
     context.weapons = helperSheets.itemsWeapons(this.document, rules)
+    context.armors = helperSheets.itemsArmors(this.document, rules)
+    context.shields = helperSheets.systemShields(this.document, rules)
+    
 
     context.tabs = this._prepareTabs("primary")
     return context
@@ -188,6 +195,63 @@ export default class extendCharacterSheet extends extendActorSheet {
     await this.document.update({
        "system.atributos.ptv.value": ptv
     })
+  }
+
+  static async #onNavToSkill(_event, target) {
+    _event.stopPropagation()
+    const key = $(target).data('key')
+    await this.document.sheet.changeTab('stats', 'primary');
+    const section = $(this.document.sheet.form).find('section.tab.active');
+    const skills = $(this.document.sheet.form).find('._skills');
+    const skill = $(this.document.sheet.form).find(`._skill[data-key="${key}"] input._skillValue`);
+    skill.focus()
+    section.scrollTop(5000)
+    skills.scrollTop(5000)
+  }
+
+  static async #onNavToItem(_event, target) {
+    _event.stopPropagation()
+    const sId = $(target).data('id')
+    const sName = $(target).data('name')
+    const item = this.document.items.get(sId)
+    if (!item) return
+    item.sheet._sheetMode = 0
+    await item.sheet.render(true)
+    let input = $(item.sheet.form).find(`input[name="${sName}"]`)
+        if (input.length === 0) input = $(item.sheet.form).find(`select[name="${sName}"]`)
+    input.focus()
+  }
+
+  static #onShowPenals(_event, target) {
+    _event.stopPropagation()
+    const item = this.document.items.get($(target).data('id'))
+    let mPenals = []
+    let rules = ''
+    let img = ''
+    let sContent = `<table class="_penals">`
+
+    if (item) {
+      item.system.penalizaciones.map(o => {
+          const skill = this.document.items.find(e => e.type === 'competencia' && e.system.key === o.key)
+          if (!skill) return
+          mPenals.push({label: skill.name, field: o.penal})
+      })
+      rules = item.system.rules
+      img = item.img
+      
+    } else {
+      mPenals = helperSheets.getSkillPenals(this.document, $(target).data('key'))
+      rules = this.document.system.rules
+      img = this.document.img
+
+    }
+
+    mPenals.map(o => {
+      sContent += `<tr><td class="_label">${o.label}</td>
+                       <td class="_field">${o.field}%</td></tr>`
+    })
+    sContent += '</table>'
+    helperDialog.dialogDescription(null, sContent, game.i18n.localize('common.penalizaciones'), rules, 550, img)
   }
 
   /**

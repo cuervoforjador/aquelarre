@@ -1,10 +1,10 @@
-<div class="_main">
+<div class="_main {{#if isEditable}}_editable{{/if}}">
     <div class="_sheetContent">
 
         {{!-- PROPERTIES --}}
         <div class="_properties">
 
-            <div class="_buttons {{#if isEditable}}_editable{{/if}}">
+            <div class="_buttons">
                 {{{checkButton 'system.dosmanos' 'common.dosManos' 'fa-hands-praying'}}}
                 {{{checkButton 'system.auxiliar' 'common.auxiliar' 'fa-dagger'}}}
                 {{{checkButton 'system.escudo' 'common.escudo' 'fa-shield-halved'}}}
@@ -74,7 +74,8 @@
                     name="system.recarga" 
                     value="{{system.recarga}}">     
                 <label>{{localize 'common.alcance'}} :</label>
-                {{#unless system.alcance.fue}}
+
+                {{#if (or isEditable (not system.alcance.fue))}}
                     <input type="number"
                         {{{_disabled}}} 
                         class="_xsSize"
@@ -90,9 +91,12 @@
                         class="_xsSize _marginRight"
                         name="system.alcance.largo" 
                         value="{{system.alcance.largo}}"> 
-                {{else}}
+                {{/if}}
+                {{#if (or isEditable system.alcance.fue)}}
                     {{{checkButton 'system.alcance.fue' 'tooltip.alcanceFUE' 'fa-bicep'}}}  
-                {{/unless}}
+                {{/if}}
+
+
             </div>
             {{/if}}
 
