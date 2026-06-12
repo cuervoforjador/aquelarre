@@ -69,6 +69,8 @@ export default class helperTemplates {
             main_Estrato: `${item}/main/estrato.hbs`,
             main_Posicion: `${item}/main/posicion.hbs`,
             main_Profesion: `${item}/main/profesion.hbs`,
+            main_Secuela: `${item}/main/secuela.hbs`,
+            main_Rasgo: `${item}/main/rasgo.hbs`,
 
             item_footer: `${item}/parts/_footer.hbs`,
             item_descripcion: `${item}/parts/_description.hbs`,
@@ -83,6 +85,8 @@ export default class helperTemplates {
             header_Reino: `${item}/headers/reino.hbs`,
             header_Estrato: `${item}/headers/estrato.hbs`,
             header_Posicion: `${item}/headers/posicion.hbs`,
+            header_Secuela: `${item}/headers/secuela.hbs`,
+            header_Rasgo: `${item}/headers/rasgo.hbs`,
 
             tab_Descripcion: `${item}/tabs/descripcion.hbs`,
             tab_Idiomas: `${item}/tabs/idiomas.hbs`,
@@ -90,7 +94,8 @@ export default class helperTemplates {
             tab_Estratos: `${item}/tabs/estratos.hbs`,
             tab_Posiciones: `${item}/tabs/posiciones.hbs`,
             tab_Localizaciones: `${item}/tabs/localizaciones.hbs`,
-            tab_Penalizaciones: `${item}/tabs/penalizaciones.hbs`
+            tab_Penalizaciones: `${item}/tabs/penalizaciones.hbs`,
+            tab_Efectos: `${item}/tabs/efectos.hbs`
         })
     }
 }

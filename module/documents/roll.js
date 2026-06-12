@@ -57,6 +57,8 @@ export default class newRoll extends Roll {
   mods = []
   competencia = null
   history = []
+  armadura = []
+  proteccion = 0
   localizacion = {
     key: '',
     label: '',
@@ -119,7 +121,7 @@ export default class newRoll extends Roll {
         label: o.low + ' - ' + o.high,
         field: game.i18n.localize('common.' + o.key)
     }) })
-    rollLocation.postMessage()
+    await rollLocation.postMessage()
     return rollLocation.data.location.key
   }
 
@@ -136,10 +138,9 @@ export default class newRoll extends Roll {
 
     await this.evaluate()
     if (game.dice3d) await game.dice3d.showForRoll(this)
+    this._evalDamage()
     this.postMessage()
   }
-
-
 
   /**
    * _preEvalDamage
@@ -158,7 +159,7 @@ export default class newRoll extends Roll {
                         field: game.i18n.localize('CHAR.'+ this.competencia.system.caracteristica)})
     }
     const damageMod = helperCombat.damageMod(this.rules, this.actor, this.competencia.system.caracteristica)
-    this.history.push({label: game.i18n.localize('common.bonDanno'), field: damageMod !== '' ? damageMod : ' - '})
+    this.history.push({label: game.i18n.localize('common.bonDanno'), field: damageMod.string !== '' ? damageMod.string : ' - '})
 
     if (damageMod.string !== '') {
         this.data.formula = this.data.formula + ' ' + damageMod.string
@@ -171,8 +172,35 @@ export default class newRoll extends Roll {
    * _preEvalTargetArmor
    */
   _preEvalTargetArmor() {
+    if (!this.useLocation || !this.targetActor || !this.localizacion.key) return
+    let nProteccion = 0
 
+    this.history.push({label: game.i18n.localize('common.localizacion'), field: this.localizacion.label})
+    this.targetActor.items.filter(o => o.type === 'armadura' 
+                                    && o.system.rules === this.rules 
+                                    && o.system.enUso 
+                                    && o.system.localizaciones.find(e => e.key === this.localizacion.key)).map( armor => {
+      nProteccion += armor.system.proteccion
+      this.armadura.push(armor)
+      this.history.push({label: '* ' + armor.name, field: armor.system.proteccion +' pt'})
+    })
+    
+    this.history.push({label: game.i18n.localize('common.proteccionTotal'), field: nProteccion +' pt'})
+    this.proteccion = nProteccion
   }
+
+  /**
+   * _evalDamage
+   */
+  _evalDamage() {
+    this.history.push({label: game.i18n.localize('common.resultadoTirada'), field: this.total +' pt'})
+    this.damageTransfer = this.total - this.proteccion
+    if (this.damageTransfer < 0) this.damageTransfer = 0
+    this.history.push({label: game.i18n.localize('common.danoTransferido'), field: this.damageTransfer +' pt'})
+    this.history.push({label: game.i18n.localize('common.localizacionMult'), field: 'x '+this.localizacion.properties.mult})
+    this.damageTotal = this.localizacion.properties.mult * this.damageTransfer
+    this.history.push({label: game.i18n.localize('common.danoTotal'), field: this.damageTotal +' pt'})
+  } 
 
   /**
    * _recalcPercent
@@ -410,7 +438,7 @@ export default class newRoll extends Roll {
     let mOptions = [{
       checked: true,
       key: '',      
-      label: `${game.i18n.localize('common.alea')} <span class="_italic">(${game.i18n.localize('common.noPenal')})</span>`,
+      label: `${game.i18n.localize('common.alea')}`,
       input: true,
       inputField: {
         label: game.i18n.localize('common.formula'),
@@ -431,13 +459,10 @@ export default class newRoll extends Roll {
 
     if (this.localizacion.key !== '') {
       this.localizacion.label = game.i18n.localize('common.'+this.localizacion.key)
-      this.localizacion.properties = localizaciones.partes[location]      
+      this.localizacion.properties = localizaciones.partes[this.localizacion.key]      
     } else {
       this.localizacion.label = game.i18n.localize('common.alea')
     }
-    this.history.push({label: game.i18n.localize('common.danoLocalizado'), field: this.localizacion.label})
-
-
     return true;
   }
 
@@ -466,13 +491,14 @@ export default class newRoll extends Roll {
   async postMessage() {
 
     const sHeader = this._messageParts_Header()   
-    const sResult = `<div class="dice-roll" data-action="expandRoll">
+    const sResult = `<div class="dice-roll ${this.rollType}" data-action="expandRoll">
                         <div class="dice-result">
                           ${this._messageParts_DiceFormula()}
                           ${this._messageParts_DiceToolTip()}
                           ${this._messageParts_DiceTotal()}
                         </div>
-                      </div>`
+                     </div>
+                     ${this._messageParts_Buttons()}`
 
     const message = await newChatMessage.create({
       content: sHeader + sResult,
@@ -493,6 +519,10 @@ export default class newRoll extends Roll {
                                                                 <div class="_target">${this.targetActor.name}</div></div>` : 
                                         this.subtitle + ( this.modif !== '+0' && this.modif !== '' ? ' '+this.modif : '' )
 
+      const sAuxiliar = this.rollType === 'simple' ? '' :
+                        this.rollType === 'damage' ? `<div class="_auxiliar">${game.i18n.localize('tooltip.rollDamage')}</div>` :
+                        this.rollType === 'location' ? '' : ''
+
      return  `<div class="_header">
                 ${sActorImg}
                 <div class="${this.actor ? '_subHeader' : '_header'}">
@@ -501,7 +531,8 @@ export default class newRoll extends Roll {
                   ${sDiff}
                 </div>
                 ${sImg}
-              </div>`
+              </div>
+              ${sAuxiliar}`
   }
 
   _messageParts_DiceFormula() {
@@ -563,9 +594,10 @@ export default class newRoll extends Roll {
   _messageParts_DiceTotal() {
 
     let boxLeftContent = this.rollType === 'simple' ? `${this.total} <span class="_percent"> / ${this.evaluatedResult.percentFinal}</span>` : 
-                         this.rollType === 'damage' ? this.total : 
+                         this.rollType === 'damage' ? `<div class="_subTitle">${game.i18n.localize('common.dano')}</div>
+                                                       <div class="_value">${this.damageTotal}</div>` : 
                          this.rollType === 'location' ? this.total :
-                                                      this.total
+                                                        this.total
 
     let resultClass = this.rollType === 'simple' ? this.evaluatedResult.class :
                       this.rollType === 'damage' ? 'damage' : 
@@ -573,7 +605,7 @@ export default class newRoll extends Roll {
                                                      ''
 
     let boxRightContent = this.rollType === 'simple' ? this.evaluatedResult.text :
-                          this.rollType === 'damage' ? '' : 
+                          this.rollType === 'damage' ? this._messageParts_Armors() : 
                           this.rollType === 'location' ? game.i18n.localize('common.'+this.data.location.key) :
                                                          ''
 
@@ -601,6 +633,34 @@ export default class newRoll extends Roll {
     return this.evaluatedResult.percentFinal < 5 ? '6% - 100%' :
            this.evaluatedResult.percentFinal > 95 ? '95% - 100%' :
 					 (this.evaluatedResult.percentFinal + 1) + '% - 100%'
+  }
+
+  _messageParts_Armors() {
+    let sArmaduras = ''
+    this.armadura.map(armor => sArmaduras += sArmaduras === '' ? armor.name : ', '+armor.name)
+    return `<div class="_armaduras" data-tooltip="${sArmaduras}">
+               <div class="_localizacion">${this.localizacion.label}</div>
+               <div class="_armor">
+                  <label>${game.i18n.localize('common.proteccion')}: 
+                      <span style="font-size: 1.3rem; font-weight: 900;">${this.proteccion} </span>pt.
+                  </label>
+                </div>
+            </div>`
+  }
+
+  _messageParts_Buttons() {
+    let sButtons = this.rollType === 'damage' ? 
+                      this.damageTotal > 0 ? 
+                          `<button type="button" 
+                                   data-action="apply-damage" 
+                                   data-damage="${this.damageTotal}"
+                                   data-actorid="${this.targetActor.id}"
+                                   data-tokenid="${this.targetActor.token?.id}">
+                                ${game.i18n.localize('common.aplicarDano')} (${this.damageTotal} pt)
+                           </button>` : '' :
+                   this.rollType === 'simple' ? '' :
+                   this.rollType === 'location' ? '' : ''
+    return sButtons !== '' ? `<div class="_buttons">${sButtons}</div>` : ''
   }
 
   /**

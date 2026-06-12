@@ -3,6 +3,9 @@ import { configRULES } from "../config/rules.js"
 import { aqConfig } from "../config/config.js"
 import helperContext from "./helperContext.js"
 import helperDialog from "./helperDialog.js"
+import helperTools from "./helperTools.js"
+import helperMessages from "./helperMessages.js"
+import helperSheets from "./helperSheets.js"
 
 export default class helperCombat {
     
@@ -66,5 +69,49 @@ export default class helperCombat {
 
         const targetID = await helperDialog.dialogSelectOptions(rules, game.i18n.localize('common.target'), mOptions)
         return mTokens.find(e => e.id === targetID)
+    }
+
+    /**
+     * applyDamage
+     * @param {*} options 
+     */
+    static async applyDamage({ actorId, tokenId, stats, chatMessageId = null }) {
+        const actor = helperTools.getActor(actorId, tokenId)
+        const message = chatMessageId ? game.messages.get(chatMessageId) : null
+        
+        if (!actor || !game.user.isGM) return
+
+        let ptv = actor.system.atributos.ptv
+        ptv.value = ptv.value - Number(stats.damage)
+        ptv.min = ptv.max * (-1)
+        if (ptv.value < ptv.min) ptv.value = ptv.min        
+        actor.update({
+            "system.atributos.ptv": ptv
+        })
+        
+        if (message) {
+            await helperMessages.disableMessageControls(message, 'apply-damage')
+        }
+
+        let estado = actor.system.salud.estado
+        helperSheets.checkStatusVida(actor.system.rules, ptv, estado)
+        let sEstado = ''
+        for (var s in estado) { if (estado[s].checked) sEstado = game.i18n.localize('common.'+s) }
+
+        await helperMessages.postMessage({
+            actor: actor,
+            title: actor.name,
+            subTitle: game.i18n.localize('common.dano')+' '+stats.damage+' pt',
+            content: `<div class="_wrap">
+                        <div class="_row">
+                            <label class="_label">${game.i18n.localize('ATTR.ptv')}:</label>
+                            <label class="_field">${ptv.value} / ${ptv.total}</label>
+                        </div>
+                        <div class="_row">
+                            <label class="_label">${game.i18n.localize('common.estado')}:</label>
+                            <label class="_field">${sEstado}</label>                        
+                        </div>
+                      </div>`
+        })
     }
 }

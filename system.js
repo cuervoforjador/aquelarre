@@ -7,9 +7,12 @@ import helperSettings from './module/helper/helperSettings.js'
 import helperHandlebars from './module/helper/helperHandlebars.js'
 import helperTemplates from './module/helper/helperTemplates.js'
 import helperTokens from './module/helper/helperTokens.js'
-
+import helperSocket from './module/helper/helperSocket.js'
+import helperMessages from './module/helper/helperMessages.js'
 
 helperHooks.initHooks();
+
+/** --- INIT ---  */
 Hooks.once("init", () => {
 
     //CONFIG.debug.hooks = true;
@@ -24,4 +27,14 @@ Hooks.once("init", () => {
     helperTokens.configTrackableAttributes()
     helperTemplates.preload()
 });
+
+/** --- READY ---  */
+Hooks.once("ready", async () => {
+
+  if (game.socket) game.socket.on(`system.${SYSTEM_ID}`, helperSocket.onSocketMessage)
+});
+
+Hooks.on("renderChatMessageHTML", (message, html) => {
+  helperMessages.activateListeners(message, html)
+})
 

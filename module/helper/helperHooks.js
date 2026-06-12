@@ -1,4 +1,3 @@
-import _hooksReady from '../hooks/ready.js'
 import _hooksSetup from '../hooks/setup.js'
 import hooksFolders from '../hooks/folders.js'
 import hooksRender from '../hooks/render.js'
@@ -12,7 +11,6 @@ export default class helperHooks {
      */
     static initHooks() {
 
-        Hooks.once('ready', _hooksReady)
         Hooks.once('setup', _hooksSetup)
 
         Hooks.on('activateCompendiumDirectory', hooksFolders.activateCompendiumDirectory.bind(this))

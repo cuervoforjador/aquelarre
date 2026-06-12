@@ -11,6 +11,8 @@ import modelReino from "../models/item/reino.js"
 import modelEstrato from "../models/item/estrato.js"
 import modelPosicion from "../models/item/posicion.js"
 import modelProfesion from "../models/item/profesion.js"
+import modelSecuela from "../models/item/secuela.js"
+import modelRasgo from "../models/item/rasgo.js"
 
 import newActor from "../documents/actor.js"
 import newItem from "../documents/item.js"
@@ -39,6 +41,8 @@ export default class helperModels {
         CONFIG.Item.dataModels.estrato = modelEstrato
         CONFIG.Item.dataModels.posicion = modelPosicion
         CONFIG.Item.dataModels.profesion = modelProfesion
+        CONFIG.Item.dataModels.secuela = modelSecuela
+        CONFIG.Item.dataModels.rasgo = modelRasgo
     }
 
     /**

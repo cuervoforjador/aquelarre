@@ -73,7 +73,7 @@
                 <td>
                     {{#if armor.penalizaciones}}
                     <button type="button"
-                            class="icon fas fa-badge" 
+                            class="icon fas fa-badge {{#if armor.item.system.enUso}}_checked{{/if}}" 
                             data-action="_showPenals" 
                             data-id="{{armor.item.id}}"
                             data-tooltip="{{localize 'common.verPenalizaciones'}}">

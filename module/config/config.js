@@ -124,6 +124,9 @@ export const aqConfig = {
         }        
     },
     modificadores: {
+        estado: [
+            {id: '050', label: 'mods.m050', mod: '-50', rules: ['aq3', 'aq4', 'vyc']}
+        ],
         cobertura: [
             {id: '028', label: 'mods.m028', mod: '-60', rules: ['aq4', 'vyc']},
             {id: '029', label: 'mods.m029', mod: '-40', rules: ['aq4', 'vyc']},

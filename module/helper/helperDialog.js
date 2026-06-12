@@ -168,7 +168,8 @@ export default class helperDialog {
         const sRules = rules ? rules : document?.system.rules
         const sContent = document ? document.system.descripcion : content
         const sTitle = document ? document.name : title
-        const sImg = img !== '' ? img : document.img
+        const sImg = img !== '' ? img : 
+                     document ? document.img : ''
 
         const dialog = await foundry.applications.api.DialogV2.prompt({
             classes: ['_extend', '_description', '_'+sRules],

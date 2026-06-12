@@ -35,7 +35,7 @@ form._extend ._main {
 form._extend ._sheetContent {
     overflow-y: auto;
     height: calc(100% - 40px);
-    padding: 10px;
+    padding: 0 10px;
     color: var(--aqText);
     box-shadow: inset 0px 0px 3px 2px #000000c9;
 }
@@ -44,6 +44,16 @@ form._extend._actor ._sheetContent {
 }
 form._extend._vyc ._sheetContent {
     color: var(--vcText);
+}
+form._extend._actor ._sheetContent ._sheetWrap {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    align-items: stretch;
+    overflow-x: hidden;
+    width: 100%;
+    padding: 0;
+    margin: 0; 
 }
 form._extend._actor ._sheetContent {
     height: 100%;
@@ -246,7 +256,8 @@ form._extend._actor ._mainHeader ._menu {
     width: calc(100% - var(--fSize) * 10);
     top: calc(100% - var(--fSize) * 1.5);
 }
-form._extend._actor ._mainHeader ._menu .tabs a {
+form._extend._actor ._mainHeader ._menu .tabs a,
+form._extend._actor ._sheetContent .tabs._subMenu a {
     background-image: url(../assets/ui/paper.png);
     padding: calc(var(--fSize) * 0) calc(var(--fSize) * 0.5);
     color: #00000094;
@@ -254,13 +265,31 @@ form._extend._actor ._mainHeader ._menu .tabs a {
     text-transform: uppercase;
     box-shadow: #00000080 0 0 8px 3px;
 }
-form._extend._actor ._mainHeader ._menu .tabs a.active {
+form._extend._actor ._mainHeader ._menu .tabs a.active,
+form._extend._actor ._sheetContent .tabs._subMenu a.active {
     color: #000000;
     font-weight: 900;
     box-shadow: #000000AA 0 0 8px 3px;
 }
-form._extend._actor ._mainHeader ._menu .tabs {
+form._extend._actor ._mainHeader ._menu .tabs,
+form._extend._actor ._sheetContent .tabs._subMenu {
     gap: calc(var(--fSize) * 0.4);
+}
+form._extend._actor ._sheetContent .tabs._subMenu {
+    margin-bottom: calc(var(--fSize) * 0.8);
+}
+form._extend._vyc._actor ._sheetContent .tabs._subMenu {
+    margin-top: -6px;
+}
+form._extend._actor ._sheetContent .tabs._subMenu a {
+    background: #673a31;
+    color: #ffffff4d;
+}
+form._extend._vyc._actor ._sheetContent .tabs._subMenu a {
+    background: #4d604c;
+}
+form._extend._actor ._sheetContent .tabs._subMenu a.active {
+    color: #FFF;
 }
 ._combo label._field {
     color: var(--aqText2);
@@ -557,13 +586,16 @@ form._extend ._stats {
     align-content: flex-start;
     align-items: flex-start;
     height: fit-content;
+
+    width: calc(var(--fSize) * 27);
+    height: 100%;    
 }
 form._extend ._stats ._wrap {
     display: flex;
     flex-direction: column;
     justify-content: flex-start;
-    align-items: center;
-    align-content: center;
+    align-items: flex-start;
+    align-content: flex-start
     /* width: calc(var(--fSize) * 25); */
 }
 form._extend ._stats h4._title {
@@ -980,11 +1012,15 @@ form._extend section.tab._combate ._left {
     display: flex;
     flex-direction: column;
     min-height: 100%;
+    padding-top: 10px;
 }
 form._extend section.tab._combate ._right {
     width: 35%;
     display: flex;
     min-height: 100%;
+}
+form._extend section._combate ._left ._weapons {
+    min-height: calc(50% - var(--fSize) * 2);
 }
 form._extend section.tab._combate ._location {
     width: 100%;
@@ -1042,6 +1078,7 @@ form._extend section.tab._combate ._location ._escudo ._input {
     justify-content: center;
     align-items: center;
     font-size: 259%;
+    text-shadow: -1px -1px 0 #ffffff, 1px -1px 0 #ffffff, -1px 1px 0 #ffffff, 1px 1px 0 #ffffff;
 }
 ._escudo.cabeza {
     top: 3%;
@@ -1123,7 +1160,8 @@ section._combate button[data-path="system.manoPrincipal"] {
 }
 section._combate button[data-path="system.enUso"]._checked,
 section._combate button[data-path="system.manoAuxiliar"]._checked,
-section._combate button[data-path="system.manoPrincipal"]._checked {
+section._combate button[data-path="system.manoPrincipal"]._checked,
+section._combate button._checked[data-action="_showPenals"] {
     background: var(--aqRed2);
     color: #e5d6c0;
 }
@@ -1323,6 +1361,7 @@ form._extend ._skills {
     align-content: start;
     align-items: stretch;
     justify-items: stretch; 
+    padding-top: 10px;
 }
 form._extend ._skills._sided {
     padding-left: 10px;    

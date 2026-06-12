@@ -306,6 +306,22 @@ export default class extendActorSheet
    * @param {*} html 
    */
   activateTab(context, html) {
+
+    [
+     context.tabs, 
+     context.tabsStats
+    ].map(_tabs => {
+        if (!_tabs) return
+        for (var s in _tabs) { if (_tabs[s].active) {
+          const tab = _tabs[s];
+          html.find(`.tab[data-group="${tab.group}"][data-tab="${tab.id}"],
+                    a[data-action="tab"][data-group="${tab.group}"][data-tab="${tab.id}"]`).each((i,e) => {
+            $(e).addClass(tab.cssClass)
+          })
+        }}      
+    })
+
+    /**
     for (var s in context.tabs) { if (context.tabs[s].active) {
       const tab = context.tabs[s];
       html.find(`.tab[data-group="${tab.group}"][data-tab="${tab.id}"],
@@ -313,6 +329,7 @@ export default class extendActorSheet
         $(e).addClass(tab.cssClass)
       })
     }}
+    */
   }
 
   /**

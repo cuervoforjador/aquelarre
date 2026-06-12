@@ -13,6 +13,8 @@ import sheetReino  from "../sheets/item/reino.js"
 import sheetEstrato  from "../sheets/item/estrato.js"
 import sheetPosicion  from "../sheets/item/posicion.js"
 import sheetProfesion  from "../sheets/item/profesion.js"
+import sheetSecuela  from "../sheets/item/secuela.js"
+import sheetRasgo  from "../sheets/item/rasgo.js"
 import sheetTableExtend from "../sheets/table/base.js"
 
 import helperContext from "./helperContext.js"
@@ -58,6 +60,8 @@ export default class helperSheets {
         vI.registerSheet(SYSTEM_ID, sheetEstrato, { types: ["estrato"], makeDefault: true, label: "sheet.estrato" })
         vI.registerSheet(SYSTEM_ID, sheetPosicion, { types: ["posicion"], makeDefault: true, label: "sheet.posicion" })
         vI.registerSheet(SYSTEM_ID, sheetProfesion, { types: ["profesion"], makeDefault: true, label: "sheet.profesion" })
+        vI.registerSheet(SYSTEM_ID, sheetSecuela, { types: ["secuela"], makeDefault: true, label: "sheet.secuela" })
+        vI.registerSheet(SYSTEM_ID, sheetRasgo, { types: ["rasgo"], makeDefault: true, label: "sheet.rasgo" })
 
         const vT = foundry.documents.collections.RollTables
         vT.registerSheet(SYSTEM_ID, sheetTableExtend, { types: ["base"], makeDefault: true, label: "sheet.lore" })
@@ -127,11 +131,26 @@ export default class helperSheets {
         _attrs.ptf.value = this._checkMinMax(_attrs.ptf.value, _attrs.ptf.min, _attrs.ptf.max)
 
         //Estatus de Vida
-        const ptv =  system.atributos.ptv
+        this.checkStatusVida(rules, system.atributos.ptv, system.salud.estado)
+
+        system.salud.heridaGrave = Math.ceil(system.atributos.ptv.total / 2)
+        return system
+    }
+
+    static _checkMinMax(val, min, max) {
+        return  Number(val) < min ? min :
+                Number(val) > max ? max : Number(val);
+    }
+
+    /**
+     * checkStatusVida
+     * @param {*} system 
+     */
+    static checkStatusVida(rules, ptv, estados) {
 
         if (rules === 'aq3') {
-            for (var s in system.salud.estado) {
-                let status = system.salud.estado[s]
+            for (var s in estados) {
+                let status = estados[s]
                 status.checked = false
 
                 const low = ptv.total - Math.ceil(ptv.total * status.low)
@@ -143,8 +162,8 @@ export default class helperSheets {
             let _high = ptv.total
             let _low = Math.ceil(ptv.total / 2)
             
-            for (var s in system.salud.estado) {
-                let status = system.salud.estado[s]
+            for (var s in estados) {
+                let status = estados[s]
                 status.checked = false
 
                 var low = Math.ceil(ptv.total/2)*2 - Math.ceil(ptv.total * status.low)
@@ -164,15 +183,7 @@ export default class helperSheets {
                 status.value = high 
                 if (ptv.value <= high && ptv.value > low) status.checked = true
             }
-        }
-        system.salud.heridaGrave = Math.ceil(ptv.total / 2)
-
-        return system
-    }
-
-    static _checkMinMax(val, min, max) {
-        return  Number(val) < min ? min :
-                Number(val) > max ? max : Number(val);
+        }        
     }
 
     /**

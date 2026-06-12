@@ -19,7 +19,7 @@ export default class extendCharacterSheet extends extendActorSheet {
     classes: ['_'+this.templateTag],
     position: { 
       width: 1000, 
-      height: 700 
+      height: 800 
     },
     actions: {
       _editLore:              this.#onEditLore,
@@ -42,7 +42,11 @@ export default class extendCharacterSheet extends extendActorSheet {
     primary: {
       tabs: [ {id: "stats"}, {id: "combate"} ],
       initial: "stats"
-    }
+    },
+    stats: {
+      tabs: [ {id: "principal"}, {id: "secuelas"} ],
+      initial: "principal"
+    }    
   }  
 
   /**
@@ -66,8 +70,9 @@ export default class extendCharacterSheet extends extendActorSheet {
     context.armors = helperSheets.itemsArmors(this.document, rules)
     context.shields = helperSheets.systemShields(this.document, rules)
     
-
     context.tabs = this._prepareTabs("primary")
+    context.tabsStats = this._prepareTabs("stats")
+
     return context
   }
 

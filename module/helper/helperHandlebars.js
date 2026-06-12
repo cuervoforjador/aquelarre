@@ -60,7 +60,7 @@ static define() {
             links += `<a data-action="tab" data-group="${group}" data-tab="${tab}">${game.i18n.localize('common.'+tab)}</a>`
         })
         return `<nav class="tabs ${sClass}" data-group="${group}">${links}</nav>`
-    })
+    })   
 
     Handlebars.registerHelper("checkButton", (...args) => {
         const path = args[0]
