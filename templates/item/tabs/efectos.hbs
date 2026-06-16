@@ -4,30 +4,41 @@
            data-path="system.efectos">
         <thead>
             <tr>
+                <th></th>
                 <th>{{localize 'common.ruta'}}</th>
                 <th>{{localize 'common.formula'}}</th>
                 <th>{{localize 'common.valor'}}</th>
+                <th>{{localize 'common.rasgo'}}</th>
                 <th>{{localize 'common.texto'}}</th>
                 {{#if isEditable}}<th class="_button"></th>{{/if}}
             </tr>
             {{#if isEditable}}
             <tr class="_sortTR">
+                <td><input type="number"           
+                            data-field="key"
+                            value="1"                    
+                            class="_xsSize _center"></td>                
                 <td><input type="text"           
                             data-field="path"
                             value="system."                    
-                            class="_lSize"></td>
+                            class="_mSize"></td>
                 <td><input type="text"           
                             data-field="formula"
                             value=""                    
-                            class="_mSize"></td>
+                            class="_sSize"></td>
                 <td><input type="number"           
                             data-field="value"
                             value="0"                    
                             class="_sSize"></td>
                 <td><input type="text"           
+                            data-field="rasgo"
+                            value=""                    
+                            class="_mSize"></td>                            
+                <td style="width: 100%">
+                    <input type="text"           
                             data-field="text"
                             value=""                    
-                            class="_lSize"></td>                            
+                            style="width: 100%"></td>                            
                 <td><button type="button"
                             class="icon fas fa-add" 
                             data-action="_addRow" 
@@ -39,10 +50,12 @@
         <tbody>
             {{#each system.efectos as |entry key|}}
             <tr data-key="{{entry.key}}">
-                <td class="_lSize">{{entry.path}}</td>
-                <td class="_mSize">{{entry.formula}}</td>
+                <td class="_pointer _center" data-action="_selectRow">{{entry.key}}</td>
+                <td class="_mSize">{{entry.path}}</td>
+                <td class="_sSize">{{entry.formula}}</td>
                 <td class="_sSize">{{entry.value}}</td>
-                <td class="_lSize">{{entry.text}}</td>
+                <td class="_mSize">{{entry.rasgo}}</td>
+                <td style="width: 100%">{{entry.text}}</td>
                 {{#if ../isEditable}}
                 <td class="_button"><button type="button" {{{_disabled}}}
                             class="icon fas fa-remove" 

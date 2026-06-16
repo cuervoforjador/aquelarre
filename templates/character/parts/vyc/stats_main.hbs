@@ -3,7 +3,7 @@
 
         <nav class="tabs _subMenu" data-group="stats">
             <a data-action="tab" data-group="stats" data-tab="principal">{{localize 'common.principal'}}</a>
-            <a data-action="tab" data-group="stats" data-tab="secuelas">{{localize 'common.secuelas'}}</a>
+            <a data-action="tab" data-group="stats" data-tab="rasgos">{{localize 'common.rasgos'}}</a>
         </nav>
 
         <section class="tab" data-group="stats" data-tab="principal">
@@ -24,8 +24,10 @@
             </div>
         </section>
 
-        <section class="tab" data-group="stats" data-tab="secuelas">
-        
+        <section class="tab" data-group="stats" data-tab="rasgos">
+            {{>orgullos_vyc}}
+            {{>verguenzas_vyc}}
+            {{>secuelas_vyc}}        
         </section>
     </div>
 </div>

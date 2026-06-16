@@ -10,6 +10,11 @@ export default class modelRasgo extends extendItem_Base {
     static defineSchema() {
         const schema = super.defineSchema();
 
+        schema.coste = new api.NumberField({ nullable: true, initial: null })
+        schema.orgullo = new api.BooleanField({ initial: false })
+        schema.verguenza = new api.BooleanField({ initial: false })
+        schema.applied = new api.BooleanField({ initial: false })
+
         return schema;
     }
 

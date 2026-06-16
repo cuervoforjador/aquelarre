@@ -6,6 +6,8 @@ import helperDialog from "./helperDialog.js"
 import helperTools from "./helperTools.js"
 import helperMessages from "./helperMessages.js"
 import helperSheets from "./helperSheets.js"
+import helperSocket from "./helperSocket.js"
+import helperTables from "./helperTables.js"
 
 export default class helperCombat {
     
@@ -113,5 +115,14 @@ export default class helperCombat {
                         </div>
                       </div>`
         })
+
+        //Secuela        
+        if (stats.secuela) {
+            const mSecuelas = (await helperContext.getFromCompendium(actor.system.rules, 'secuela'))
+                                                .filter(e => e.system.localizacionTipo === actor.system.info.localizacion
+                                                            && e.system.localizacion === stats.location)
+            mSecuelas.sort((a,b) => a.system.roll.low - b.system.roll.low)
+            helperTables.tableSecuelas(actor.system.rules, mSecuelas, actor)
+        }
     }
 }

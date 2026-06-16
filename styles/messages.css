@@ -104,12 +104,31 @@ li.chat-message._extend ._subHeader h4 {
     margin-top: 4px;
     font-weight: 100;
 }
+li.chat-message._extend ._subHeader h4._title,
+li.chat-message._extend h4._lineTitle {
+    font-family: var(--fFont1);
+    font-size: 1rem;
+    margin: 0.5rem 0;
+}
+li.chat-message._extend._vyc ._subHeader h4 {
+    font-family: var(--vcFont0);
+}
+li.chat-message._extend._vyc ._subHeader h4._title,
+li.chat-message._extend._vyc h4._lineTitle {
+    font-family: var(--vcfFont1);
+}
 li.chat-message._extend ._auxiliar {
     font-size: 1.1rem;
     font-weight: 900;
     border: 1px solid #0000009e;
     padding: 0.1rem 0.5rem;
     margin-bottom: 0.25rem;
+}
+li.chat-message._extend ._descripcion {
+    text-align: justify;
+}
+li.chat-message._extend ._small {
+    font-size: 1rem;
 }
 li.chat-message._extend ._targeted ._actor {
     display: flex;
@@ -237,6 +256,16 @@ li.chat-message._extend .dice-roll.damage span._number ._value {
 li.chat-message._extend .dice-roll.damage span._result {
     width: 70%!important;
 }
+li.chat-message._extend ._extra {
+    border: 1px solid #000;
+    margin-top: 0.3rem;
+    background: #a90f0f9e;
+    padding: 0.25rem;
+    text-align: center;
+    color: #FFF;
+    box-shadow: inset #ffffff 0 0 4px;
+}
+
 
 li.chat-message._extend ._buttons {
     display: flex;

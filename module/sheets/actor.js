@@ -18,6 +18,7 @@ export default class extendActorSheet
 
   //Attributes...
   _sheetMode = this.constructor.SHEET_MODES.PLAY
+  _firstTimeStep = '01' 
 
   /**
    * constructor

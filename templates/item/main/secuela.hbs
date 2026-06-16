@@ -3,7 +3,10 @@
 
         {{!-- PROPERTIES --}}
         <div class="_properties">
-            <div class="_row _gapped">
+            <div class="_row _gapped" style="margin: 1rem 0">
+                
+                {{{checkButton 'system.applied' 'common.aplicada' 'fa-circle'}}}
+
                 <label>{{localize 'common.localizacionTipo'}} :</label>
                 <select name="system.localizacionTipo" {{{_disabled}}} style="width: calc(var(--fSize) * 11);">
                 {{selectOptions localizacionesTipos 
@@ -20,8 +23,7 @@
                                 nameAttr="key"
                                 labelAttr="label" }}
                 </select>                                 
-            </div>
-            <div class="_row _gapped">
+
                 <label>{{localize 'common.desde'}} :</label>
                 <input type="number"
                     {{{_disabled}}} 

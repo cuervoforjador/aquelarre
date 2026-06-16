@@ -21,13 +21,13 @@ export default class helperMessages {
      */
     static activateListeners(message, html) {
 
-        const root = this._getChatHtmlRoot(html)
+        const root = helperMessages._getChatHtmlRoot(html)
         if (!root) return
 
         root.querySelectorAll('[data-action="apply-damage"]').forEach(button => {
             if (button.dataset.bound === "true") return
             button.dataset.bound = "true"
-            button.addEventListener("click", event => this.#onApplyDamageClick(event, message))
+            button.addEventListener("click", event => helperMessages.#onApplyDamageClick(event, message))
         })        
     }
 
@@ -53,9 +53,11 @@ export default class helperMessages {
         const actorId = $(event.currentTarget).data('actorid')
         const tokenId = $(event.currentTarget).data('tokenid')
         const damage = $(event.currentTarget).data('damage')
+        const location = $(event.currentTarget).data('location')
+        const secuela = $(event.currentTarget).data('secuela')
         helperSocket.requestDamage({actorId, 
                                     tokenId, 
-                                    stats: {damage: damage}, 
+                                    stats: {damage, location, secuela}, 
                                     chatMessageId: message.id})    
     }
 
@@ -79,7 +81,7 @@ export default class helperMessages {
      * postMessage
      * @param {*} options 
      */
-    static async postMessage(options={actor, title:'', subTitle:'', textAuxiliar:'', content:'', backImg:''}) {
+    static async postMessage(options={actor, title:'', subTitle:'', textAuxiliar:'', content:'', backImg:'', class:''}) {
         const sHeader = this._messageParts_Header(options)    
         const message = await newChatMessage.create({
             content: sHeader + options.content,

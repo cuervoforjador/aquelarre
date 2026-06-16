@@ -2,6 +2,8 @@ import { SYSTEM_ID } from "../config/uiConstants.js"
 import { configRULES } from "../config/rules.js"
 import extendCharacter_Character from "../models/character/character.js"
 import { aqConfig } from "../config/config.js"
+import helperMessages from "./helperMessages.js"
+import newRoll from "../documents/roll.js"
 
 export default class helperContext {
 
@@ -321,6 +323,107 @@ export default class helperContext {
             await Item.create(newItem, {parent: actor})
             actor.update({"system.info.limpiezaSangre": item.system.sangre})
         }
+    }
+
+    /**
+     * assignSecuelaToActor
+     * @param {*} actor 
+     * @param {*} secuela 
+     */
+    static async assignSecuelaToActor(actor, secuela) {
+        if (!secuela) return
+        await Item.create(secuela, {parent: actor})
+    }
+    
+
+    /**
+     * activeSecuela
+     * @param {*} item 
+     */
+    static async activeSecuela(item) {
+        if (!item || !item.parent || item.system.applied) return
+        const actor = item.parent
+        let bRender = false
+
+        await helperMessages.postMessage({
+            actor: actor,
+            title: actor.name,
+            subTitle: game.i18n.localize('common.secuela'),
+            content: `<h4 class="_lineTitle">${item.name}</h4><div class="_descripcion">${item.system.descripcion}</div>`
+        })
+
+        for (const efecto of item.system.efectos) {
+            let nValue = Number(efecto.value)
+            if (isNaN(nValue)) nValue = 0
+
+            if (efecto.formula !== '' && efecto.formula[0] !== '=' && efecto.formula[0] !== '*') {
+                const diceRoll = new newRoll(efecto.formula, {actor})
+                await diceRoll.evaluate()
+                if (game.dice3d) await game.dice3d.showForRoll(diceRoll)               
+                nValue = diceRoll.total
+            }
+
+            efecto.text = efecto.text.replaceAll('#result#', nValue)
+
+            if (efecto.path !== '') {
+                const pathRoot = efecto.path.split('.')[0]
+                let nOldValue = 0
+                let nNewValue = 0
+
+                if (pathRoot === 'system') {
+                    nOldValue = Number(this._access(actor, efecto.path))
+                    nNewValue = nOldValue + Number(nValue)
+                    if (efecto.formula !== '' && efecto.formula[0] === '=') nNewValue = Number(efecto.formula.slice(1))
+                    if (efecto.formula !== '' && efecto.formula[0] === '*') {
+                        nNewValue = Math.round(Number(eval(nOldValue+efecto.formula)))
+                    }
+                    await actor.update({[efecto.path]: nNewValue})
+                    bRender = true
+                }
+
+                if (pathRoot === 'skill') {
+                    const key = efecto.path.split('.')[1]
+                    let competencias = actor.system.competencias
+                    let target = competencias.find(e => e.key === key)
+
+                    nOldValue = Number(target.stats.value)
+                    let nOldTotal = Number(target.stats.total)
+                    nNewValue = nOldValue + Number(nValue)
+                    let nNewTotal = nOldTotal + Number(nValue)
+                    if (efecto.formula !== '' && efecto.formula[0] === '=') {
+                        nNewValue = Number(efecto.formula.slice(1))
+                        nNewTotal = Number(efecto.formula.slice(1))
+                    }
+                    if (efecto.formula !== '' && efecto.formula[0] === '*') {
+                        nNewValue = Math.round(Number(eval(nOldValue+efecto.formula)))
+                        nNewTotal = Math.round(Number(eval(nNewTotal+efecto.formula)))
+                    }
+                    target.stats.value = nNewValue
+                    target.stats.total = nNewTotal
+                    await actor.update({"system.competencias": competencias})
+                    bRender = true
+                }
+
+                efecto.text = efecto.text.replaceAll('#oldValue#', nOldValue)
+                efecto.text = efecto.text.replaceAll('#newValue#', nNewValue)                
+            }
+
+            if (efecto.rasgo !== '') {
+                const mDocs = await helperContext.getFromCompendium(actor.system.rules, 'rasgo')
+                const rasgo = mDocs.find(e => e.system.key === efecto.rasgo)
+                if (!rasgo) continue
+                await Item.create(rasgo, {parent: actor})
+            }
+
+            await helperMessages.postMessage({
+                actor: actor,
+                title: actor.name,
+                subTitle: game.i18n.localize('common.efecto'),
+                content: `<div class="_descripcion">${efecto.text}</div>`
+            })            
+        }
+        item.update({"system.applied": true})
+        if (bRender && actor.sheet.rendered) actor.sheet.render(true)
     }
 
     /**

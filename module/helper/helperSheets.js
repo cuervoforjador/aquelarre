@@ -375,6 +375,54 @@ export default class helperSheets {
     }
 
     /**
+     * itemsSecuelas
+     * @param {*} actor 
+     * @param {*} rules 
+     */
+    static itemsSecuelas(actor, rules) {
+        let mReturn = []
+        let mItems = actor.items.filter(e => e.type === 'secuela' && e.system.rules === rules)
+        mItems.map(item => {
+            mReturn.push({
+                item: item
+            })
+        })
+        return mReturn
+    }
+
+    /**
+     * itemsOrgullos
+     * @param {*} actor 
+     * @param {*} rules 
+     */
+    static itemsOrgullos(actor, rules) {
+        let mReturn = []
+        let mItems = actor.items.filter(e => e.type === 'rasgo' && e.system.orgullo && e.system.rules === rules)
+        mItems.map(item => {
+            mReturn.push({
+                item: item
+            })
+        })
+        return mReturn
+    }
+
+    /**
+     * itemsVerguenzas
+     * @param {*} actor 
+     * @param {*} rules 
+     */
+    static itemsVerguenzas(actor, rules) {
+        let mReturn = []
+        let mItems = actor.items.filter(e => e.type === 'rasgo' && e.system.verguenza && e.system.rules === rules)
+        mItems.map(item => {
+            mReturn.push({
+                item: item
+            })
+        })
+        return mReturn
+    }
+
+    /**
      * itemsWeapons
      * @param {*} actor 
      * @param {*} rules
@@ -638,6 +686,7 @@ export default class helperSheets {
                 helperDialog._setShadowToDialog(dialog)
                 $(dialog.element).find('button[type="button"]').on("click", _e => {
                     _e.stopPropagation()
+                    if ($(_e.delegateTarget).data('size') === undefined) dialog.close()
                     $(_e.delegateTarget).parents('.dialog-content').find('input[name="textsize"]').val($(_e.delegateTarget).data('size'))
                 })
             }            

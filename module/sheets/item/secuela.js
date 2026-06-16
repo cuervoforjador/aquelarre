@@ -38,6 +38,7 @@ export default class sheetSecuela extends extendItem0Sheet {
     const context = await super._prepareContext()
     context.localizacionesTipos = await helperContext.getLocalizacionesTipos(rules)
     context.localizaciones = await helperContext.getLocalizacionesPartes(rules, this.document.system.localizacionTipo)
+    context.efectos = this.document.system.efectos
 
     context.configRULES = configRULES[rules]
     context.tabs = this._prepareTabs("primary")

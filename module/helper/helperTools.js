@@ -27,4 +27,13 @@ export default class helperTools {
     static numberArray(max) {
         return Array(max).fill().map((x,i)=>i)        
     }
+
+    /**
+     * getTokenId
+     * @param {*} actor 
+     * @returns 
+     */
+    static getTokenId(actor) {
+        return actor.isToken ? actor.token.id : ''   
+    }
 }

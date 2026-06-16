@@ -31,6 +31,7 @@ export default class extendItem0Sheet
       _checkButton:   this.#onBooleanField,
       _addRow:        this.#onAddRow,
       _deleteRow:     this.#onDeleteRow,
+      _selectRow:     this.#onSelectRow,
       _copyObject:    this.#onCopyObject,
       _greenIcon:     this.#onGreenIcon
     },
@@ -52,6 +53,16 @@ export default class extendItem0Sheet
   static async #onReadKey(_event, target) {
     const sTarget = $(event.currentTarget).parent().find('input[name="name"]')
     let sKey = sTarget.val().replaceAll(' ', '_').toLowerCase()
+    sKey = sKey.replaceAll('ú', 'u').replaceAll('ó', 'o').replaceAll('í', 'i').replaceAll('é', 'e').replaceAll('á', 'a')
+    sKey = sKey.replaceAll('ü', 'u').replaceAll('ö', 'o').replaceAll('ï', 'i').replaceAll('ë', 'e').replaceAll('ä', 'a')
+    sKey = sKey.replaceAll('ù', 'u').replaceAll('ò', 'o').replaceAll('ì', 'i').replaceAll('è', 'e').replaceAll('à', 'a')
+    sKey = sKey.replaceAll('û', 'u').replaceAll('ô', 'o').replaceAll('î', 'i').replaceAll('ê', 'e').replaceAll('â', 'a')
+    sKey = sKey.replaceAll('(', '').replaceAll(')', '').replaceAll('[', '').replaceAll(']', '').replaceAll('ñ', 'n')
+    sKey = sKey.replaceAll('/', '').replaceAll('"', '').replaceAll("'", '').replaceAll('`', '').replaceAll('´', '')
+    sKey = sKey.replaceAll('*', '').replaceAll('?', '').replaceAll('¿', '').replaceAll('!', '').replaceAll('¡', '')
+    sKey = sKey.replaceAll('^', '').replaceAll('¨', '').replaceAll('+', '').replaceAll('-', '').replaceAll('.', '')
+    sKey = sKey.replaceAll(',', '').replaceAll(';', '').replaceAll(':', '').replaceAll('<', '').replaceAll('>', '')
+
     let mDocs = await helperContext.getFromCompendium(this.document.system.rules)
     if (mDocs.find(e => e.system.key === sKey)) sKey = ''
     await this.document.update({"system.key": sKey})
@@ -86,6 +97,19 @@ export default class extendItem0Sheet
     const index = mItems.findIndex(e => e.key === $(target).parents('tr').data('key'))
     mItems.splice(index, 1)
     await this.document.update({[path]: mItems})
+  }
+
+  static #onSelectRow(_event, target) {
+    const key = $(target).parents('tr').data('key')
+    const path = $(target).parents('table').data('path')
+    const row = this._access(this.document, path).find(e => e.key === key)
+    $(target).parents('table').find('._sortTR').find('input').each((i,e) => {
+      var nIndex = 0
+      for (var s in row) {
+        if (nIndex === i) $(e).val(row[s])
+        nIndex++
+      }
+    })
   }
 
   static async #onGreenIcon(_event, target) {

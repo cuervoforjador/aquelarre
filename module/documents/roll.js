@@ -4,6 +4,7 @@ import newChatMessage from "./chatMessage.js";
 import helperCombat from "../helper/helperCombat.js";
 import helperContext from "../helper/helperContext.js";
 import { aqConfig } from "../config/config.js";
+import helperTools from "../helper/helperTools.js";
 
 export default class newRoll extends Roll {
 
@@ -63,6 +64,11 @@ export default class newRoll extends Roll {
     key: '',
     label: '',
     properties: {}
+  }
+  heridaGrave = 0
+  secuela = {
+    apply: false,
+    item: null
   }
 
   /** @override */
@@ -193,10 +199,16 @@ export default class newRoll extends Roll {
    * _evalDamage
    */
   _evalDamage() {
+    this.heridaGrave = Math.ceil(this.targetActor.system.atributos.ptv.total/2)
     this.history.push({label: game.i18n.localize('common.resultadoTirada'), field: this.total +' pt'})
-    this.damageTransfer = this.total - this.proteccion
+    this.damageTransfer = this.total - this.proteccion    
     if (this.damageTransfer < 0) this.damageTransfer = 0
+    this.secuela.apply = this.damageTransfer > this.heridaGrave    
     this.history.push({label: game.i18n.localize('common.danoTransferido'), field: this.damageTransfer +' pt'})
+    this.history.push({label: game.i18n.localize('common.heridaGrave'), field: this.heridaGrave +' pt'})
+    if (this.secuela.apply) this.history.push({label: game.i18n.localize('explain.aplicaSecuela'), field: ''})
+                       else this.history.push({label: game.i18n.localize('explain.noAplicaSecuela'), field: ''})
+
     this.history.push({label: game.i18n.localize('common.localizacionMult'), field: 'x '+this.localizacion.properties.mult})
     this.damageTotal = this.localizacion.properties.mult * this.damageTransfer
     this.history.push({label: game.i18n.localize('common.danoTotal'), field: this.damageTotal +' pt'})
@@ -498,6 +510,7 @@ export default class newRoll extends Roll {
                           ${this._messageParts_DiceTotal()}
                         </div>
                      </div>
+                     ${this._messageParts_Extra()}
                      ${this._messageParts_Buttons()}`
 
     const message = await newChatMessage.create({
@@ -505,7 +518,7 @@ export default class newRoll extends Roll {
       title: this.title,
       flags: {
         "actorId": {"value": this.actor ? this.actor.id : ''},
-        "tokenId": {"value": this.actor && this.actor.token ? this.actor.token.id : ''}
+        "tokenId": {"value": this.actor ? helperTools.getTokenId(this.actor) : ''}
       }
     })
   }
@@ -653,7 +666,9 @@ export default class newRoll extends Roll {
                       this.damageTotal > 0 ? 
                           `<button type="button" 
                                    data-action="apply-damage" 
+                                   data-location="${this.localizacion.key}"
                                    data-damage="${this.damageTotal}"
+                                   data-secuela="${this.secuela.apply}"                                   
                                    data-actorid="${this.targetActor.id}"
                                    data-tokenid="${this.targetActor.token?.id}">
                                 ${game.i18n.localize('common.aplicarDano')} (${this.damageTotal} pt)
@@ -661,6 +676,14 @@ export default class newRoll extends Roll {
                    this.rollType === 'simple' ? '' :
                    this.rollType === 'location' ? '' : ''
     return sButtons !== '' ? `<div class="_buttons">${sButtons}</div>` : ''
+  }
+
+  _messageParts_Extra() {
+    let sText = this.rollType === 'damage' ? 
+                    this.secuela.apply ? `<div class="_extra _secuela">${game.i18n.localize('explain.aplicaSecuela')}</div>` : '' :
+                this.rollType === 'simple' ? '' :
+                this.rollType === 'location' ? '' : ''
+    return sText
   }
 
   /**

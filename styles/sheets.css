@@ -290,6 +290,7 @@ form._extend._vyc._actor ._sheetContent .tabs._subMenu a {
 }
 form._extend._actor ._sheetContent .tabs._subMenu a.active {
     color: #FFF;
+    font-weight: 100;
 }
 ._combo label._field {
     color: var(--aqText2);
@@ -396,6 +397,12 @@ form._extend._actor ._mainHeader {
     width: 100%;
     height: 100%;
 }
+form._extend._rasgo ._mainHeader input.h4 {
+    font-size: calc(var(--fSize) * 1.25);
+    height: calc(var(--fSize) * 1.25);
+    line-height: calc(var(--fSize) * 1.25);
+}
+
 form._extend ._sheetFooter {
     border-top: 1px solid var(--aqRed);
 }
@@ -595,7 +602,9 @@ form._extend ._stats ._wrap {
     flex-direction: column;
     justify-content: flex-start;
     align-items: flex-start;
-    align-content: flex-start
+    align-content: flex-start;
+    width: 100%;
+    min-height: 100%;
     /* width: calc(var(--fSize) * 25); */
 }
 form._extend ._stats h4._title {
@@ -998,6 +1007,71 @@ form._extend ._stats ._attrs {
         padding-bottom: calc(var(--fSize) * 0.3);
         color: #8b3535;
     }    
+
+form._extend section.tab[data-tab="rasgos"] {
+    width: 100%;
+    min-height: 100%;
+}
+form._extend section.tab[data-tab="rasgos"] ._orgullos,
+form._extend section.tab[data-tab="rasgos"] ._verguenzas,
+form._extend section.tab[data-tab="rasgos"] ._secuelas {
+    width: 100%;
+    min-height: 30%;
+}
+form._extend section.tab[data-tab="rasgos"] table._list label._name {
+    font-weight: 100;
+}
+
+form._extend ._fog {
+    display: block;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #000000bf;
+    z-index: 1;    
+}
+form._extend ._fog ._explain {
+    width: 70%;
+    height: 60%;
+    position: absolute;
+    left: 15%;
+    top: 25%;
+    background: #000000a6;
+    padding: 2rem;
+    border: 2px solid #ffa500cf;
+    box-shadow: #e197285c 0 0 12px 9px;
+    font-size: 1.25rem;
+    text-align: justify;
+}
+form._extend ._fog ._buttons {
+    height: 3rem;
+    display: flex;
+    gap: 0.5rem;
+    width: 100%;
+    position: absolute;
+    top: calc(100% - 3rem);
+    left: 0;
+    padding: 0 1rem;
+    justify-content: flex-end;
+}
+form._extend ._fog ._boxPointer {
+    position: absolute;
+    width: 30px;
+    height: 30px;
+    border: 2px solid #ffa500cf;
+    box-shadow: #e197285c 0 0 12px 9px;
+    background: #ffdd007d;
+    top: 4px;
+}
+form._extend ._fog ._boxPointer._firstTime01 {
+    left: calc(100% - 63px);
+}
+form._extend ._fog ._boxPointer._firstTime02 {
+    left: calc(100% - 90px);
+}
+form._extend ._fog ._boxPointer._firstTime03 {
+    left: calc(100% - 118px);
+}
 
 /** COMBATE **/
 form._extend section.tab.active._combate {

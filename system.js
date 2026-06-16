@@ -34,7 +34,3 @@ Hooks.once("ready", async () => {
   if (game.socket) game.socket.on(`system.${SYSTEM_ID}`, helperSocket.onSocketMessage)
 });
 
-Hooks.on("renderChatMessageHTML", (message, html) => {
-  helperMessages.activateListeners(message, html)
-})
-

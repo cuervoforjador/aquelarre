@@ -1,4 +1,5 @@
 import { SYSTEM_ID } from "../../config/uiConstants.js"
+import { configRULES } from "../../config/rules.js";
 import extendItem0Sheet from "../item.js";
 import helperContext from "../../helper/helperContext.js";
 
@@ -23,9 +24,11 @@ export default class sheetRasgo extends extendItem0Sheet {
    * @override
    */
   async _prepareContext() {
-    const context = await super._prepareContext()
-    return context
+    const rules = this.document.system.rules
+    const context = await super._prepareContext()    
+    context.configRULES = configRULES[rules]
 
+    return context
   }
 
 }

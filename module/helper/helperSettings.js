@@ -21,6 +21,24 @@ export default class helperSettings {
                 "vyc": game.i18n.localize('RULES.vyc'),
             },            
         })
+
+        game.settings.register(SYSTEM_ID, "firstTime", {
+            name: "common.firstTime",
+            hint: "tooltip.firstTime",
+            scope: "world",
+            config: true,
+            type: Boolean,
+            default: true,
+            requiresReload: true 
+        })        
+    }
+
+    /**
+     * getFirstTime
+     * @returns 
+     */
+    static getFirstTime() {
+        return game.settings.get(SYSTEM_ID,'firstTime');
     }
 
 }

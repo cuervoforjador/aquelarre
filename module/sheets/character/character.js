@@ -8,6 +8,7 @@ import helperDialog from "../../helper/helperDialog.js";
 import helperTables from "../../helper/helperTables.js";
 import sheetHandler from "../handler.js";
 import helperTools from "../../helper/helperTools.js";
+import helperSettings from "../../helper/helperSettings.js";
 
 export default class extendCharacterSheet extends extendActorSheet {
 
@@ -44,7 +45,7 @@ export default class extendCharacterSheet extends extendActorSheet {
       initial: "stats"
     },
     stats: {
-      tabs: [ {id: "principal"}, {id: "secuelas"} ],
+      tabs: [ {id: "principal"}, {id: "rasgos"} ],
       initial: "principal"
     }    
   }  
@@ -66,6 +67,9 @@ export default class extendCharacterSheet extends extendActorSheet {
 
     await helperSheets.checkSkills(this.document)
     context.skills = helperSheets.systemSkills(this.document)
+    context.secuelas = helperSheets.itemsSecuelas(this.document, rules)
+    context.orgullos = helperSheets.itemsOrgullos(this.document, rules)
+    context.verguenzas = helperSheets.itemsVerguenzas(this.document, rules)
     context.weapons = helperSheets.itemsWeapons(this.document, rules)
     context.armors = helperSheets.itemsArmors(this.document, rules)
     context.shields = helperSheets.systemShields(this.document, rules)
@@ -85,6 +89,7 @@ export default class extendCharacterSheet extends extendActorSheet {
   async _onRender(context, options) {
     await super._onRender(context, options)
     this.activateListeners($(this.element))
+    this.activateFirstTime()
   }
 
 
@@ -103,6 +108,44 @@ export default class extendCharacterSheet extends extendActorSheet {
     html.find('._skillValue').on("change", sheetHandler._onChangeSkillValue.bind(this))
     html.find('._skillCheck').on("change", sheetHandler._onChangeSkillCheck.bind(this))
   }  
+
+  /**
+   * activateFirstTime
+   */
+  activateFirstTime() {
+    if (!helperSettings.getFirstTime()) return
+
+    if ($(this.element).find('._fog').length === 0) 
+        $(this.element).prepend(`<div class="_fog"></div>`)
+    if ($(this.element).find('._fog').find('._explain').length === 0) 
+        $(this.element).find('._fog').prepend(this._lineFirstTime(this._firstTimeStep, this._firstTimeStep === '03'))
+
+    $(this.element).find('._fog ._buttons button._next').on('click', _event => {
+      _event.stopPropagation()
+      $(this.element).find('._explain._firstTime'+this._firstTimeStep).remove()
+      $(this.element).find('._boxPointer._firstTime'+this._firstTimeStep).remove()
+      this._firstTimeStep = '0' + (Number($(_event.target).data('current')) + 1)
+      this.document.sheet.render(true)
+    })
+
+    $(this.element).find('._fog ._buttons button._close').on('click', async _event => {
+      _event.stopPropagation()
+      await game.settings.set(SYSTEM_ID, 'firstTime', false)
+      $(this.element).find('._fog').remove()
+      this.document.sheet.render(true)
+    })    
+  }
+
+  _lineFirstTime(sCount, bLast) {
+    return `<div class="_explain _firstTime${sCount}">
+              ${game.i18n.localize('explain.firstTime'+sCount)}
+              <div class="_buttons">                
+                <button type="button" class="_close" data-current="${sCount}">${game.i18n.localize('common.abandonar')}</button>
+                ${!bLast ? `<button type="button" class="_next" data-current="${sCount}">${game.i18n.localize('common.continuar')}</button>` : ''}                
+              </div>              
+            </div>
+            <div class="_boxPointer _firstTime${sCount}"></div>`
+  }
 
   /**
    * onEditLore
