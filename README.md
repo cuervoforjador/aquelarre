@@ -1,6 +1,6 @@
 # Aquelarre a V14
 
-!(assets/ui/systemBackground.png)
+!(/assets/ui/systemBackground.png)
 
 
 ## Situación actual del desarrollo:
