@@ -2,8 +2,41 @@
 
 <image src="/assets/ui/systemBackground.png">
 
+Este sistema se encuentra actualmente en desarrollo y se irá actualizando de forma periódica.
 
-## Situación actual del desarrollo:
+Este no es un sistema oficial. El contenido de los repositorios ha sido tomado de los Manuales básicos de Aquelarre y Villa y Corte - <a href="https://www.nosolorol.com/">Ediciones NoSoloRol</a> del juego creado por Ricard Ibañez y Antonio Polo. 
+
+Esta implementación se define como un apoyo adicional y su finalidad es ayudar a aumentar el alcance del juego.
+
+Esta es una primera versión anticipada y jugable del nuevo sistema extendido y se espera que pronto se termine de desarrollar el resto de funcionalidades. (Puedes seguir el estado del desarrollo al final de este documento)
+
+Te agradezco enormemente tu visita.
+Por favor, no dudes en pasarte por el grupo de Aquelarre en el canal <a href="https://discord.com/channels/701794931299188908/988007079841234996">FoundryVTT Español de Discord</a> donde podrás comentar y participar en este proyecto.
+
+## Licencia
+Esta implementación y el resto del código de este repositorio están bajo la licencia GNU General Public License
+
+This implementation and rest of the code in this repository is licensed under the GNU General Public License.
+This system is completely UNOFFICIAL.
+
+## Capturas de Pantalla
+
+<image src="/assets/img/iroiro/fichaAQ3.png">
+<image src="/assets/img/iroiro/fichaAQ3_2.png">
+<image src="/assets/img/iroiro/fichaAQ3_3.png">
+<image src="/assets/img/iroiro/fichaAQ3_4.png">
+<image src="/assets/img/iroiro/fichaAQ4.png">
+<image src="/assets/img/iroiro/fichaAQ4_2.png">
+<image src="/assets/img/iroiro/fichaVyc.png">
+<image src="/assets/img/iroiro/fichaVyc1.png">
+<image src="/assets/img/iroiro/fichaVyc2.png">
+<image src="/assets/img/iroiro/fichaVyc3.png">
+<image src="/assets/img/iroiro/fichaVyc4.png">
+<image src="/assets/img/iroiro/fichaVyc5.png">
+<image src="/assets/img/iroiro/fichaVyc6.png">
+
+
+## Situación actual del desarrollo
  :black_square_button::black_square_button::black_square_button: PENDIENTE
 
  :black_square_button::black_square_button::white_check_mark: IMPLEMENTADO
