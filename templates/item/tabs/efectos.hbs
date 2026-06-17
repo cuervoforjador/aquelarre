@@ -1,5 +1,51 @@
 <section class="tab" data-group="primary" data-tab="efectos">
     
+    {{#if isEditable}}
+    <div class="_row">
+        <div class="_combo">
+            <select class="_charSelector _lSize">
+                {{selectOptions caracteristicas 
+                                localize=false
+                                nameAttr="key"
+                                labelAttr="label" }}
+            </select>
+            <button type="button"
+                    class="icon fas fa-add" 
+                    data-action="_useChar" 
+                    data-tooltip="{{localize 'common.anadir'}}">
+            </button>
+        </div>
+
+        <div class="_combo">
+            <select class="_charSelector">
+                {{selectOptions atributos 
+                                localize=false
+                                nameAttr="key"
+                                labelAttr="label" }}
+            </select>
+            <button type="button"
+                    class="icon fas fa-add" 
+                    data-action="_useAttr" 
+                    data-tooltip="{{localize 'common.anadir'}}">
+            </button>
+        </div>
+
+        <div class="_combo">
+            <select data-field="key">
+            {{selectOptions competencias 
+                            localize=false
+                            nameAttr="key"
+                            labelAttr="label" }}
+            </select>
+            <button type="button"
+                    class="icon fas fa-add" 
+                    data-action="_useSkill" 
+                    data-tooltip="{{localize 'common.anadir'}}">
+            </button>
+        </div>                        
+    </div>
+    {{/if}}
+
     <table class="_table _sortable"
            data-path="system.efectos">
         <thead>

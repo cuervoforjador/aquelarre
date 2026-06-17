@@ -13,7 +13,12 @@ export default class sheetSecuela extends extendItem0Sheet {
     classes: ['_'+this.templateTag],
     position: { 
         width: 1200
-    },     
+    }, 
+    actions: {
+      _useChar:    this.#onUseChar,
+      _useAttr:    this.#onUseAttr,
+      _useSkill:   this.#onUseSkill
+    }          
   }
 
   /** @override */
@@ -40,9 +45,30 @@ export default class sheetSecuela extends extendItem0Sheet {
     context.localizaciones = await helperContext.getLocalizacionesPartes(rules, this.document.system.localizacionTipo)
     context.efectos = this.document.system.efectos
 
+    context.competencias = await helperContext.getCompetenciasObject(rules)
+    context.caracteristicas = helperContext.getCaracteristicas()
+    context.atributos = helperContext.getAtributos()
+
     context.configRULES = configRULES[rules]
     context.tabs = this._prepareTabs("primary")
     return context
   }
 
+  static #onUseChar(_event, target) {
+    const sChar = $(target).parent().find('select').find(':selected').val()
+    const oInput = $(target).parents('section.tab').find('input[data-field="path"]')
+    oInput.val("system.caracteristicas."+sChar+".value")
+  }
+
+  static #onUseAttr(_event, target) {
+    const sChar = $(target).parent().find('select').find(':selected').val()
+    const oInput = $(target).parents('section.tab').find('input[data-field="path"]')
+    oInput.val("system.atributos."+sChar+".value")
+  }
+
+  static #onUseSkill(_event, target) {
+    const sKey = $(target).parent().find('select').find(':selected').val()
+    const oInput = $(target).parents('section.tab').find('input[data-field="path"]')
+    oInput.val("skill."+sKey)    
+  }
 }

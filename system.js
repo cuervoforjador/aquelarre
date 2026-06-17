@@ -19,7 +19,7 @@ Hooks.once("init", () => {
 
     helperInitialization.loader()
     helperInitialization.config()
-    helperSettings.register()
+    helperSettings.register()    
     helperModels.initModels()    
     helperModels.setDocumentClasses()
     helperSheets.initSheets()
@@ -32,5 +32,6 @@ Hooks.once("init", () => {
 Hooks.once("ready", async () => {
 
   if (game.socket) game.socket.on(`system.${SYSTEM_ID}`, helperSocket.onSocketMessage)
+  helperSettings.registerTours()
 });
 

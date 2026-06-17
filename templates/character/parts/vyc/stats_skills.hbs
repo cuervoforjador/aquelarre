@@ -60,6 +60,12 @@
                             min="{{skill.stats.value.min}}" 
                             max="{{skill.stats.value.max}}"
                             class="_skillValue">
+                    <button type="button"
+                            class="icon fas fa-remove" 
+                            data-action="_deleteItem" 
+                            data-id="{{skill.item.id}}"
+                            data-tooltip="{{localize 'tooltip.borrarItem'}}">
+                    </button>                              
                 {{else}}
                     <label class="_input _roll _skillValue"
                             data-spectrum="true"

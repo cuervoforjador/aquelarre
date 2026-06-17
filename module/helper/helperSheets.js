@@ -22,6 +22,7 @@ import helperDialog from "./helperDialog.js"
 import helperPxTools from "../../libs/helperPxTools.js"
 import { aqConfig } from "../config/config.js"
 import { configRULES } from "../config/rules.js"
+import helperTools from "./helperTools.js"
 
 export default class helperSheets {
 
@@ -593,9 +594,10 @@ export default class helperSheets {
      * @param {*} html 
      * @param {*} isPlayMode 
      */
-    static addEditButton(html, isPlayMode) {        
-        let header = html.find('.window-header')
-
+    static addEditButton(html, isPlayMode) {    
+        if (!helperTools.isEditable()) return;
+        
+        let header = html.find('.window-header')        
         if (isPlayMode) {
             header.find('button[data-action="_play"]').remove();
             if (header.find('button[data-action="_edit"]').length === 1) return;
@@ -621,6 +623,8 @@ export default class helperSheets {
      * @param {*} html 
      */
     static addRulesButton(html) {
+        if (!helperTools.isGM()) return;
+        
         let header = html.find('.window-header')
         if (header.find('button[data-action="_rules"]').length === 1) return;
         const sTooltip = game.i18n.localize('common.editarReglas')

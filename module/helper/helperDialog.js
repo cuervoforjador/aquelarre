@@ -17,6 +17,23 @@ export default class helperDialog {
     }
 
     /**
+     * dialogConfirm
+     * @param {*} rules 
+     * @param {*} sContent 
+     * @returns 
+     */
+    static async dialogConfirm(rules, title, sContent) {
+        const proceed = await foundry.applications.api.DialogV2.confirm({
+            classes: ['_extend', '_'+rules],
+            window: { title: title },
+            content: sContent,
+            rejectClose: false,
+            modal: true
+        });
+        return (!!proceed)        
+    }
+
+    /**
      * dialogSelectOptions
      * @param {*} rules 
      * @param {*} title 

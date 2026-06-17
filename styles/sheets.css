@@ -1042,6 +1042,7 @@ form._extend ._fog ._explain {
     box-shadow: #e197285c 0 0 12px 9px;
     font-size: 1.25rem;
     text-align: justify;
+    color: #ffffffdb !important;
 }
 form._extend ._fog ._buttons {
     height: 3rem;
@@ -1519,6 +1520,11 @@ form._extend ._skills button.icon.showPenals {
     left: calc(100% - var(--fSize) * 6.5);
     top: 3px;
 }
+form._extend ._skills ._skill button[data-action="_deleteItem"] {
+    font-size: calc(var(--fSize) * 0.6);
+    line-height: calc(var(--fSize) * 0.6);
+    margin: 0 calc(var(--fSize) * -0.3);
+}
 
 
 /** --- OTROS --- */
@@ -1547,6 +1553,13 @@ a[data-action="_showStatus"]:hover label {
     background-repeat: no-repeat;
     background-position: center;
 }
+label._advert {
+    border: 1px solid #00000063;
+    padding: 0 0.5rem;
+    margin: 0 0.5rem;
+    background: #510808a8;
+    color: #FFF;
+}
 
 /** DESCRIPCIONES */
 ._item._extend table {
@@ -1562,4 +1575,49 @@ a[data-action="_showStatus"]:hover label {
 ._item._extend table td {
     padding: 0.5rem 0.5rem 0 0;
     align-content: flex-start;
+}
+
+/** TOURS **/
+.tour ._tourWrap {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: -50px;
+}
+.tour ._tourHeader {
+    width: 100%;
+    height: 150px;
+    background-size: cover;
+    background-position: center;
+}
+.tour ._tourWrap p:empty {
+    display: none;
+}
+.tour ._tourWrap h1,
+.tour ._tourWrap h4 {
+    font-family: "corvux", serif;
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 100;
+}
+.tour ._tourWrap h4 {
+    font-size: 1.5rem;
+}
+.tour ._vyc {
+    font-family: "IM Fell English SC", serif;
+    color: #4e975d;
+    font-size: 1.75rem;
+}
+.tour ._tourWrap p.content {
+    text-align: justify;
+    padding: 0 1rem;
+    color: #ffffffd6;
+    font-family: "Almendra", serif;
+    font-size: 1.1rem;
+    line-height: 1.25rem;
+}
+.tour ._tourWrap p.content strong {
+    color: #e94040;
 }

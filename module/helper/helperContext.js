@@ -45,6 +45,21 @@ export default class helperContext {
     }
 
     /**
+     * getAtributos
+     */
+    static getAtributos() {
+
+        let oReturn = {};
+        const schema = extendCharacter_Character.defineSchema();
+        for (var s in schema.atributos.fields) {
+            const label = game.i18n.localize(schema.atributos.fields[s].label) +
+                          ' (' + game.i18n.localize(schema.atributos.fields[s].hint) + ')'
+            oReturn[s] = { key: s, label: label };
+        }
+        return oReturn
+    }
+
+    /**
      * getCompetencias
      * @param {*} rules 
      */

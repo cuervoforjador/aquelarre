@@ -282,6 +282,9 @@ section.directory._extend._vyc li.directory-item img.thumbnail {
 .blink {
   animation: blinker 0.5s linear infinite;
 }
+.blink1 {
+  animation: blinker 1s linear infinite;
+}
 .glowBlink {
   animation: color-pulse 1s infinite alternate;
 }

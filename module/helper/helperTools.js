@@ -1,4 +1,5 @@
 import { SYSTEM_ID } from "../config/uiConstants.js"
+import helperSettings from "./helperSettings.js"
 export default class helperTools {
 
     /**
@@ -35,5 +36,20 @@ export default class helperTools {
      */
     static getTokenId(actor) {
         return actor.isToken ? actor.token.id : ''   
+    }
+
+    /**
+     * isEditable
+     */
+    static isEditable() {
+        return ( helperTools.isGM() || helperSettings.getUserEdit() )
+    }
+
+    /**
+     * isGM
+     */
+    static isGM() {
+        const activeGM = game.users.activeGM
+        return ( game.user.isGM || (activeGM && activeGM.id === game.user.id) )
     }
 }

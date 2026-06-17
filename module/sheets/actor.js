@@ -150,7 +150,10 @@ export default class extendActorSheet
   static async #onDeleteItem(_event, target) {
     _event.stopPropagation()
     const item = this.document.items.get($(target).data('id'))
-    await item.delete()    
+    if (item.type === 'competencia') {
+      const answer = await helperDialog.dialogConfirm(this.document.system.rules, item.name, game.i18n.localize("info.confirmBorrarItem"))
+      if (answer) await item.delete()
+    } else await item.delete()    
   }
 
   static async #onUpdateItem(_event, target) {

@@ -21,6 +21,16 @@
                        data-id="{{orgullo.item.id}}">
                         <label class="_name _lSize">{{orgullo.item.name}}</label>
                     </a>
+                    {{#unless orgullo.item.system.applied}}
+                        {{#if ../isEditable}}
+                            <a data-action="_navToItem"  data-id="{{orgullo.item.id}}" data-name="system.applied">
+                                <label class="_advert _pointer blink1" data-tooltip="{{{localize 'tooltip.sinAplicar'}}}">{{localize 'common.sinAplicar'}}</label>
+                            </a>
+                        {{else}}
+                            <label class="_advert blink1" data-tooltip="{{{localize 'tooltip.sinAplicar'}}}">{{localize 'common.sinAplicar'}}</label>
+                        {{/if}}                    
+                    
+                    {{/unless}}
                 </td>
                 <td>
                 {{#if ../isEditable}}
