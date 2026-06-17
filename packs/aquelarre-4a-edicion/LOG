@@ -1,0 +1,10 @@
+2026/06/17-10:56:32.344 38a0 Recovering log #185
+2026/06/17-10:56:32.346 38a0 Delete type=0 #185
+2026/06/17-10:56:32.346 38a0 Delete type=3 #184
+2026/06/17-12:53:41.249 fb4 Compacting 2@0 + 1@1 files
+2026/06/17-12:53:41.257 fb4 Generated table #188@0: 342 keys, 260086 bytes
+2026/06/17-12:53:41.257 fb4 Compacted 2@0 + 1@1 files => 260086 bytes
+2026/06/17-12:53:41.258 fb4 compacted to: files[ 0 1 0 0 0 0 0 ]
+2026/06/17-12:53:41.258 fb4 Delete type=2 #157
+2026/06/17-12:53:41.258 fb4 Delete type=2 #159
+2026/06/17-12:53:41.258 fb4 Delete type=2 #180
