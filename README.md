@@ -1,4 +1,4 @@
-# Aquelarre a V14
+# Aquelarre Extendido (V14)
 
 <image src="/assets/ui/systemBackground.png">
 

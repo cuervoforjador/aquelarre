@@ -21,6 +21,7 @@ export default class helperHooks {
         Hooks.on('renderCompendium', hooksFolders.renderCompendium.bind(this))
         Hooks.on('renderApplicationV2', hooksRender.renderApplicationV2.bind(this))
 
+        Hooks.on("createActor", hooksActor.createActor.bind(this))
         Hooks.on("createItem", hooksItem.createItem.bind(this))
     }
 
