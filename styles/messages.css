@@ -265,7 +265,18 @@ li.chat-message._extend ._extra {
     color: #FFF;
     box-shadow: inset #ffffff 0 0 4px;
 }
-
+li.chat-message._extend span.flavor-text {
+    font-size: 1rem;
+    font-weight: 900;
+    background: #ffc30024;
+    border: 1px solid #00000029;
+    padding: 0.3rem;
+}
+li.chat-message._extend.context h4.dice-total {
+    justify-content: center;
+    font-weight: 900;
+    font-size: 1.5rem;    
+}
 
 li.chat-message._extend ._buttons {
     display: flex;

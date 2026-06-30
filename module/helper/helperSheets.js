@@ -15,6 +15,11 @@ import sheetPosicion  from "../sheets/item/posicion.js"
 import sheetProfesion  from "../sheets/item/profesion.js"
 import sheetSecuela  from "../sheets/item/secuela.js"
 import sheetRasgo  from "../sheets/item/rasgo.js"
+import sheetGrimorio  from "../sheets/item/grimorio.js"
+import sheetHechizo  from "../sheets/item/hechizo.js"
+import sheetEnsalmo  from "../sheets/item/ensalmo.js"
+import sheetFormula  from "../sheets/item/formula.js"
+
 import sheetTableExtend from "../sheets/table/base.js"
 
 import helperContext from "./helperContext.js"
@@ -63,6 +68,10 @@ export default class helperSheets {
         vI.registerSheet(SYSTEM_ID, sheetProfesion, { types: ["profesion"], makeDefault: true, label: "sheet.profesion" })
         vI.registerSheet(SYSTEM_ID, sheetSecuela, { types: ["secuela"], makeDefault: true, label: "sheet.secuela" })
         vI.registerSheet(SYSTEM_ID, sheetRasgo, { types: ["rasgo"], makeDefault: true, label: "sheet.rasgo" })
+        vI.registerSheet(SYSTEM_ID, sheetGrimorio, { types: ["grimorio"], makeDefault: true, label: "sheet.grimorio" })
+        vI.registerSheet(SYSTEM_ID, sheetHechizo, { types: ["hechizo"], makeDefault: true, label: "sheet.hechizo" })
+        vI.registerSheet(SYSTEM_ID, sheetEnsalmo, { types: ["ensalmo"], makeDefault: true, label: "sheet.ensalmo" })
+        vI.registerSheet(SYSTEM_ID, sheetFormula, { types: ["formula"], makeDefault: true, label: "sheet.formula" })
 
         const vT = foundry.documents.collections.RollTables
         vT.registerSheet(SYSTEM_ID, sheetTableExtend, { types: ["base"], makeDefault: true, label: "sheet.lore" })

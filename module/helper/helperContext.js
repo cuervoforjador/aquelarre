@@ -314,6 +314,97 @@ export default class helperContext {
     }
 
     /**
+     * getHechizosRequisitos
+     * @param {*} rules 
+     * @returns 
+     */
+    static getHechizosRequisitos(rules) {
+        return aqConfig.hechizos[rules].requisitos
+    }
+
+    /**
+     * getHechizosNiveles
+     * @param {*} rules 
+     * @returns 
+     */
+    static getHechizosNiveles(rules) {
+        return this._mapObject(aqConfig.hechizos[rules].niveles)
+    }
+
+    /**
+     * getHechizosTipos
+     * @param {*} rules 
+     * @returns 
+     */
+    static getHechizosTipos(rules) {
+        return this._mapObject(aqConfig.hechizos[rules].tipos)
+    }    
+    
+    /**
+     * getHechizosNaturaleza
+     * @param {*} rules 
+     * @returns 
+     */
+    static getHechizosNaturaleza(rules) {
+        return this._mapObject(aqConfig.hechizos[rules].naturaleza)
+    }
+
+    /**
+     * getHechizosOrigen
+     * @param {*} rules 
+     * @returns 
+     */
+    static getHechizosOrigen(rules) {
+        return this._mapObject(aqConfig.hechizos[rules].origen)
+    }
+
+    /**
+     * getHechizosFabPociones / getHechizosFabTalismanes / getHechizosFabUnguentos
+     * @param {*} rules 
+     * @returns 
+     */
+    static getHechizosFabPociones(rules) {
+        return aqConfig.hechizos[rules].fabricacion.pociones
+    }
+    static getHechizosFabTalismanes(rules) {
+        return aqConfig.hechizos[rules].fabricacion.talismanes
+    }
+    static getHechizosFabUnguentos(rules) {
+        return aqConfig.hechizos[rules].fabricacion.unguentos
+    }
+
+    static getFabPocion(rules, alchemy) {
+        return this.getHechizosFabPociones(rules).find(e => e.low <= alchemy && e.high >= alchemy)
+    }  
+    static getFabTalisman(rules, alchemy) {
+        return this.getHechizosFabTalismanes(rules).find(e => e.low <= alchemy && e.high >= alchemy)
+    }
+    static getFabUnguento(rules, alchemy) {
+        return this.getHechizosFabUnguentos(rules).find(e => e.low <= alchemy && e.high >= alchemy)
+    }              
+
+    /**
+     * getEnsalmosNiveles
+     * @param {*} rules 
+     * @returns 
+     */
+    static getEnsalmosNiveles(rules) {
+        return this._mapObject(aqConfig.ensalmos[rules].niveles)
+    }
+
+    static _mapObject(root) {
+        let oReturn = {}
+        for (var s in root) {
+            const prop = root[s]
+            oReturn[s] = {...prop, ...{
+                key: s,
+                label: game.i18n.localize(prop.label)
+            }}
+        }
+        return oReturn        
+    }
+
+    /**
      * assignLoreToActor
      * @param {*} rules 
      * @param {*} lore 

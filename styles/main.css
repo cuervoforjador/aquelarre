@@ -140,6 +140,10 @@ input.h4 {
     display: flex;
     justify-content: center;
 }
+._middle {
+    align-content: center;
+    align-items: center;    
+}
 ._right {
     text-align: right;
 }
@@ -171,6 +175,9 @@ input._sInput {
 ._scrolled {
     height: 100%;
     overflow-y: auto;
+}
+h4._noMargin {
+    margin: 11px 0 0px 0;
 }
 
 ._bad {
