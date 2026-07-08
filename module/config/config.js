@@ -204,7 +204,19 @@ export const aqConfig = {
             {id: '058', label: 'mods.m058', mod: '-40', rules: ['aq3', 'aq4', 'vyc']},
             {id: '059', label: 'mods.m059', mod: '-60', rules: ['aq3', 'aq4', 'vyc']},
             {id: '060', label: 'mods.m060', mod: '-80', rules: ['aq3', 'aq4', 'vyc']},
-            {id: '061', label: 'mods.m061', mod: '-10', rules: ['aq3', 'aq4', 'vyc']}
+            {id: '061', label: 'mods.m061', mod: '-10', rules: ['aq3', 'aq4', 'vyc']},
+            {id: '066', label: 'mods.m066', mod: '-15', rules: ['aq3']},
+            {id: '067', label: 'mods.m067', mod: '-35', rules: ['aq3']},
+            {id: '068', label: 'mods.m068', mod: '-50', rules: ['aq3']},
+            {id: '069', label: 'mods.m069', mod: '-75', rules: ['aq3']},
+            {id: '070', label: 'mods.m070', mod: '-100', rules: ['aq3']},
+            {id: '071', label: 'mods.m071', mod: '-150', rules: ['aq3']},
+            {id: '072', label: 'mods.m072', mod: '-20',  rules: ['aq4', 'vyc']},
+            {id: '073', label: 'mods.m073', mod: '-40',  rules: ['aq4', 'vyc']},
+            {id: '074', label: 'mods.m074', mod: '-60',  rules: ['aq4', 'vyc']},
+            {id: '075', label: 'mods.m075', mod: '-80',  rules: ['aq4', 'vyc']},
+            {id: '076', label: 'mods.m076', mod: '-100', rules: ['aq4', 'vyc']},
+            {id: '077', label: 'mods.m077', mod: '-140', rules: ['aq4', 'vyc']}
         ],
         ensalmos: [
             {id: '062', label: 'mods.m062', mod: '-25', rules: ['aq3']},
@@ -217,24 +229,28 @@ export const aqConfig = {
         aq3: {
             requisitos: {
                 minIRR: 50,
-                minConMagico: 50,
+                minSkill: 50,
+                skillID: 'conocimiento_magico',
+                skillEnsenar: 'ensenar',
+                skillFabricacion: 'alquimia',
+                useComunicacion: false,
                 ptAprendizaje: false,
             },
             niveles: {
-                vis1: {label: 'common.vis1',  pta: 0, ptc: 1,  mod: '+0'},
-                vis2: {label: 'common.vis2',  pta: 0, ptc: 1,  mod: '-15'},
-                vis3: {label: 'common.vis3',  pta: 0, ptc: 2,  mod: '-35'},
-                vis4: {label: 'common.vis4',  pta: 0, ptc: 3,  mod: '-50'},
-                vis5: {label: 'common.vis5',  pta: 0, ptc: 5,  mod: '-75'},
-                vis6: {label: 'common.vis6',  pta: 0, ptc: 5,  mod: '-100'},
-                vis7: {label: 'common.vis7',  pta: 0, ptc: 10, mod: '-150'}
+                vis1: {label: 'common.vis1',  pta: 0, ptc: 1,  mod: '+0',   mods: ''},
+                vis2: {label: 'common.vis2',  pta: 0, ptc: 1,  mod: '-15',  mods: '066'},
+                vis3: {label: 'common.vis3',  pta: 0, ptc: 2,  mod: '-35',  mods: '067'},
+                vis4: {label: 'common.vis4',  pta: 0, ptc: 3,  mod: '-50',  mods: '068'},
+                vis5: {label: 'common.vis5',  pta: 0, ptc: 5,  mod: '-75',  mods: '069'},
+                vis6: {label: 'common.vis6',  pta: 0, ptc: 5,  mod: '-100', mods: '070'},
+                vis7: {label: 'common.vis7',  pta: 0, ptc: 10, mod: '-150', mods: '071'}
             },                
             tipos: [
-                {key: 'invocacion', label: 'common.invocacion'},
-                {key: 'maleficio', label: 'common.maleficio'},
-                {key: 'pocion', label: 'common.pocion'},
-                {key: 'talisman', label: 'common.talisman'},
-                {key: 'unguento', label: 'common.unguento'},
+                {key: 'invocacion', label: 'common.invocacion', icon: 'fa-crow',                fabricacion: false},
+                {key: 'maleficio',  label: 'common.maleficio',  icon: 'fa-skull-cow',           fabricacion: false},
+                {key: 'pocion',     label: 'common.pocion',     icon: 'fa-flask-round-potion',  fabricacion: true},
+                {key: 'talisman',   label: 'common.talisman',   icon: 'fa-ankh',                fabricacion: true},
+                {key: 'unguento',   label: 'common.unguento',   icon: 'fa-bottle-droplet',      fabricacion: true}
             ],
             naturaleza: [
                 {key: 'blanca', label: 'common.magiaBlanca'},
@@ -247,50 +263,54 @@ export const aqConfig = {
                 {key: 'prohibida', label: 'common.magiaProhibida'},
             ],            
             fabricacion: {
-                pociones: [
-                    {low: 0,  high: 30,  tiempo: '-',   unidad: ''},
-                    {low: 31, high: 40,  tiempo: '1D6', unidad: 'días'},
-                    {low: 41, high: 70,  tiempo: '1D4', unidad: 'días'},
-                    {low: 71, high: 90,  tiempo: '1D3', unidad: 'días'},
-                    {low: 91, high: 999, tiempo: '1',   unidad: 'días'}
+                pocion: [
+                    {low: 0,  high: 30,  tiempo: '-',   unidad: '', dosis: 0},
+                    {low: 31, high: 40,  tiempo: '1D6', unidad: 'common.dias', dosis: 6},
+                    {low: 41, high: 70,  tiempo: '1D4', unidad: 'common.dias', dosis: 6},
+                    {low: 71, high: 90,  tiempo: '1D3', unidad: 'common.dias', dosis: 6},
+                    {low: 91, high: 999, tiempo: '1',   unidad: 'common.dias', dosis: 6}
                 ],
-                talismanes: [
-                    {low: 0,  high: 30,  tiempo: '-',     unidad: ''},
-                    {low: 31, high: 40,  tiempo: '1D6+3', unidad: 'meses'},
-                    {low: 41, high: 70,  tiempo: '1D4+2', unidad: 'meses'},
-                    {low: 71, high: 90,  tiempo: '1D3+2', unidad: 'meses'},
-                    {low: 91, high: 999, tiempo: '2D6',   unidad: 'semanas'}
+                talisman: [
+                    {low: 0,  high: 30,  tiempo: '-',     unidad: '', dosis: 0},
+                    {low: 31, high: 40,  tiempo: '1D6+3', unidad: 'common.meses', dosis: 6},
+                    {low: 41, high: 70,  tiempo: '1D4+2', unidad: 'common.meses', dosis: 6},
+                    {low: 71, high: 90,  tiempo: '1D3+2', unidad: 'common.meses', dosis: 6},
+                    {low: 91, high: 999, tiempo: '2D6',   unidad: 'common.semanas', dosis: 6}
                 ],
-                unguentos: [
-                    {low: 0,  high: 30,  tiempo: '-',   unidad: ''},
-                    {low: 31, high: 40,  tiempo: '1D6', unidad: 'semanas'},
-                    {low: 41, high: 70,  tiempo: '1D3', unidad: 'semanas'},
-                    {low: 71, high: 90,  tiempo: '1',   unidad: 'semanas'},
-                    {low: 91, high: 999, tiempo: '1D6', unidad: 'días'}
+                unguento: [
+                    {low: 0,  high: 30,  tiempo: '-',   unidad: '', dosis: 0},
+                    {low: 31, high: 40,  tiempo: '1D6', unidad: 'common.semanas', dosis: 6},
+                    {low: 41, high: 70,  tiempo: '1D3', unidad: 'common.semanas', dosis: 6},
+                    {low: 71, high: 90,  tiempo: '1',   unidad: 'common.semanas', dosis: 6},
+                    {low: 91, high: 999, tiempo: '1D6', unidad: 'common.dias', dosis: 6}
                 ]                       
             }
         },
         aq4: {
             requisitos: {
                 minIRR: 60,
-                minConMagico: 60,
+                minSkill: 60,
+                skillID: 'conocimiento_magico',
+                skillEnsenar: 'ensenar',
+                skillFabricacion: 'alquimia',
+                useComunicacion: true,
                 ptAprendizaje: true
             },
             niveles: {
-                vis1: {label: 'common.vis1',  pta: 10,  ptc: 1,  mod: '+0'},
-                vis2: {label: 'common.vis2',  pta: 20,  ptc: 2,  mod: '-20'},
-                vis3: {label: 'common.vis3',  pta: 30,  ptc: 3,  mod: '-40'},
-                vis4: {label: 'common.vis4',  pta: 40,  ptc: 4,  mod: '-60'},
-                vis5: {label: 'common.vis5',  pta: 50,  ptc: 5,  mod: '-80'},
-                vis6: {label: 'common.vis6',  pta: 70,  ptc: 7,  mod: '-100'},
-                vis7: {label: 'common.vis7',  pta: 100, ptc: 10, mod: '-140'}
+                vis1: {label: 'common.vis1',  pta: 10,  ptc: 1,  mod: '+0',   mods: ''},
+                vis2: {label: 'common.vis2',  pta: 20,  ptc: 2,  mod: '-20',  mods: '072'},
+                vis3: {label: 'common.vis3',  pta: 30,  ptc: 3,  mod: '-40',  mods: '073'},
+                vis4: {label: 'common.vis4',  pta: 40,  ptc: 4,  mod: '-60',  mods: '074'},
+                vis5: {label: 'common.vis5',  pta: 50,  ptc: 5,  mod: '-80',  mods: '075'},
+                vis6: {label: 'common.vis6',  pta: 70,  ptc: 7,  mod: '-100', mods: '076'},
+                vis7: {label: 'common.vis7',  pta: 100, ptc: 10, mod: '-140', mods: '077'}
             },
             tipos: [
-                {key: 'invocacion', label: 'common.invocacion'},
-                {key: 'maleficio', label: 'common.maleficio'},
-                {key: 'pocion', label: 'common.pocion'},
-                {key: 'talisman', label: 'common.talisman'},
-                {key: 'unguento', label: 'common.unguento'},
+                {key: 'invocacion', label: 'common.invocacion', icon: 'fa-crow',                fabricacion: false},
+                {key: 'maleficio',  label: 'common.maleficio',  icon: 'fa-skull-cow',           fabricacion: false},
+                {key: 'pocion',     label: 'common.pocion',     icon: 'fa-flask-round-potion',  fabricacion: true},
+                {key: 'talisman',   label: 'common.talisman',   icon: 'fa-ankh',                fabricacion: true},
+                {key: 'unguento',   label: 'common.unguento',   icon: 'fa-bottle-droplet',      fabricacion: true}
             ],
             naturaleza: [
                 {key: 'blanca', label: 'common.magiaBlanca'},
@@ -310,50 +330,54 @@ export const aqConfig = {
                 vis7: {ptAp: 10},
             },     
             fabricacion: {
-                pociones: [
-                    {low: 0,  high: 20,  tiempo: '-',   unidad: ''},
-                    {low: 21, high: 40,  tiempo: '1D6', unidad: 'días'},
-                    {low: 41, high: 60,  tiempo: '1D4', unidad: 'días'},
-                    {low: 61, high: 80,  tiempo: '1D3', unidad: 'días'},
-                    {low: 81, high: 999, tiempo: '1',   unidad: 'días'}
+                pocion: [
+                    {low: 0,  high: 20,  tiempo: '-',   unidad: '', dosis: 0},
+                    {low: 21, high: 40,  tiempo: '1D6', unidad: 'common.dias', dosis: 6},
+                    {low: 41, high: 60,  tiempo: '1D4', unidad: 'common.dias', dosis: 6},
+                    {low: 61, high: 80,  tiempo: '1D3', unidad: 'common.dias', dosis: 6},
+                    {low: 81, high: 999, tiempo: '1',   unidad: 'common.dias', dosis: 6}
                 ],
-                talismanes: [
-                    {low: 0,  high: 20,  tiempo: '-',     unidad: ''},
-                    {low: 21, high: 40,  tiempo: '1D6+3', unidad: 'meses'},
-                    {low: 41, high: 60,  tiempo: '1D4+2', unidad: 'meses'},
-                    {low: 61, high: 80,  tiempo: '1D3+2', unidad: 'meses'},
-                    {low: 81, high: 999, tiempo: '2D6',   unidad: 'semanas'}
+                talisman: [
+                    {low: 0,  high: 20,  tiempo: '-',     unidad: '', dosis: 0},
+                    {low: 21, high: 40,  tiempo: '1D6+3', unidad: 'common.meses', dosis: 1},
+                    {low: 41, high: 60,  tiempo: '1D4+2', unidad: 'common.meses', dosis: 1},
+                    {low: 61, high: 80,  tiempo: '1D3+2', unidad: 'common.meses', dosis: 1},
+                    {low: 81, high: 999, tiempo: '2D6',   unidad: 'common.semanas', dosis: 1}
                 ],
-                unguentos: [
-                    {low: 0,  high: 20,  tiempo: '-',   unidad: ''},
-                    {low: 21, high: 40,  tiempo: '1D6', unidad: 'semanas'},
-                    {low: 41, high: 60,  tiempo: '1D3', unidad: 'semanas'},
-                    {low: 61, high: 80,  tiempo: '1',   unidad: 'semanas'},
-                    {low: 81, high: 999, tiempo: '1D6', unidad: 'días'}
+                unguento: [
+                    {low: 0,  high: 20,  tiempo: '-',   unidad: '', dosis: 0},
+                    {low: 21, high: 40,  tiempo: '1D6', unidad: 'common.semanas', dosis: 6},
+                    {low: 41, high: 60,  tiempo: '1D3', unidad: 'common.semanas', dosis: 6},
+                    {low: 61, high: 80,  tiempo: '1',   unidad: 'common.semanas', dosis: 6},
+                    {low: 81, high: 999, tiempo: '1D6', unidad: 'common.dias', dosis: 6}
                 ]                       
             }
         },
         vyc: {
             requisitos: {
                 minIRR: 60,
-                minConMagico: 60,
+                minSkill: 60,
+                skillID: 'conocimiento_magico',
+                skillEnsenar: 'ensenar',
+                skillFabricacion: 'alquimia',
+                useComunicacion: false,
                 ptAprendizaje: true
             },
             niveles: {
-                vis1: {label: 'common.vis1',  pta: 10,  ptc: 1,  mod: '+0'},
-                vis2: {label: 'common.vis2',  pta: 20,  ptc: 2,  mod: '-20'},
-                vis3: {label: 'common.vis3',  pta: 30,  ptc: 3,  mod: '-40'},
-                vis4: {label: 'common.vis4',  pta: 40,  ptc: 4,  mod: '-60'},
-                vis5: {label: 'common.vis5',  pta: 50,  ptc: 5,  mod: '-80'},
-                vis6: {label: 'common.vis6',  pta: 70,  ptc: 7,  mod: '-100'},
-                vis7: {label: 'common.vis7',  pta: 100, ptc: 10, mod: '-140'}
+                vis1: {label: 'common.vis1',  pta: 10,  ptc: 1,  mod: '+0',   mods: ''},
+                vis2: {label: 'common.vis2',  pta: 20,  ptc: 2,  mod: '-20',  mods: '072'},
+                vis3: {label: 'common.vis3',  pta: 30,  ptc: 3,  mod: '-40',  mods: '073'},
+                vis4: {label: 'common.vis4',  pta: 40,  ptc: 4,  mod: '-60',  mods: '074'},
+                vis5: {label: 'common.vis5',  pta: 50,  ptc: 5,  mod: '-80',  mods: '075'},
+                vis6: {label: 'common.vis6',  pta: 70,  ptc: 7,  mod: '-100', mods: '076'},
+                vis7: {label: 'common.vis7',  pta: 100, ptc: 10, mod: '-140', mods: '077'}
             },
             tipos: [
-                {key: 'invocacion', label: 'common.invocacion'},
-                {key: 'maleficio', label: 'common.maleficio'},
-                {key: 'pocion', label: 'common.pocion'},
-                {key: 'talisman', label: 'common.talisman'},
-                {key: 'unguento', label: 'common.unguento'},
+                {key: 'invocacion', label: 'common.invocacion', icon: 'fa-crow',                fabricacion: false},
+                {key: 'maleficio',  label: 'common.maleficio',  icon: 'fa-skull-cow',           fabricacion: false},
+                {key: 'pocion',     label: 'common.pocion',     icon: 'fa-flask-round-potion',  fabricacion: true},
+                {key: 'talisman',   label: 'common.talisman',   icon: 'fa-ankh',                fabricacion: true},
+                {key: 'unguento',   label: 'common.unguento',   icon: 'fa-bottle-droplet',      fabricacion: true}
             ],
             naturaleza: [
                 {key: 'blanca', label: 'common.magiaBlanca'},
@@ -374,26 +398,26 @@ export const aqConfig = {
                 vis7: {ptAp: 10},
             },     
             fabricacion: {
-                pociones: [
-                    {low: 0,  high: 20,  tiempo: '-',   unidad: ''},
-                    {low: 21, high: 40,  tiempo: '1D6', unidad: 'días'},
-                    {low: 41, high: 60,  tiempo: '1D4', unidad: 'días'},
-                    {low: 61, high: 80,  tiempo: '1D3', unidad: 'días'},
-                    {low: 81, high: 999, tiempo: '1',   unidad: 'días'}
+                pocion: [
+                    {low: 0,  high: 20,  tiempo: '-',   unidad: '', dosis: 0},
+                    {low: 21, high: 40,  tiempo: '1D6', unidad: 'common.dias', dosis: 6},
+                    {low: 41, high: 60,  tiempo: '1D4', unidad: 'common.dias', dosis: 6},
+                    {low: 61, high: 80,  tiempo: '1D3', unidad: 'common.dias', dosis: 6},
+                    {low: 81, high: 999, tiempo: '1',   unidad: 'common.dias', dosis: 6}
                 ],
-                talismanes: [
-                    {low: 0,  high: 20,  tiempo: '-',     unidad: ''},
-                    {low: 21, high: 40,  tiempo: '1D6+3', unidad: 'meses'},
-                    {low: 41, high: 60,  tiempo: '1D4+2', unidad: 'meses'},
-                    {low: 61, high: 80,  tiempo: '1D3+2', unidad: 'meses'},
-                    {low: 81, high: 999, tiempo: '2D6',   unidad: 'semanas'}
+                talisman: [
+                    {low: 0,  high: 20,  tiempo: '-',     unidad: '', dosis: 0},
+                    {low: 21, high: 40,  tiempo: '1D6+3', unidad: 'common.meses', dosis: 1},
+                    {low: 41, high: 60,  tiempo: '1D4+2', unidad: 'common.meses', dosis: 1},
+                    {low: 61, high: 80,  tiempo: '1D3+2', unidad: 'common.meses', dosis: 1},
+                    {low: 81, high: 999, tiempo: '2D6',   unidad: 'common.semanas', dosis: 1}
                 ],
-                unguentos: [
-                    {low: 0,  high: 20,  tiempo: '-',   unidad: ''},
-                    {low: 21, high: 40,  tiempo: '1D6', unidad: 'semanas'},
-                    {low: 41, high: 60,  tiempo: '1D3', unidad: 'semanas'},
-                    {low: 61, high: 80,  tiempo: '1',   unidad: 'semanas'},
-                    {low: 81, high: 999, tiempo: '1D6', unidad: 'días'}
+                unguento: [
+                    {low: 0,  high: 20,  tiempo: '-',   unidad: '', dosis: 0},
+                    {low: 21, high: 40,  tiempo: '1D6', unidad: 'common.semanas', dosis: 6},
+                    {low: 41, high: 60,  tiempo: '1D3', unidad: 'common.semanas', dosis: 6},
+                    {low: 61, high: 80,  tiempo: '1',   unidad: 'common.semanas', dosis: 6},
+                    {low: 81, high: 999, tiempo: '1D6', unidad: 'common.dias', dosis: 6}
                 ]                       
             }
         }        
@@ -402,7 +426,8 @@ export const aqConfig = {
         aq3: {
             requisitos: {
                 minRR: 50,
-                minTeologia: 50,
+                minSkill: 50,
+                skillID: 'teologia',
                 ptAprendizaje: false,
                 diarios: false
             },
@@ -419,7 +444,8 @@ export const aqConfig = {
         aq4: {
             requisitos: {
                 minRR: 50,
-                minTeologia: 60,
+                minSkill: 60,
+                skillID: 'teologia',
                 ptAprendizaje: true,
                 diarios: true
             },
@@ -443,7 +469,8 @@ export const aqConfig = {
         vyc: {
             requisitos: {
                 minRR: 50,
-                minTeologia: 60,
+                minSkill: 60,
+                skillID: 'teologia',
                 ptAprendizaje: true,
                 diarios: true
             },

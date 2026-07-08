@@ -41,6 +41,13 @@
                                 labelAttr="label" }}
                 </select>                 
             </div>
+            <div class="_row _gapped">
+                <label>{{localize 'common.aprendido'}} :</label>
+                <input type="checkbox" 
+                       {{{_disabled}}}
+                       name="system.aprendido"
+                       {{checked system.aprendido}}>
+            </div>
             <div class="_row _gapped _menu">
                 {{{navTab 'primary' (array 'propiedades' 'componentes' 'descripcion') '_expanded'}}}
             </div>

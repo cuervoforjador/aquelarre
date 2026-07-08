@@ -12,6 +12,7 @@ export default class modelHechizo extends extendItem_Base {
 
         schema.aprendido = new api.BooleanField({ initial: false })
         schema.vis = new api.StringField({ initial: '' })
+        schema.tiradaRR = new api.BooleanField({ initial: false })
         schema.info = new api.SchemaField({
             forma: new api.StringField({ initial: '' }),
             naturaleza: new api.StringField({ initial: '' }),

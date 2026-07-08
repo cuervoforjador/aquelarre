@@ -3,6 +3,7 @@ import { configRULES } from "../config/rules.js"
 import extendCharacter_Character from "../models/character/character.js"
 import { aqConfig } from "../config/config.js"
 import helperMessages from "./helperMessages.js"
+import helperDialog from "./helperDialog.js"
 import newRoll from "../documents/roll.js"
 
 export default class helperContext {
@@ -313,6 +314,13 @@ export default class helperContext {
         return oReturn              
     }
 
+    static getMagiaRequisitos(rules) {
+        return {
+            hechizos: aqConfig.hechizos[rules].requisitos,
+            ensalmos: aqConfig.ensalmos[rules].requisitos
+        }        
+    }
+
     /**
      * getHechizosRequisitos
      * @param {*} rules 
@@ -396,8 +404,9 @@ export default class helperContext {
         let oReturn = {}
         for (var s in root) {
             const prop = root[s]
-            oReturn[s] = {...prop, ...{
-                key: s,
+            const sKey = prop.key ? prop.key : s
+            oReturn[sKey] = {...prop, ...{
+                key: prop.key,
                 label: game.i18n.localize(prop.label)
             }}
         }
@@ -530,6 +539,72 @@ export default class helperContext {
         }
         item.update({"system.applied": true})
         if (bRender && actor.sheet.rendered) actor.sheet.render(true)
+    }
+
+    /**
+     * showHechizo
+     * @param {*} rules 
+     * @param {*} item 
+     */
+    static showHechizo(rules, item) {
+        const _config = aqConfig.hechizos[rules]
+        const stats = {
+            tipo: _config.tipos.find(e => e.key === item.system.info.forma),
+            naturaleza: _config.naturaleza.find(e => e.key === item.system.info.naturaleza),
+            origen: _config.origen.find(e => e.key === item.system.info.origen),
+            nivel: _config.niveles[item.system.vis]
+        }
+        const textos = {
+            caducidad: item.system.propiedades.caducidad.useFormula ? 
+                            item.system.propiedades.caducidad.formula.replaceAll('#', '') : 
+                            item.system.propiedades.caducidad.text,
+            duracion: item.system.propiedades.duracion.useFormula ? 
+                            item.system.propiedades.duracion.formula.replaceAll('#', '') : 
+                            item.system.propiedades.duracion.text 
+        }
+        let sComponentes = ''
+            item.system.componentes.map(o => { sComponentes += sComponentes === '' ? o.name : ', ' + o.name })
+        if (sComponentes === '') sComponentes = game.i18n.localize('common.noAplica')
+
+        let sContent = `
+            <h1 class="_title">${item.name}</h1>
+            <h4>VIS ${game.i18n.localize(stats.nivel.label)} (-${stats.nivel.ptc} PC, ${stats.nivel.mod}%)</h4>
+            <div class="_stats">
+                <div class="_combo">
+                    <label>${game.i18n.localize('common.forma')}:</label>
+                    <label class="_field">${game.i18n.localize(stats.tipo.label)}</label>
+                </div>
+                <div class="_combo">
+                    <label>${game.i18n.localize('common.naturaleza')}:</label>
+                    <label class="_field">${game.i18n.localize(stats.naturaleza.label)}</label>
+                </div>
+                <div class="_combo">
+                    <label>${game.i18n.localize('common.origen')}:</label>
+                    <label class="_field">${game.i18n.localize(stats.origen.label)}</label>
+                </div>
+            </div>
+            <div class="_row">
+                <label><span class="_pseudoTitle">${game.i18n.localize('common.caducidad')}:</span> ${textos.caducidad}</label>
+            </div>
+            <div class="_row">
+                <label><span class="_pseudoTitle">${game.i18n.localize('common.duracion')}:</span> ${textos.duracion}</label>
+            </div>
+            <div class="_row">
+                <label><span class="_pseudoTitle">${game.i18n.localize('common.tiradaRR')}:</span> ${item.system.tiradaRR ? game.i18n.localize('common.si') : 
+                                                                                                                            game.i18n.localize('common.no')}</label>
+            </div>
+            <div class="_row">
+                <label><span class="_pseudoTitle">${game.i18n.localize('common.componentes')}:</span> ${sComponentes}</label>
+            </div>        
+            <div class="_row">
+                <label><span class="_pseudoTitle">${game.i18n.localize('common.preparacion')}:</span> ${item.system.propiedades.preparacion}</label>
+            </div>     
+            <div class="_row">
+                <label><span class="_pseudoTitle">${game.i18n.localize('common.descripcion')}:</span> ${item.system.descripcion}</label>
+            </div>                                   
+            `
+        
+        helperDialog.dialogDescription(null, sContent, item.name, rules, 700, item.img)
     }
 
     /**
