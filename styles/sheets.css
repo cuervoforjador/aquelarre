@@ -1352,13 +1352,22 @@ form._extend ._fog ._boxPointer {
     top: 4px;
 }
 form._extend ._fog ._boxPointer._firstTime01 {
-    left: calc(100% - 63px);
+    display: none;
 }
 form._extend ._fog ._boxPointer._firstTime02 {
-    left: calc(100% - 90px);
+    left: calc(100% - 63px);
 }
 form._extend ._fog ._boxPointer._firstTime03 {
+    left: calc(100% - 90px);
+}
+form._extend ._fog ._boxPointer._firstTime04 {
     left: calc(100% - 118px);
+}
+form._extend ._fog ._explain h4 {
+    font-size: 3rem;
+}
+form._extend ._fog ._explain b {
+    color: #ebaa11;
 }
 
 /** COMBATE **/

@@ -160,7 +160,7 @@ export default class extendCharacterSheet extends extendActorSheet {
     if ($(this.element).find('._fog').length === 0) 
         $(this.element).prepend(`<div class="_fog"></div>`)
     if ($(this.element).find('._fog').find('._explain').length === 0) 
-        $(this.element).find('._fog').prepend(this._lineFirstTime(this._firstTimeStep, this._firstTimeStep === '03'))
+        $(this.element).find('._fog').prepend(this._lineFirstTime(this._firstTimeStep, this._firstTimeStep === '04'))
 
     $(this.element).find('._fog ._buttons button._next').on('click', _event => {
       _event.stopPropagation()
@@ -172,7 +172,7 @@ export default class extendCharacterSheet extends extendActorSheet {
 
     $(this.element).find('._fog ._buttons button._close').on('click', async _event => {
       _event.stopPropagation()
-      await game.settings.set(SYSTEM_ID, 'firstTime', false)
+      await helperSettings.hideFirstTime()
       $(this.element).find('._fog').remove()
       this.document.sheet.render(true)
     })    
