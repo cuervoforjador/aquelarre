@@ -535,6 +535,32 @@ export default class helperSheets {
     }
 
     /**
+     * itemsEnsalmos
+     * @param {*} actor 
+     * @param {*} rules 
+     */
+    static itemsEnsalmos(actor, rules) {
+        const _config = aqConfig.ensalmos[rules]
+        let mReturn = []
+        let mItems = actor.items.filter(e => e.type === 'ensalmo' && e.system.rules === rules)
+        mItems.sort((a,b) => a.name.localeCompare(b.name))
+        mItems.map(item => {
+            const oItem = {
+                item: item,
+                nivel: item.system.ordo,
+                nivelTxt: game.i18n.localize(_config.niveles[item.system.ordo]?.label) || '',
+                pta: _config.niveles[item.system.ordo]?.pta || 0,
+                ptf: _config.niveles[item.system.ordo]?.ptf || 0,
+                mod: _config.niveles[item.system.ordo]?.mod || '',
+                base: actor.system.atributos.rr.value,
+            }
+            oItem.total = Number(oItem.base) + Number(oItem.mod)
+            mReturn.push(oItem)
+        })
+        return mReturn        
+    }
+
+    /**
      * itemsHechizosEstudio
      * @param {*} actor 
      * @param {*} rules 
@@ -547,6 +573,41 @@ export default class helperSheets {
             }}
             mReturn.push(oEstudio)
         })
+        return mReturn
+    }
+
+    /**
+     * ensalmosEstudio
+     * @param {*} actor 
+     */
+    static ensalmosEstudio(actor, rules) {
+        const _config = aqConfig.ensalmos[rules]
+        const teologia = actor.system.competencias.find(e => e.key === 'teologia')?.stats.value || 0
+        let mReturn = []
+        for (var s in actor.system.ritual.estudio) {
+            
+            const oRitual = actor.system.ritual.estudio[s]
+            const oRitualAux = {...oRitual, ...{
+                level: s,
+                levelText: game.i18n.localize('common.'+s),
+                minTeo: _config.niveles[s].teologia.min,
+                actTeo: teologia,
+                available: teologia >= _config.niveles[s].teologia.min,
+                estudiable: false,
+                meses: oRitual.meses,
+                mesesTotal: _config.niveles[s].estudioMeses,
+                percent: Math.round((oRitual.meses / _config.niveles[s].estudioMeses) *100),
+                usePta: _config.requisitos.ptAprendizaje,
+                pta: _config.niveles[s].pta,
+                pagado: oRitual.pagado,
+                mod: _config.niveles[s].mod,
+                mods: _config.niveles[s].mods,
+            }}
+            oRitualAux.aprendizaje = (oRitualAux.percent === 100)
+            mReturn.push(oRitualAux)
+        }
+        let estudiable = mReturn.find(e => e.available && !e.completado && !e.estudiando)
+        if (estudiable) estudiable.estudiable = true
         return mReturn
     }
 
@@ -564,6 +625,80 @@ export default class helperSheets {
             mReturn.push(oPreparado)
         })
         return mReturn
+    }
+
+    /**
+     * itemsEnsalmosPreparacion
+     * @param {*} actor 
+     * @param {*} rules 
+     */
+    static itemsEnsalmosPreparacion(actor, rules) {
+        let mReturn = []
+        actor.system.magia.preparacion.map(preparado => {
+            let oPreparado = {...preparado, ...{
+                item: actor.items.find(e => e.system.key === preparado.key)
+            }}
+            mReturn.push(oPreparado)
+        })
+        return mReturn
+    }
+
+    /**
+     * ensalmoPreparacion
+     * @param {*} actor 
+     * @param {*} rules 
+     */
+    static ensalmoPreparacion(actor, rules) {
+        const item = actor.items.get(actor.system.ritual.preparacion.id)
+        if (!item) return {}
+
+        const _config = aqConfig.ensalmos[rules]
+        const _nivel = _config.niveles[item.system.ordo]
+        
+        return {
+            ptf: _nivel.ptf,
+            ptfOK: item.system.propiedades.estadoGracia ? actor.system.atributos.ptf.value >= _nivel.ptf &&
+                                                        actor.system.atributos.ptf.value == actor.system.atributos.ptf.max :
+                                                        actor.system.atributos.ptf.value >= _nivel.ptf,
+            mod: _nivel.mod,
+            mods: _nivel.mods,
+            item: item
+        }
+    }
+
+    /**
+     * importOrdo
+     * @param {*} actor 
+     * @param {*} ordo 
+     */
+    static async importOrdo(actor, ordo) {
+        const rules = actor.system.rules
+        const sPath = "system.ritual.estudio."+ordo+".completado"
+
+        const mEnsalmos = (await helperContext.getFromCompendium(rules, 'ensalmo')).filter(e => e.system.ordo === ordo)
+        if (mEnsalmos.length === 0) {
+            helperDialog.error('error.noOrdo')
+            return
+        }
+        let itemsInfo = ""
+        mEnsalmos.map(ensalmo => {
+            itemsInfo += itemsInfo !== "" ? ', ' + ensalmo.name : ensalmo.name
+        })
+        const content = `<h4 class="_title divider">${game.i18n.localize('common.'+ordo)}</h4>
+                         <p>${game.i18n.localize("explain.adquirirOrdo")}</p>
+                         <p><strong>${game.i18n.localize("common.ensalmos")}: </strong> ${itemsInfo}</p>`
+
+        const answer = await helperDialog.dialogConfirm(rules, game.i18n.localize('common.'+ordo), content)
+        if (!answer) return
+        
+        const mMyEnsalmos = actor.items.filter(e => e.type === 'ensalmo')
+        const mAddEnsalmos = mEnsalmos.filter(e1 => !mMyEnsalmos.find(e2 => e2.system.key === e1.system.key))
+
+        await Item.create(mAddEnsalmos, {parent: actor})
+        await actor.update({
+            "system.control.importedSkills": true,
+            [sPath]: true
+        })
     }
 
     static _descrLocalizaciones(mLocalizaciones) {
@@ -882,4 +1017,210 @@ export default class helperSheets {
 
         return info
     }
+
+    /**
+     * clearKey
+     * @param {*} sKey 
+     */
+    static clearKey(sKey) {
+        let sReturn = sKey.replaceAll(' ', '_').toLowerCase()
+        sReturn = sReturn.replaceAll('ú', 'u').replaceAll('ó', 'o').replaceAll('í', 'i').replaceAll('é', 'e').replaceAll('á', 'a')
+        sReturn = sReturn.replaceAll('ü', 'u').replaceAll('ö', 'o').replaceAll('ï', 'i').replaceAll('ë', 'e').replaceAll('ä', 'a')
+        sReturn = sReturn.replaceAll('ù', 'u').replaceAll('ò', 'o').replaceAll('ì', 'i').replaceAll('è', 'e').replaceAll('à', 'a')
+        sReturn = sReturn.replaceAll('û', 'u').replaceAll('ô', 'o').replaceAll('î', 'i').replaceAll('ê', 'e').replaceAll('â', 'a')
+        sReturn = sReturn.replaceAll('(', '').replaceAll(')', '').replaceAll('[', '').replaceAll(']', '').replaceAll('ñ', 'n')
+        sReturn = sReturn.replaceAll('/', '').replaceAll('"', '').replaceAll("'", '').replaceAll('`', '').replaceAll('´', '')
+        sReturn = sReturn.replaceAll('*', '').replaceAll('?', '').replaceAll('¿', '').replaceAll('!', '').replaceAll('¡', '')
+        sReturn = sReturn.replaceAll('^', '').replaceAll('¨', '').replaceAll('+', '').replaceAll('-', '').replaceAll('.', '')
+        sReturn = sReturn.replaceAll(',', '').replaceAll(';', '').replaceAll(':', '').replaceAll('<', '').replaceAll('>', '')
+        return sReturn
+    }
+
+    /**
+     * getFolders
+     */
+    static getFolders() {
+        let oReturn = {}
+        game.folders.filter(e => e.type === 'Item' && e.depth === 1).map(e => {
+            oReturn[e.id] = {
+                key: e.id,
+                label: e.name
+            }
+        })
+        return oReturn
+    }
+
+    /**
+     * reconocerHechizo
+     * @param {*} rules
+     * @param {*} sContent 
+     */
+    static reconocerHechizo(rules, sContent) {
+        const _config = aqConfig.hechizos[rules]
+        let oItem = {
+            name: '',
+            key: '',
+            nivel: '1',
+            tipo: '',
+            naturaleza: '',
+            origen: '',
+            caducidad: '',
+            caducidadFormula: 'no',
+            duracion: '',
+            duracionFormula: 'no',
+            componentes: '',
+            preparacion: '',
+            descripcion: ''
+        }
+        let mLines = sContent.replaceAll('</p>', '').split('<p>').filter(e => e !== '')
+        oItem.name = mLines[0].trim()
+        oItem.key = this.clearKey(oItem.name)
+
+        if (rules === 'aq3') {
+
+            //Tipo, Naturaleza, Origen...
+            const sProperties = mLines[2].toLowerCase().replaceAll('.', '').trim()
+            let sTipo = sProperties.split(',')[0].trim()
+            let sNaturaleza = this.clearKey(sProperties.split(',')[1].split(' de origen ')[0].trim().replaceAll('magia ',''))
+            let sOrigen = this.clearKey(sProperties.split(',')[1].split(' de origen ')[1].trim())
+            if (sOrigen === 'alquimico') sOrigen = 'alquimica'
+            if (sOrigen === 'prohibido') sOrigen = 'prohibida'
+
+            oItem.tipo = aqConfig.hechizos[rules].tipos.find(o => o.key === sTipo)?.key
+            oItem.naturaleza = aqConfig.hechizos[rules].naturaleza.find(o => o.key === sNaturaleza)?.key
+            oItem.origen = aqConfig.hechizos[rules].origen.find(o => o.key === sOrigen)?.key
+            
+            let sRest = ''
+            let sProperty = ''
+            for (var i = 3; i < mLines.length; i++) {
+                const line = mLines[i]
+                if (line.split('ProseMirror').length > 1) continue
+                if (line.substr(0, 2) === 'a ') {
+                    if (sProperty !== '') oItem[sProperty] = sRest
+                    sProperty = this.clearKey(line.substr(2).split(':')[0].toLowerCase())
+                    if (sProperty === 'descripcion' || 
+                        sProperty === 'preparacion') sRest = '<p>' + line.substr(2).split(':')[1].trim() + '</p>'
+                                                else sRest = line.substr(2).split(':')[1].trim()
+                    
+                } else {
+                    if (sProperty === 'descripcion' || 
+                        sProperty === 'preparacion') sRest += '<p>' + line + '</p>'
+                                                else sRest += line
+                }
+            }
+            oItem[sProperty] = sRest
+        }
+
+        oItem.componentes = oItem.componentes.replaceAll(' y ', ', ').replaceAll('.', '')
+        return `<p><b>Nombre:</b> ${oItem.name}</p>
+                <p><b>Key:</b> ${oItem.key}</p>
+                <p><b>VIS:</b> ${oItem.nivel}</p>
+                <p><b>Tipo:</b> ${oItem.tipo}</p>
+                <p><b>Naturaleza:</b> ${oItem.naturaleza}</p>
+                <p><b>Origen:</b> ${oItem.origen}</p>
+                <p><b>Caducidad:</b> ${oItem.caducidad}</p>
+                <p><b>Caducidad (Es una Fórmula):</b> ${oItem.caducidadFormula}</p>
+                <p><b>Duración:</b> ${oItem.duracion}</p>
+                <p><b>Duración (Es una Fórmula):</b> ${oItem.duracionFormula}</p>
+                <p><b>Componentes:</b> ${oItem.componentes}</p>
+                <p><b>PREPARACIÓN</b> ${oItem.preparacion}</p>
+                <p><b>DESCRIPCIÓN</b> ${oItem.descripcion}</p>`
+    }
+
+    /**
+     * parseHechizo
+     * @param {*} sText 
+     * @param {*} item 
+     */
+    static async parseHechizo(sText, item) {
+        try {
+            const folder = item.system.massEditFolder
+            let mLines = sText.split('<p><b>').filter(e => e !== '')
+            if (mLines.length === 1) mLines = sText.split('<p><strong>').filter(e => e !== '')
+            let oSystem = {
+                info: {},
+                propiedades: {
+                    caducidad: {},
+                    duracion: {}
+                },
+                componentes: []
+            }
+            let name = ''
+            mLines.map(line => {
+                line = line.replaceAll('<b>', '<strong>').replaceAll('</b>', '</strong>')
+
+                let sProperty = this.clearKey(line.replace('</strong></p>', '</strong> ').split('</strong> ')[0].toLowerCase().replaceAll(':', ''))
+                let sRest = ''
+                const temp = line.replace('</strong> ', '#--#').split('#--#')
+                if (temp.length === 1 ) sRest = line.split('</strong></p>')[1].replaceAll('<p></p>', '')
+                                   else sRest = line.replace('</strong> ', '#--#').split('#--#')[1].split('</p>\n')[0].trim()
+
+                if (sProperty !== 'preparacion' &&
+                    sProperty !== 'descripcion') sRest = sRest.split('</p>')[0]
+
+                if (sProperty === 'nombre') name = sRest
+                if (sProperty === 'key')  oSystem.key = sRest
+                if (sProperty === 'vis')  oSystem.vis = 'vis'+sRest
+                if (sProperty === 'tipo')  oSystem.info.forma = sRest
+                if (sProperty === 'naturaleza')  oSystem.info.naturaleza = sRest
+                if (sProperty === 'origen')  oSystem.info.origen = sRest
+                if (sProperty === 'caducidad') oSystem.propiedades.caducidad.text = sRest
+                if (sProperty === 'caducidad_es_una_formula' && sRest.toLowerCase() === 'si') {                    
+                    oSystem.propiedades.caducidad.useFormula = true
+                    oSystem.propiedades.caducidad.formula = oSystem.propiedades.caducidad.text
+                    oSystem.propiedades.caducidad.text = ''
+                }
+                if (sProperty === 'duracion') oSystem.propiedades.duracion.text = sRest
+                if (sProperty === 'duracion_es_una_formula' && sRest.toLowerCase() === 'si') {                    
+                    oSystem.propiedades.duracion.useFormula = true
+                    oSystem.propiedades.duracion.formula = oSystem.propiedades.duracion.text
+                    oSystem.propiedades.duracion.text = ''
+                }
+                if (sProperty === 'componentes') {
+                    let nIndex = 1
+                    sRest.split(',').map(comp => {
+                        oSystem.componentes.push({
+                            key: nIndex.toString(),
+                            name: comp,
+                            checked: false
+                        })
+                        nIndex++
+                    })
+                }
+                if (sProperty === 'preparacion') oSystem.propiedades.preparacion = sRest
+                if (sProperty === 'descripcion') oSystem.descripcion = sRest
+            })
+
+            const newItem = await Item.create([{
+                                        name: name, 
+                                        img: item.img,
+                                        type: item.type, 
+                                        system: oSystem,
+                                        folder: folder}])
+        } catch(error) {
+            ui.notifications.error(`Error en el Sistema: ${error.message}`, { permanent: true });            
+        }
+    }
+
+    /**
+     * reconocerEnsalmo
+     * @param {*} rules
+     * @param {*} sContent 
+     */
+    static reconocerEnsalmo(rules, sContent) {
+
+    }
+
+    /**
+     * parseEnsalmo
+     * @param {*} sText 
+     * @param {*} item 
+     */
+    static parseEnsalmo(sText, item) {
+
+        const mLines = sText.split('<p><b>').filter(e => e !== '')
+        mLines.map(line => {
+
+        })
+    }    
 }

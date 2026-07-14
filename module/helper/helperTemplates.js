@@ -30,9 +30,13 @@ export default class helperTemplates {
             secuelas_comun: `${character}/parts/comun/secuelas.hbs`,
             orgullos_comun: `${character}/parts/comun/orgullos.hbs`,
             verguenzas_comun: `${character}/parts/comun/verguenzas.hbs`,
+            
             hechizosGrimorio_comun: `${character}/parts/comun/hechizosGrimorio.hbs`,
             hechizosEstudio_comun: `${character}/parts/comun/hechizosEstudio.hbs`,
             hechizosPreparacion_comun: `${character}/parts/comun/hechizosPreparacion.hbs`,
+            ensalmosGrimorio_comun: `${character}/parts/comun/ensalmosGrimorio.hbs`,
+            ensalmosEstudio_comun: `${character}/parts/comun/ensalmosEstudio.hbs`,
+            ensalmosPreparacion_comun: `${character}/parts/comun/ensalmosPreparacion.hbs`,            
 
             stats_main_aq3: `${character}/parts/aq3/stats_main.hbs`,
             stats_chars_aq3: `${character}/parts/aq3/stats_chars.hbs`,
@@ -116,7 +120,9 @@ export default class helperTemplates {
             tab_Penalizaciones: `${item}/tabs/penalizaciones.hbs`,
             tab_Efectos: `${item}/tabs/efectos.hbs`,
             tab_Componentes: `${item}/tabs/componentes.hbs`,
-            tab_HechizosPropiedades: `${item}/tabs/hechizosPropiedades.hbs`
+            tab_HechizosPropiedades: `${item}/tabs/hechizosPropiedades.hbs`,
+            tab_EnsalmosPropiedades: `${item}/tabs/ensalmosPropiedades.hbs`,
+            tab_MassEdit: `${item}/tabs/massEdit.hbs`
         })
     }
 }

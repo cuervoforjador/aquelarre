@@ -149,4 +149,23 @@ export default class helperMagia {
         await actor.update({"system.magia.estudio": mEstudios})
     }    
 
+    /**
+     * readPagesEnsalmos
+     * @param {*} rules 
+     * @param {*} actor 
+     */
+    static readPagesEnsalmos(rules, actor) {
+        const mItems = helperSheets.itemsEnsalmos(actor, rules)
+        let mPages = []
+        mItems.map(item => {
+            mPages.push({
+                id: item.item.id,
+                key: item.item.system.key,
+                img: item.item.img,
+                content: helperContext._contentEnsalmo(rules, item.item)
+            })
+        })
+        return mPages
+    }
+
 }

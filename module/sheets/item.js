@@ -34,7 +34,8 @@ export default class extendItem0Sheet
       _selectRow:     this.#onSelectRow,
       _markRow:       this.#onMarkRow,
       _copyObject:    this.#onCopyObject,
-      _greenIcon:     this.#onGreenIcon
+      _greenIcon:     this.#onGreenIcon,
+      _massEdit:      this.#onMassEdit
     },
   }
 
@@ -53,17 +54,7 @@ export default class extendItem0Sheet
 
   static async #onReadKey(_event, target) {
     const sTarget = $(event.currentTarget).parent().find('input[name="name"]')
-    let sKey = sTarget.val().replaceAll(' ', '_').toLowerCase()
-    sKey = sKey.replaceAll('ú', 'u').replaceAll('ó', 'o').replaceAll('í', 'i').replaceAll('é', 'e').replaceAll('á', 'a')
-    sKey = sKey.replaceAll('ü', 'u').replaceAll('ö', 'o').replaceAll('ï', 'i').replaceAll('ë', 'e').replaceAll('ä', 'a')
-    sKey = sKey.replaceAll('ù', 'u').replaceAll('ò', 'o').replaceAll('ì', 'i').replaceAll('è', 'e').replaceAll('à', 'a')
-    sKey = sKey.replaceAll('û', 'u').replaceAll('ô', 'o').replaceAll('î', 'i').replaceAll('ê', 'e').replaceAll('â', 'a')
-    sKey = sKey.replaceAll('(', '').replaceAll(')', '').replaceAll('[', '').replaceAll(']', '').replaceAll('ñ', 'n')
-    sKey = sKey.replaceAll('/', '').replaceAll('"', '').replaceAll("'", '').replaceAll('`', '').replaceAll('´', '')
-    sKey = sKey.replaceAll('*', '').replaceAll('?', '').replaceAll('¿', '').replaceAll('!', '').replaceAll('¡', '')
-    sKey = sKey.replaceAll('^', '').replaceAll('¨', '').replaceAll('+', '').replaceAll('-', '').replaceAll('.', '')
-    sKey = sKey.replaceAll(',', '').replaceAll(';', '').replaceAll(':', '').replaceAll('<', '').replaceAll('>', '')
-
+    const sKey = helperSheets.clearKey(sTarget)
     let mDocs = await helperContext.getFromCompendium(this.document.system.rules)
     if (mDocs.find(e => e.system.key === sKey)) sKey = ''
     await this.document.update({"system.key": sKey})
@@ -158,6 +149,14 @@ export default class extendItem0Sheet
     if (!item) return
     const data = this._access(item, path)
     await this.document.update({[path]: data})
+  }
+
+  static async #onMassEdit(_event, target) {
+    const sText = this.document.system.massEdit
+    if (!sText || sText === '') return
+
+    if (this.document.type === 'hechizo') helperSheets.parseHechizo(sText, this.document)
+    if (this.document.type === 'ensalmo') helperSheets.parseEnsalmo(sText, this.document)
   }
 
   /** @override */
@@ -269,33 +268,73 @@ export default class extendItem0Sheet
   }
 
   /**
+   * changeTab
+   * @param {*} tab 
+   * @param {*} group 
+   * @param {*} options 
+   */
+  changeTab(tab, group, options) {
+    if (tab === 'massedit') {
+        const body = $(document).find('body')
+        const sideBar = $(document).find("#interface section#ui-right #sidebar #sidebar-content")
+        $(this.element).width(body.width() - sideBar.width())
+        $(this.element).height(body.height() - 100)
+        $(this.element).css('top', 5)
+        $(this.element).css('left', 5)
+    }
+    super.changeTab(tab, group, options);
+  }
+
+  /**
    * addCustomTextButtons
    * @param {*} context 
    * @param {*} html 
    */
   addCustomTextButtons(context, html) {
-    const menu = html.find('.menu-container menu.editor-menu')
-    if (menu.find('li._fromPDF').length === 0) {
-      menu.append(`<li class="_custom _fromPDF">
-                      <button type="button" data-action="fromPDF" data-tooltip="Arreglar Texto">
-                        <i class="fa-solid fa-text fa-fw"></i>
-                      </button>
-                   </li>`)
-      menu.find('li._fromPDF button').on("click", (event, data) => {
-        let content = $(event.delegateTarget).parents('prose-mirror').find('.editor-content')
-        let sContent = content.html()
-        sContent = sContent.replaceAll('<p>', '')
-        let mContent = sContent.split('</p>')
-        let sFinal = ""
-        mContent.map(s => {
-          if (sFinal.slice(-1) === '-') sFinal = sFinal.slice(0, -1) + s
-          else sFinal = sFinal === '' ? s : sFinal + ' ' + s
+
+    html.find('.menu-container menu.editor-menu').each((i,e) => {
+      const menu = $(e)
+      const path = menu.parents('.editor').attr('name')
+      const type = context.item.type
+      const rules = context.myRules
+
+      if (menu.find('li._fromPDF').length === 0) {
+        menu.append(`<li class="_custom _fromPDF">
+                        <button type="button" data-action="fromPDF" data-tooltip="Arreglar Texto">
+                          <i class="fa-solid fa-text fa-fw"></i>
+                        </button>
+                    </li>`)
+        if (path === 'system.massEdit' && context.modeMass) {
+          menu.append(`<li class="_custom _massEdit">
+                        <button type="button" data-action="massEdit" data-tooltip="Reconocer Texto">
+                          <i class="fa-solid fa-wand-magic-sparkles fa-fw"></i>
+                        </button>
+                      </li>`)
+        }                 
+        menu.find('li._fromPDF button').on("click", (event, data) => {
+          let content = $(event.delegateTarget).parents('prose-mirror').find('.editor-content')
+          let sContent = content.html()
+          sContent = sContent.replaceAll('<p>', '')
+          let mContent = sContent.split('</p>')
+          let sFinal = ""
+          mContent.map(s => {
+            if (sFinal.slice(-1) === '-') sFinal = sFinal.slice(0, -1) + s
+            else sFinal = sFinal === '' ? s : sFinal + ' ' + s
+          })
+          sFinal = sFinal.replaceAll('. ', '.</p><p>')
+          sFinal = '<p>'+sFinal+'</p>'
+          content.html(sFinal)
         })
-        sFinal = sFinal.replaceAll('. ', '.</p><p>')
-        sFinal = '<p>'+sFinal+'</p>'
-        content.html(sFinal)
-      })
-    }
+        menu.find('li._massEdit button').on("click", async (event, data) => {
+          let content = $(event.delegateTarget).parents('prose-mirror').find('.editor-content')
+          let sContent = content.html()                    
+          if (type === 'hechizo') sContent = helperSheets.reconocerHechizo(rules, sContent)
+          if (type === 'ensalmo') sContent = helperSheets.reconocerEnsalmo(rules, sContent)
+          content.html(sContent)
+          await context.item.update({"system.massEdit": sContent})
+        })
+      }
+    })    
   }
 
   /**

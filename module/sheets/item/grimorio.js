@@ -27,6 +27,7 @@ export default class sheetGrimorio extends extendItem0Sheet {
     const rules = this.document.system.rules
     const context = await super._prepareContext()    
     context.configRULES = configRULES[rules]
+    context.modeMass = helperSettings.getModeMass()
 
     return context
   }

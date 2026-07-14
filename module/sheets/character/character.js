@@ -10,6 +10,8 @@ import sheetHandler from "../handler.js";
 import helperTools from "../../helper/helperTools.js";
 import helperSettings from "../../helper/helperSettings.js";
 import helperMessages from "../../helper/helperMessages.js";
+import helperBooks from "../../helper/helperBooks.js";
+import helperMagia from "../../helper/helperMagia.js";
 
 export default class extendCharacterSheet extends extendActorSheet {
 
@@ -33,22 +35,33 @@ export default class extendCharacterSheet extends extendActorSheet {
       _navToItem:             this.#onNavToItem,
       _showPenals:            this.#onShowPenals,
       _showHechizo:           this.#onShowHechizo,
+      _showEnsalmo:           this.#onShowEnsalmo,
       _toggleAprendido:       this.#onToggleAprendido,
       _deletePreparacion:     this.#onDeletePreparacion,
       _deleteEstudio:         this.#onDeleteEstudio,
       _payHechizoPta:         this.#onPayHechizoPta,
       _dosis:                 this.#onDosis,
       _componentes:           this.#onComponentes,
-      _lanzarHechizo:         this.#onLanzarHechizo
+      _lanzarHechizo:         this.#onLanzarHechizo,
+      _estudiarOrdo:          this.#onEstudiarOrdo,
+      _payEnsalmoPta:         this.#onPayEnsalmoPta,
+      _adquirirOrdo:          this.#onAdquirirOrdo,
+      _prepararEnsalmo:       this.#onPrepararEnsalmo,
+      _bookEnsalmos:          this.#onBookEnsalmos,
+      _payEnsalmoPtf:         this.#onPayEnsalmoPtf,
+      _lanzarEnsalmo:         this.#onLanzarEnsalmo,
     }
   }
 
   /** @override */
   static PARTS = {
-    header: { template: `${this.templateFolder}/headers/${this.templateTag}.hbs` },
-    main: { 
+    header: { 
+      template: `${this.templateFolder}/headers/${this.templateTag}.hbs`,
+      scrollable: [".scrollable"] 
+    },
+    main: {       
       template: `${this.templateFolder}/main/${this.templateTag}.hbs`,
-      scrollable: ["._skills", "._gridTop", "._gridBottom", "._gridRight"]
+      scrollable: [".scrollable"]
     }
   }
   static TABS = {
@@ -93,9 +106,14 @@ export default class extendCharacterSheet extends extendActorSheet {
     context.weapons = helperSheets.itemsWeapons(this.document, rules)
     context.armors = helperSheets.itemsArmors(this.document, rules)
     context.shields = helperSheets.systemShields(this.document, rules)
+
     context.hechizos = helperSheets.itemsHechizos(this.document, rules)
     context.hechizosPreparacion = helperSheets.itemsHechizosPreparacion(this.document, rules)
     context.hechizosEstudio = helperSheets.itemsHechizosEstudio(this.document, rules)
+    
+    context.ensalmos = helperSheets.itemsEnsalmos(this.document, rules)
+    context.ensalmosEstudio = helperSheets.ensalmosEstudio(this.document, rules)
+    context.ensalmoPreparacion = helperSheets.ensalmoPreparacion(this.document, rules)
     
     context.tabs = this._prepareTabs("primary")
     context.tabsStats = this._prepareTabs("stats")
@@ -350,6 +368,12 @@ export default class extendCharacterSheet extends extendActorSheet {
     helperContext.showHechizo(this.document.system.rules, item)
   }
 
+  static #onShowEnsalmo(_event, target) {
+    _event.stopPropagation()
+    const item = this.document.items.get($(target).data('id'))
+    helperContext.showEnsalmo(this.document.system.rules, item)
+  }  
+
   static async #onToggleAprendido(_event, target) {
     _event.stopPropagation() 
     const item = this.document.items.get($(target).data('id'))
@@ -399,6 +423,39 @@ export default class extendCharacterSheet extends extendActorSheet {
     })
   }
 
+  static async #onPayEnsalmoPta(_event, target) {
+    _event.stopPropagation()
+    const ordo = $(target).data('ordo')
+    const nivel = aqConfig.ensalmos[this.document.system.rules].niveles[ordo]
+    const sPath = "system.ritual.estudio."+ordo+".pagado"
+
+    let ptaValue = this.document.system.atributos.pta.value - nivel.pta
+    if (ptaValue < 0) {
+      helperDialog.error('error.noPta')
+      return
+    }
+    await this.document.update({
+      "system.atributos.pta.value": ptaValue,
+      [sPath]: true
+    })
+  }
+
+  static async #onPayEnsalmoPtf(_event, target) {
+    _event.stopPropagation()
+    const ptf = Number($(target).data('ptf'))
+    if (isNaN(ptf) || ptf <= 0) return
+
+    let ptfValue = this.document.system.atributos.ptf.value - ptf
+    if (ptfValue < 0) {
+      helperDialog.error('error.noPtf')
+      return
+    }
+    await this.document.update({
+      "system.atributos.ptf.value": ptfValue,
+      "system.ritual.preparacion.ptfPaid": true
+    })    
+  }
+
   static async #onDosis(_event, target) {
     _event.stopPropagation()
     let mPreparacion = this.document.system.magia.preparacion  
@@ -441,12 +498,72 @@ export default class extendCharacterSheet extends extendActorSheet {
     const item = this.document.items.get(prep.id)
     helperMessages.postMessage({
       actor: this.document,
-      title: this.document.name, //game.i18n.localize('common.lanzandoHechizo'),
+      title: this.document.name,
       subTitle: item.name,
       backImg: item.img, 
       class: '_hechizo',
       content: ''
     })
+  }
+
+  static async #onLanzarEnsalmo(_event, target) {
+    _event.stopPropagation()
+    const item = this.document.items.get(this.document.system.ritual.preparacion.id)
+    if (!item) return
+
+    let preparacion = { ...this.document.system.ritual.preparacion, ...{
+      id: '',
+      preparando: false,
+      ptfPaid: false,
+      ceremonia: false,
+      completado: false
+    }}
+    await this.document.update({ "system.ritual.preparacion": preparacion })  
+    
+    helperMessages.postMessage({
+      actor: this.document,
+      title: this.document.name,
+      subTitle: item.name,
+      backImg: item.img, 
+      class: '_ensalmo',
+      content: ''
+    })
+  }  
+
+  static async #onEstudiarOrdo(_event, target) {
+    _event.stopPropagation()
+    const sPath = "system.ritual.estudio." + $(target).data('ordo') + ".estudiando"
+    await this.document.update({
+      [sPath]: true
+    })
+  }
+
+  static async #onAdquirirOrdo(_event, target) {
+    _event.stopPropagation()
+    const ordo = $(target).data('ordo')
+    if (!ordo) return
+    helperSheets.importOrdo(this.document, ordo)    
+  }
+
+  static async #onPrepararEnsalmo(_event, target) {
+    _event.stopPropagation()
+    const item = this.document.items.get($(target).data('id'))
+    if (!item) return
+    const preparacion = {...this.document.system.ritual.preparacion, ...{
+      id: item.id,
+      preparando: true,
+      ptfPaid: false,
+      ceremonia: false,
+      completado: false
+    }}
+    await this.document.update({ "system.ritual.preparacion": preparacion })
+  }
+
+  static async #onBookEnsalmos(_event, target) {
+    _event.stopPropagation()
+    const rules = this.document.system.rules
+    const mPages = helperMagia.readPagesEnsalmos(rules, this.document)
+    await helperBooks.openBook(rules, this.document, mPages)
   }
 
   /**

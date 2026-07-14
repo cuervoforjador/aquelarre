@@ -547,6 +547,10 @@ export default class helperContext {
      * @param {*} item 
      */
     static showHechizo(rules, item) {
+        const sContent = this._contentHechizo(rules, item)
+        helperDialog.dialogDescription(null, sContent, item.name, rules, 700, item.img)
+    }
+    static _contentHechizo(rules, item) {
         const _config = aqConfig.hechizos[rules]
         const stats = {
             tipo: _config.tipos.find(e => e.key === item.system.info.forma),
@@ -566,22 +570,29 @@ export default class helperContext {
             item.system.componentes.map(o => { sComponentes += sComponentes === '' ? o.name : ', ' + o.name })
         if (sComponentes === '') sComponentes = game.i18n.localize('common.noAplica')
 
-        let sContent = `
-            <h1 class="_title">${item.name}</h1>
-            <h4>VIS ${game.i18n.localize(stats.nivel.label)} (-${stats.nivel.ptc} PC, ${stats.nivel.mod}%)</h4>
-            <div class="_stats">
-                <div class="_combo">
-                    <label>${game.i18n.localize('common.forma')}:</label>
-                    <label class="_field">${game.i18n.localize(stats.tipo.label)}</label>
+        return `
+            <div class="_wrapImg">
+                <img class="_spellImg" src="${item.img}"/>
+                <div class="_header">
+                    <h1 class="_title _pointer" data-id="${item.id}">${item.name}</h1>
+                    <h4>VIS ${game.i18n.localize(stats.nivel.label)} (-${stats.nivel.ptc} PC, ${stats.nivel.mod}%)</h4>
+                    <div class="_stats">
+                        <div class="_combo">
+                            <label>${game.i18n.localize('common.forma')}:</label>
+                            <label class="_field">${game.i18n.localize(stats.tipo.label)}</label>
+                        </div>
+                        <div class="_combo">
+                            <label>${game.i18n.localize('common.naturaleza')}:</label>
+                            <label class="_field">${game.i18n.localize(stats.naturaleza.label)}</label>
+                        </div>
+                    </div>  
                 </div>
-                <div class="_combo">
-                    <label>${game.i18n.localize('common.naturaleza')}:</label>
-                    <label class="_field">${game.i18n.localize(stats.naturaleza.label)}</label>
-                </div>
+            </div>
+            <div class="_row _stats">
                 <div class="_combo">
                     <label>${game.i18n.localize('common.origen')}:</label>
                     <label class="_field">${game.i18n.localize(stats.origen.label)}</label>
-                </div>
+                </div>            
             </div>
             <div class="_row">
                 <label><span class="_pseudoTitle">${game.i18n.localize('common.caducidad')}:</span> ${textos.caducidad}</label>
@@ -603,9 +614,45 @@ export default class helperContext {
                 <label><span class="_pseudoTitle">${game.i18n.localize('common.descripcion')}:</span> ${item.system.descripcion}</label>
             </div>                                   
             `
-        
+    }
+
+    /**
+     * showEnsalmo
+     * @param {*} rules 
+     * @param {*} item 
+     */
+    static showEnsalmo(rules, item) {
+        const sContent = this._contentEnsalmo(rules, item)
         helperDialog.dialogDescription(null, sContent, item.name, rules, 700, item.img)
     }
+    static _contentEnsalmo(rules, item) {            
+        const _config = aqConfig.ensalmos[rules]
+        const nivel = _config.niveles[item.system.ordo]
+        return `
+            <div class="_wrapImg">
+                <img class="_spellImg" src="${item.img}"/>
+                <div class="_header">
+                    <h1 class="_title _pointer" data-id="${item.id}">${item.name}</h1>
+                    <h4>Ordo ${game.i18n.localize(nivel.label)} (-${nivel.ptf} PC, ${nivel.mod}%)</h4>
+                    <div class="_stats">
+                        <div class="_combo">
+                            <label>${game.i18n.localize('common.estadoGracia')}:</label>
+                            <label class="_field">${item.system.propiedades.estadoGracia ? game.i18n.localize('common.si') : game.i18n.localize('common.no')}</label>
+                        </div>
+                    </div>  
+                </div>
+            </div>          
+            <div class="_row">
+                <label><span class="_pseudoTitle">${game.i18n.localize('common.requisitos')}:</span> ${item.system.propiedades.requisitos}</label>
+            </div>
+            <div class="_row">
+                <label><span class="_pseudoTitle">${game.i18n.localize('common.ceremonia')}:</span> ${item.system.propiedades.ceremonia}</label>
+            </div>
+            <div class="_row">
+                <label><span class="_pseudoTitle">${game.i18n.localize('common.efectos')}:</span> ${item.system.descripcion}</label>
+            </div>
+            `
+    }    
 
     /**
      * deleteAllContext

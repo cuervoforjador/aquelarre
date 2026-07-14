@@ -49,13 +49,18 @@
                        {{checked system.aprendido}}>
             </div>
             <div class="_row _gapped _menu">
-                {{{navTab 'primary' (array 'propiedades' 'componentes' 'descripcion') '_expanded'}}}
+                {{#if modeMass}}
+                    {{{navTab 'primary' (array 'propiedades' 'componentes' 'descripcion' 'massedit') '_expanded'}}}
+                {{else}}
+                    {{{navTab 'primary' (array 'propiedades' 'componentes' 'descripcion') '_expanded'}}}
+                {{/if}}
             </div>
         </div> 
                 
         {{>tab_HechizosPropiedades}}
         {{>tab_Componentes}}
         {{>tab_Descripcion}}
+        {{>tab_MassEdit}}
         
     </div>
     <div class="_sheetFooter">

@@ -36,7 +36,10 @@ export default class modelHechizo extends extendItem_Base {
             key: new api.StringField({ initial: '' }),
             name: new api.StringField({ initial: '' }),
             checked: new api.BooleanField({ initial: false })
-        }))        
+        }))  
+        
+        schema.massEdit = new api.HTMLField({ initial: '' })
+        schema.massEditFolder = new api.StringField({ initial: '' })
 
         return schema;
     }

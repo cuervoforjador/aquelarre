@@ -169,6 +169,11 @@ input.h4 {
 ._big {
     font-size: calc(var(--fSize)*1.5);
 }
+._red {
+    color: #bf2222 !important;
+    text-shadow: 0 0 5px #c76f6f;
+    font-weight: 900;
+}
 ._noBorder {
     border-color: #00000000 !important;
 }

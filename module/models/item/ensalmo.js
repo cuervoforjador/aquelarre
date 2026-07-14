@@ -19,6 +19,9 @@ export default class modelEnsalmo extends extendItem_Base {
             resumen: new api.StringField({ initial: '' })
         })    
 
+        schema.massEdit = new api.HTMLField({ initial: '' })
+        schema.massEditFolder = new api.StringField({ initial: '' })
+
         return schema;
     }
 
