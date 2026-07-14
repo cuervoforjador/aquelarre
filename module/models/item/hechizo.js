@@ -29,7 +29,8 @@ export default class modelHechizo extends extendItem_Base {
                 formula: new api.StringField({ initial: '' }),
                 text: new api.StringField({ initial: '' })
             }),
-            preparacion: new api.HTMLField({ initial: '' })    
+            preparacion: new api.HTMLField({ initial: '' }),
+            resumen: new api.StringField({ initial: '' }) 
         })
 
         schema.componentes = new api.ArrayField(new api.SchemaField({

@@ -1068,19 +1068,21 @@ export default class helperSheets {
             caducidadFormula: 'no',
             duracion: '',
             duracionFormula: 'no',
+            tiradaRR: 'no',
             componentes: '',
             preparacion: '',
             descripcion: ''
         }
         let mLines = sContent.replaceAll('</p>', '').split('<p>').filter(e => e !== '')
+        let linesInit = 2
         oItem.name = mLines[0].trim()
+        oItem.name = oItem.name.trim().charAt(0).toUpperCase() + oItem.name.trim().slice(1)
         oItem.key = this.clearKey(oItem.name)
 
         if (rules === 'aq3') {
-
-            //Tipo, Naturaleza, Origen...
+            linesInit = 3
             const sProperties = mLines[2].toLowerCase().replaceAll('.', '').trim()
-            let sTipo = sProperties.split(',')[0].trim()
+            let sTipo = this.clearKey(sProperties.split(',')[0].trim())
             let sNaturaleza = this.clearKey(sProperties.split(',')[1].split(' de origen ')[0].trim().replaceAll('magia ',''))
             let sOrigen = this.clearKey(sProperties.split(',')[1].split(' de origen ')[1].trim())
             if (sOrigen === 'alquimico') sOrigen = 'alquimica'
@@ -1089,29 +1091,58 @@ export default class helperSheets {
             oItem.tipo = aqConfig.hechizos[rules].tipos.find(o => o.key === sTipo)?.key
             oItem.naturaleza = aqConfig.hechizos[rules].naturaleza.find(o => o.key === sNaturaleza)?.key
             oItem.origen = aqConfig.hechizos[rules].origen.find(o => o.key === sOrigen)?.key
-            
-            let sRest = ''
-            let sProperty = ''
-            for (var i = 3; i < mLines.length; i++) {
-                const line = mLines[i]
-                if (line.split('ProseMirror').length > 1) continue
-                if (line.substr(0, 2) === 'a ') {
-                    if (sProperty !== '') oItem[sProperty] = sRest
-                    sProperty = this.clearKey(line.substr(2).split(':')[0].toLowerCase())
-                    if (sProperty === 'descripcion' || 
-                        sProperty === 'preparacion') sRest = '<p>' + line.substr(2).split(':')[1].trim() + '</p>'
-                                                else sRest = line.substr(2).split(':')[1].trim()
-                    
-                } else {
-                    if (sProperty === 'descripcion' || 
-                        sProperty === 'preparacion') sRest += '<p>' + line + '</p>'
-                                                else sRest += line
-                }
-            }
-            oItem[sProperty] = sRest
         }
+        if (rules === 'vyc') {
+            linesInit = 2
+            const sVIS = mLines[1].split('(')[0].trim().split(' ')[1];
+            ['vis1', 'vis2', 'vis3', 'vis4', 'vis5', 'vis6', 'vis7'].map(s => {
+                if (game.i18n.localize('common.'+s).toLowerCase() === sVIS) oItem.nivel = s.substr(3,1)
+            })
+            let sTipo = this.clearKey(mLines[1].split(',')[2].trim())
+            let sNaturaleza = this.clearKey(mLines[1].split(',')[3].trim().split(' de origen ')[0].trim().replaceAll('magia ',''))
+            let sOrigen = this.clearKey(mLines[1].split(',')[3].trim().split(' de origen ')[1].trim())
+            if (sOrigen === 'alquimico') sOrigen = 'alquimica'
+            if (sOrigen === 'prohibido') sOrigen = 'prohibida'
 
-        oItem.componentes = oItem.componentes.replaceAll(' y ', ', ').replaceAll('.', '')
+            oItem.tipo = aqConfig.hechizos[rules].tipos.find(o => o.key === sTipo)?.key
+            oItem.naturaleza = aqConfig.hechizos[rules].naturaleza.find(o => o.key === sNaturaleza)?.key
+            oItem.origen = aqConfig.hechizos[rules].origen.find(o => o.key === sOrigen)?.key
+        }        
+
+        let sRest = ''
+        let sProperty = ''
+        for (var i = linesInit; i < mLines.length; i++) {
+            const line = mLines[i]
+            if (line.split('ProseMirror').length > 1) continue
+            if (line.substr(0, 2) === 'a ' ||                
+                line.substr(0, 10) === 'Caducidad:' ||
+                line.substr(0, 9) === 'Duración:' ||
+                line.substr(0, 13) === 'Tirada de RR:' ||
+                line.substr(0, 12) === 'Componentes:' ||
+                line.substr(0, 12) === 'Preparación:' ||
+                line.substr(0, 12) === 'Descripción:') {
+
+                if (sProperty !== '') oItem[sProperty] = sRest
+                if (line.substr(0, 2) === 'a ') sProperty = this.clearKey(line.substr(2).split(':')[0].toLowerCase())
+                                           else sProperty = this.clearKey(line.split(':')[0].toLowerCase())
+
+                if (sProperty === 'descripcion' || 
+                    sProperty === 'preparacion') sRest = '<p>' + line.substr(2).split(':')[1].trim() + '</p>'
+                                            else sRest = line.substr(2).split(':')[1].trim()
+                
+            } else {
+                if (sProperty === 'descripcion' || 
+                    sProperty === 'preparacion') sRest += '<p>' + line + '</p>'
+                                            else sRest += line
+            }
+        }
+        oItem[sProperty] = sRest        
+
+        oItem.componentes = oItem.componentes.replaceAll(' y ', ', ').replaceAll('.', '').replaceAll('*', '')
+        oItem.caducidad = oItem.caducidad.trim() === '' ? game.i18n.localize('common.noAplica') : oItem.caducidad
+        oItem.duracion = oItem.duracion.trim() === '' ? game.i18n.localize('common.noAplica') : oItem.duracion
+        oItem.preparacion = oItem.preparacion.trim() === '' ? game.i18n.localize('common.noAplica') : oItem.preparacion
+
         return `<p><b>Nombre:</b> ${oItem.name}</p>
                 <p><b>Key:</b> ${oItem.key}</p>
                 <p><b>VIS:</b> ${oItem.nivel}</p>
@@ -1122,6 +1153,7 @@ export default class helperSheets {
                 <p><b>Caducidad (Es una Fórmula):</b> ${oItem.caducidadFormula}</p>
                 <p><b>Duración:</b> ${oItem.duracion}</p>
                 <p><b>Duración (Es una Fórmula):</b> ${oItem.duracionFormula}</p>
+                <p><b>Tirada de RR:</b> ${oItem.tirada_de_rr ? oItem.tirada_de_rr : 'no'}</p>
                 <p><b>Componentes:</b> ${oItem.componentes}</p>
                 <p><b>PREPARACIÓN</b> ${oItem.preparacion}</p>
                 <p><b>DESCRIPCIÓN</b> ${oItem.descripcion}</p>`
@@ -1143,7 +1175,8 @@ export default class helperSheets {
                     caducidad: {},
                     duracion: {}
                 },
-                componentes: []
+                componentes: [],
+                rules: item.system.rules
             }
             let name = ''
             mLines.map(line => {
@@ -1165,6 +1198,7 @@ export default class helperSheets {
                 if (sProperty === 'naturaleza')  oSystem.info.naturaleza = sRest
                 if (sProperty === 'origen')  oSystem.info.origen = sRest
                 if (sProperty === 'caducidad') oSystem.propiedades.caducidad.text = sRest
+                if (sProperty === 'tirada_de_rr') oSystem.tiradaRR = this.clearKey(sRest.toLowerCase()) === 'si'
                 if (sProperty === 'caducidad_es_una_formula' && sRest.toLowerCase() === 'si') {                    
                     oSystem.propiedades.caducidad.useFormula = true
                     oSystem.propiedades.caducidad.formula = oSystem.propiedades.caducidad.text
@@ -1181,7 +1215,7 @@ export default class helperSheets {
                     sRest.split(',').map(comp => {
                         oSystem.componentes.push({
                             key: nIndex.toString(),
-                            name: comp,
+                            name: comp.trim().charAt(0).toUpperCase() + comp.trim().slice(1),
                             checked: false
                         })
                         nIndex++
@@ -1190,6 +1224,9 @@ export default class helperSheets {
                 if (sProperty === 'preparacion') oSystem.propiedades.preparacion = sRest
                 if (sProperty === 'descripcion') oSystem.descripcion = sRest
             })
+            oSystem.fuente = (item.system.rules === 'aq3') ? "Fuente: Aquelarre Manual básico ( 3a Edición - NoSoloRol )" :
+                             (item.system.rules === 'aq4') ? "Fuente: Aquelarre Manual básico ( 4a Edición - NoSoloRol )" :
+                             (item.system.rules === 'vyc') ? "Fuente: Villa y Corte Manual básico ( NoSoloRol )" : ''
 
             const newItem = await Item.create([{
                                         name: name, 
