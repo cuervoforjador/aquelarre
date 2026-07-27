@@ -45,4 +45,23 @@
         {{/if}}             
     </div>
 
+    <h4 class="_noMargin">{{localize 'common.duracion'}} ({{localize 'common.ceremonia'}})</h4>
+    <div class="_simpleText _medSize">
+        {{#if isEditable}}
+            {{formInput 
+                systemFields.descripcion 
+                enriched=_textDuracion
+                value=system.propiedades.duracion 
+                name="system.propiedades.duracion"
+                toggled=false}}  
+        {{else}}
+            {{editor system.propiedades.duracion 
+                target="system.propiedades.duracion" 
+                button=false 
+                editable=false
+                engine="prosemirror" 
+                collaborate=false}}
+        {{/if}}             
+    </div>
+
 </section>

@@ -35,6 +35,16 @@ export default class helperSettings {
             requiresReload: true 
         })
 
+        game.settings.register(SYSTEM_ID, "modeEdit", {
+            name: "common.modeEdit",
+            hint: "tooltip.modeEdit",
+            scope: "world",
+            config: true,
+            type: Boolean,
+            default: false,
+            requiresReload: true 
+        }) 
+
         game.settings.register(SYSTEM_ID, "modeMass", {
             name: "common.modeMass",
             hint: "tooltip.modeMass",
@@ -80,6 +90,14 @@ export default class helperSettings {
     }
 
     /**
+     * rules
+     * @returns 
+     */
+    static rules() {
+        return game.settings.get(SYSTEM_ID,'rules');
+    }
+
+    /**
      * getFirstTime
      * @returns 
      */
@@ -98,6 +116,14 @@ export default class helperSettings {
      */
     static getUserEdit() {
         return game.settings.get(SYSTEM_ID,'userEdit');
+    }
+
+    /**
+     * getModeEdit
+     * @returns 
+     */
+    static getModeEdit() {
+        return game.settings.get(SYSTEM_ID,'modeEdit');
     }
 
     /**

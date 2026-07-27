@@ -36,12 +36,14 @@ export default class extendCharacterSheet extends extendActorSheet {
       _showPenals:            this.#onShowPenals,
       _showHechizo:           this.#onShowHechizo,
       _showEnsalmo:           this.#onShowEnsalmo,
+      _showItemDescr:         this.#onShowItemDescr,
       _toggleAprendido:       this.#onToggleAprendido,
       _deletePreparacion:     this.#onDeletePreparacion,
       _deleteEstudio:         this.#onDeleteEstudio,
       _payHechizoPta:         this.#onPayHechizoPta,
       _dosis:                 this.#onDosis,
       _componentes:           this.#onComponentes,
+      _bookHechizos:          this.#onBookHechizos,
       _lanzarHechizo:         this.#onLanzarHechizo,
       _estudiarOrdo:          this.#onEstudiarOrdo,
       _payEnsalmoPta:         this.#onPayEnsalmoPta,
@@ -50,6 +52,10 @@ export default class extendCharacterSheet extends extendActorSheet {
       _bookEnsalmos:          this.#onBookEnsalmos,
       _payEnsalmoPtf:         this.#onPayEnsalmoPtf,
       _lanzarEnsalmo:         this.#onLanzarEnsalmo,
+      _minusUnidad:           this.#onMinusUnidad,
+      _openTienda:            this.#onOpenTienda,
+      _productoDescr:         this.#onProductoDescr,
+      _comprarItem:           this.#onComprarItem
     }
   }
 
@@ -80,7 +86,11 @@ export default class extendCharacterSheet extends extendActorSheet {
     ensalmos: {
       tabs: [ {id: "preparacion"}, {id: "estudio"}],
       initial: "preparacion"
-    }   
+    },
+    equipo: {
+      tabs: [ {id: "equipo"}, {id: "posesiones"}, {id: "tiendas"}],
+      initial: "equipo"      
+    }
   }  
 
   /**
@@ -93,6 +103,8 @@ export default class extendCharacterSheet extends extendActorSheet {
     context.configRULES = configRULES[rules]
 
     context.caracteristicas = helperContext.getCaracteristicas()
+    context.skillRenderOptions = helperSheets.getItemsRenderOptions(this)
+    context.itemsRenderOptions = context.skillRenderOptions
 
     context.info = {...context.info, ...helperSheets.readLoreContext(this.document)}
     context.m10 = helperTools.numberArray(10)
@@ -115,10 +127,18 @@ export default class extendCharacterSheet extends extendActorSheet {
     context.ensalmosEstudio = helperSheets.ensalmosEstudio(this.document, rules)
     context.ensalmoPreparacion = helperSheets.ensalmoPreparacion(this.document, rules)
     
+    context.equipoProvisiones = helperSheets.provisiones(this.document, rules)
+    context.equipoMunicion = helperSheets.municion(this.document, rules)
+    context.equipo = helperSheets.equipo(this.document, rules)
+
+    context.tiendas = helperSheets.tiendas(this.document.id, this.document.system.control.tienda, rules)
+    context.tienda = helperSheets.tienda(this.document.id, this.document.system.control.tienda, rules)
+
     context.tabs = this._prepareTabs("primary")
     context.tabsStats = this._prepareTabs("stats")
     context.tabsHechizos = this._prepareTabs("hechizos")
     context.tabsEnsalmos = this._prepareTabs("ensalmos")
+    context.tabsEquipo = this._prepareTabs("equipo")
 
     return context
   }
@@ -374,6 +394,12 @@ export default class extendCharacterSheet extends extendActorSheet {
     helperContext.showEnsalmo(this.document.system.rules, item)
   }  
 
+  static #onShowItemDescr(_event, target) {
+    _event.stopPropagation()
+    const item = this.document.items.get($(target).data('id'))
+    helperDialog.dialogDescription(item)
+  } 
+
   static async #onToggleAprendido(_event, target) {
     _event.stopPropagation() 
     const item = this.document.items.get($(target).data('id'))
@@ -559,11 +585,43 @@ export default class extendCharacterSheet extends extendActorSheet {
     await this.document.update({ "system.ritual.preparacion": preparacion })
   }
 
+  static async #onBookHechizos(_event, target) {
+    _event.stopPropagation()
+    const rules = this.document.system.rules
+    const mPages = helperMagia.readPagesHechizos(rules, this.document)
+    await helperBooks.openBook(rules, this.document, mPages)
+  }
+
   static async #onBookEnsalmos(_event, target) {
     _event.stopPropagation()
     const rules = this.document.system.rules
     const mPages = helperMagia.readPagesEnsalmos(rules, this.document)
     await helperBooks.openBook(rules, this.document, mPages)
+  }
+
+  static async #onMinusUnidad(_event, target) {
+    _event.stopPropagation()
+    const item = this.document.items.get($(target).data('id'))
+    if (!item) return
+    let nValue = item.system.unidades.actual - 1
+    if (nValue < 0) nValue = 0
+    await item.update({"system.unidades.actual": nValue})
+  }
+
+  static async #onOpenTienda(_event, target) {
+    _event.stopPropagation()
+    await this.document.update({"system.control.tienda": $(target).data('id')})
+  }
+
+  static #onProductoDescr(_event, target) {
+    _event.stopPropagation()
+    const item = game.items.get($(target).data('id'))
+    helperDialog.dialogDescription(item)
+  }
+
+  static #onComprarItem(_event, target) {
+    _event.stopPropagation()    
+    helperSheets.comprarItem($(target).data('tienda'), $(target).data('id'), this.document)
   }
 
   /**

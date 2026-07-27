@@ -150,6 +150,25 @@ export default class helperMagia {
     }    
 
     /**
+     * readPagesHechizos
+     * @param {*} rules 
+     * @param {*} actor 
+     */
+    static readPagesHechizos(rules, actor) {
+        const mItems = helperSheets.itemsHechizos(actor, rules)
+        let mPages = []
+        mItems.map(item => {
+            mPages.push({
+                id: item.item.id,
+                key: item.item.system.key,
+                img: item.item.img,
+                content: helperContext._contentHechizo(rules, item.item, true)
+            })
+        })
+        return mPages
+    }
+
+    /**
      * readPagesEnsalmos
      * @param {*} rules 
      * @param {*} actor 
@@ -162,7 +181,7 @@ export default class helperMagia {
                 id: item.item.id,
                 key: item.item.system.key,
                 img: item.item.img,
-                content: helperContext._contentEnsalmo(rules, item.item)
+                content: helperContext._contentEnsalmo(rules, item.item, true)
             })
         })
         return mPages

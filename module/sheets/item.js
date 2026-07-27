@@ -1,6 +1,9 @@
 import { SYSTEM_ID } from "../config/uiConstants.js";
+import { configRULES } from "../config/rules.js";
 import helperSheets from "../helper/helperSheets.js"
 import helperContext from "../helper/helperContext.js";
+import helperSettings from "../helper/helperSettings.js";
+import helperTools from "../helper/helperTools.js";
 
 const { HandlebarsApplicationMixin } = foundry.applications.api
 export default class extendItem0Sheet 
@@ -13,7 +16,8 @@ export default class extendItem0Sheet
   }
 
   //Attributes...
-  _sheetMode = this.constructor.SHEET_MODES.PLAY
+  _sheetMode = helperSettings.getModeEdit() && helperTools.isGM() ? 
+                this.constructor.SHEET_MODES.EDIT : this.constructor.SHEET_MODES.PLAY
 
   /** @override */
   static DEFAULT_OPTIONS = {
@@ -173,6 +177,7 @@ export default class extendItem0Sheet
       isEditable:           this.isEditable && this._sheetMode === 0,
       rules:                helperContext.getRules(),
       myRules:              this.document.system.rules,
+      configRULES:          configRULES[this.document.system.rules],
 
       _richDescripcion:     richDescription
     }
@@ -248,8 +253,8 @@ export default class extendItem0Sheet
       })
     }
 
-    /** --- TABLES --- */
-    html.find('._table tbody tr').on("click", this._clickTableTR.bind(this))
+    html.find("input[name='system.etiquetas']").on("change", this._changeEtiquetas.bind(this))
+    html.find("._table tbody tr").on("click", this._clickTableTR.bind(this))
   }
 
   /**
@@ -367,6 +372,18 @@ export default class extendItem0Sheet
                                          .find('option[value="'+key+'"]')
     if (!option) return
     option.prop('selected', true)
+  }
+
+  /**
+   * _changeEtiquetas
+   * @param {*} event 
+   */
+  _changeEtiquetas(event) {
+    let sVal = ''
+    $(event.currentTarget).val().split(',').map(s => {
+      sVal += sVal === '' ? s.trim().toLowerCase() : ', ' + s.trim().toLowerCase()
+    })
+    $(event.currentTarget).val(sVal)
   }
 
   /**

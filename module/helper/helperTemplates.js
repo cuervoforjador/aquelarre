@@ -36,7 +36,13 @@ export default class helperTemplates {
             hechizosPreparacion_comun: `${character}/parts/comun/hechizosPreparacion.hbs`,
             ensalmosGrimorio_comun: `${character}/parts/comun/ensalmosGrimorio.hbs`,
             ensalmosEstudio_comun: `${character}/parts/comun/ensalmosEstudio.hbs`,
-            ensalmosPreparacion_comun: `${character}/parts/comun/ensalmosPreparacion.hbs`,            
+            ensalmosPreparacion_comun: `${character}/parts/comun/ensalmosPreparacion.hbs`, 
+            equipoGeneral_comun: `${character}/parts/comun/equipoGeneral.hbs`, 
+            equipoGeneral_Equipo_comun: `${character}/parts/comun/equipoGeneral_Equipo.hbs`, 
+            equipoGeneral_Provisiones_comun: `${character}/parts/comun/equipoGeneral_Provisiones.hbs`, 
+            equipoGeneral_Municion_comun: `${character}/parts/comun/equipoGeneral_Municion.hbs`, 
+            equipoPosesiones_comun: `${character}/parts/comun/equipoPosesiones.hbs`, 
+            equipoTiendas_comun: `${character}/parts/comun/equipoTiendas.hbs`, 
 
             stats_main_aq3: `${character}/parts/aq3/stats_main.hbs`,
             stats_chars_aq3: `${character}/parts/aq3/stats_chars.hbs`,
@@ -90,6 +96,7 @@ export default class helperTemplates {
             main_Hechizo: `${item}/main/hechizo.hbs`,
             main_Ensalmo: `${item}/main/ensalmo.hbs`,
             main_Formula: `${item}/main/formula.hbs`,
+            main_Tienda: `${item}/main/tienda.hbs`,
 
             item_footer: `${item}/parts/_footer.hbs`,
             item_descripcion: `${item}/parts/_description.hbs`,
@@ -110,6 +117,7 @@ export default class helperTemplates {
             header_Hechizo: `${item}/headers/hechizo.hbs`,
             header_Ensalmo: `${item}/headers/ensalmo.hbs`,
             header_Formula: `${item}/headers/formula.hbs`,
+            header_Tienda: `${item}/headers/tienda.hbs`,
 
             tab_Descripcion: `${item}/tabs/descripcion.hbs`,
             tab_Idiomas: `${item}/tabs/idiomas.hbs`,
@@ -122,7 +130,9 @@ export default class helperTemplates {
             tab_Componentes: `${item}/tabs/componentes.hbs`,
             tab_HechizosPropiedades: `${item}/tabs/hechizosPropiedades.hbs`,
             tab_EnsalmosPropiedades: `${item}/tabs/ensalmosPropiedades.hbs`,
-            tab_MassEdit: `${item}/tabs/massEdit.hbs`
+            tab_MassEdit: `${item}/tabs/massEdit.hbs`,
+            tab_Actores: `${item}/tabs/actores.hbs`,
+            tab_Productos: `${item}/tabs/productos.hbs`
         })
     }
 }

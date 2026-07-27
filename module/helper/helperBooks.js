@@ -4,6 +4,7 @@ import { aqConfig } from "../config/config.js"
 import helperContext from "./helperContext.js"
 import helperDialog from "./helperDialog.js"
 import newBook from "../documents/book.js"
+import helperMagia from "./helperMagia.js"
 
 export default class helperBooks {
     
@@ -121,7 +122,7 @@ export default class helperBooks {
      * @param {*} actor 
      */
     static addListeners(_dialog, dialog, actor) {
-        _dialog.find('._header ._title._pointer').on('click', this.#onPointItem.bind(dialog))
+        _dialog.find('button._action').on('click', this.#onClickButton.bind(dialog))
         _dialog.find('._marker._close').on('click', this.#onClose.bind(dialog))
     }
 
@@ -134,20 +135,61 @@ export default class helperBooks {
         this.close()
     }
 
-    static async #onPointItem(_event) {
+    static async #onClickButton(_event) {
         _event.stopPropagation()
         const sId = $(_event.target).data('id')
+        const sAction = $(_event.target).data('action')
         const item = this.actor.items.get(sId)
         if (!item || !this.actor) return
 
-        if (item.type === 'ensalmo') {
-            await this.actor.update({
-                "system.ritual.preparacion.id": item.id,
-                "system.ritual.preparacion.preparando": true,
-                "system.ritual.preparacion.ceremonia": false,
-                "system.ritual.preparacion.completado": false
-            }) 
-            this.close()
+        switch (item.type) {
+            case 'ensalmo':
+                await helperBooks._handlerEnsalmos(sAction, this, this.actor, item)
+                break;
+            case 'hechizo':
+                await helperBooks._handlerHechizos(sAction, this, this.actor, item)
+                break;                
+        }
+    }
+
+    /**
+     * _handlerEnsalmos
+     * @param {*} action 
+     * @param {*} book 
+     * @param {*} actor 
+     * @param {*} item 
+     */
+    static async _handlerEnsalmos(action, book, actor, item) {
+        switch (action) {
+            case 'preparar':
+                await actor.update({
+                    "system.ritual.preparacion.id": item.id,
+                    "system.ritual.preparacion.preparando": true,
+                    "system.ritual.preparacion.ceremonia": false,
+                    "system.ritual.preparacion.completado": false
+                }) 
+                book.close()
+            break;
+        }
+    }
+
+    /**
+     * _handlerHechizos
+     * @param {*} action 
+     * @param {*} book 
+     * @param {*} actor 
+     * @param {*} item 
+     */
+    static async _handlerHechizos(action, book, actor, item) {
+        switch (action) {
+            case 'preparar':
+                helperMagia.prepararHechizo(actor, item)
+                book.close()
+                break;
+            case 'estudiar':
+                helperMagia.estudiarHechizo(actor, item)
+                book.close()
+                break;                
         }
     }
 

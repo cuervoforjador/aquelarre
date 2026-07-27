@@ -19,6 +19,7 @@ import sheetGrimorio  from "../sheets/item/grimorio.js"
 import sheetHechizo  from "../sheets/item/hechizo.js"
 import sheetEnsalmo  from "../sheets/item/ensalmo.js"
 import sheetFormula  from "../sheets/item/formula.js"
+import sheetTienda  from "../sheets/item/tienda.js"
 
 import sheetTableExtend from "../sheets/table/base.js"
 
@@ -28,6 +29,8 @@ import helperPxTools from "../../libs/helperPxTools.js"
 import { aqConfig } from "../config/config.js"
 import { configRULES } from "../config/rules.js"
 import helperTools from "./helperTools.js"
+import helperSocket from "./helperSocket.js"
+import helperMessages from "./helperMessages.js"
 
 export default class helperSheets {
 
@@ -72,6 +75,7 @@ export default class helperSheets {
         vI.registerSheet(SYSTEM_ID, sheetHechizo, { types: ["hechizo"], makeDefault: true, label: "sheet.hechizo" })
         vI.registerSheet(SYSTEM_ID, sheetEnsalmo, { types: ["ensalmo"], makeDefault: true, label: "sheet.ensalmo" })
         vI.registerSheet(SYSTEM_ID, sheetFormula, { types: ["formula"], makeDefault: true, label: "sheet.formula" })
+        vI.registerSheet(SYSTEM_ID, sheetTienda, { types: ["tienda"], makeDefault: true, label: "sheet.tienda" })
 
         const vT = foundry.documents.collections.RollTables
         vT.registerSheet(SYSTEM_ID, sheetTableExtend, { types: ["base"], makeDefault: true, label: "sheet.lore" })
@@ -701,6 +705,202 @@ export default class helperSheets {
         })
     }
 
+    /**
+     * provisiones
+     * @param {*} actor 
+     * @param {*} rules 
+     */
+    static provisiones(actor, rules) {
+        let oReturn = {
+            comida: {
+                actual: 0,
+                total: 0,
+                percent: 0,
+                items: []
+            },
+            bebida: {
+                actual: 0,
+                total: 0,
+                percent: 0,
+                items: []
+            }
+        };
+
+        ["comida", "bebida"].map(s => {
+            oReturn[s].items = actor.items.filter(e => e.type === 'item' && e.system[s])
+            oReturn[s].items.sort((a,b) => a.name.localeCompare(b.name))
+            oReturn[s].items.map(o => {
+                if (!o.system.unidades.use) return;
+                oReturn[s].actual += Number(o.system.unidades.actual)
+                oReturn[s].total += Number(o.system.unidades.total)
+            })
+            oReturn[s].percent = oReturn[s].total > 0 ? Math.round((oReturn[s].actual / oReturn[s].total) * 100) : 0
+        })
+        return oReturn
+    }
+
+    /**
+     * municion
+     * @param {*} actor 
+     * @param {*} rules 
+     */
+    static municion(actor, rules) {
+        let mReturn = actor.items.filter(e => e.type === 'item' && e.system.municion)
+        mReturn.sort((a,b) => a.name.localeCompare(b.name))
+        return mReturn
+    }
+
+    /**
+     * equipo
+     * @param {*} actor 
+     * @param {*} rules 
+     */
+    static equipo(actor, rules) {
+        let mReturn = actor.items.filter(e => e.type === 'item' && 
+                                            (!e.system.municion && !e.system.comida && !e.system.bebida))
+        mReturn.sort((a,b) => a.name.localeCompare(b.name))
+        return mReturn
+    }
+
+    /**
+     * tiendas
+     * @param {*} id 
+     * @param {*} activeId 
+     * @param {*} rules 
+     */
+    static tiendas(id, activeId, rules) {
+        let mReturn = []
+        const mTiendas = game.items.filter(e => e.type === 'tienda' && !!e.system.actors.find(o => o.id === id))
+        if (!mTiendas || mTiendas.length === 0) return
+        mTiendas.map(tienda => {
+            mReturn.push({
+                id: tienda.id,
+                name: tienda.name,
+                img: tienda.img,
+                folder: tienda.system.folder,
+                active: tienda.id === activeId
+            })
+        })
+        return mReturn
+    }
+
+    /**
+     * tienda
+     * @param {*} id 
+     * @param {*} activeId 
+     * @param {*} rules 
+     */
+    static tienda(id, activeId, rules) {
+        let oReturn = {
+            id: id,
+            active: false,
+            name: '',
+            descripcion: '',
+            items: []
+        }
+        if (!activeId) return oReturn
+
+        const itemTienda = game.items.find(e => e.type === 'tienda' 
+                                             && !!e.system.actors.find(o => o.id === id)
+                                             && e.id === activeId)
+        if (!itemTienda) return oReturn   
+        
+        oReturn.id = itemTienda.id
+        oReturn.name = itemTienda.name
+        oReturn.descripcion = itemTienda.system.descripcion
+
+        game.folders.get(itemTienda.system.folder).contents.map(item => {
+            const oItem = itemTienda.system.productos.find(e => e.id === item.id)
+            if (!oItem || !oItem.visible) return
+            oReturn.items.push({
+                id: item.id,
+                img: item.img,
+                name: item.name,
+                precio: item.system.precio,
+                limitado: oItem.limitado,
+                unidades: oItem.unidades
+            })
+        })
+        oReturn.active = oReturn.items.length > 0
+        return oReturn
+    }
+
+    /**
+     * comprarItem
+     * @param {*} tiendaID 
+     * @param {*} itemID 
+     * @param {*} actor 
+     */
+    static comprarItem(tiendaID, itemID, actor) {
+        const rules = actor.system.rules
+        const tienda = game.items.get(tiendaID)
+        const item = game.items.get(itemID)  
+        if (!tienda || !item) return
+
+        if ((actor.system.economia.dineros - item.system.precio) < 0) {
+            helperDialog.dialogConfirm(rules, actor.name, game.i18n.localize('explain.sinDinero'))
+            return
+        }
+
+        helperSocket.requestBuyItem({
+            actorId: actor.id,
+            tokenId: actor.token?.tokenId,
+            stats: {
+                tiendaId: tiendaID,
+                itemId: itemID
+            }
+        })      
+    }
+
+    /**
+     * requestComprarItem
+     * @param {*} param0 
+     */
+    static async requestComprarItem({actorId, tokenId, stats}) {
+         if (!game.user.isGM) return
+
+        const actor = helperTools.getActor(actorId, tokenId)
+        const tienda = game.items.get(stats.tiendaId)
+        const item = game.items.get(stats.itemId)
+        if (!actor || !tienda || !item) return
+
+        const oItem = tienda.system.productos.find(e => e.id === item.id)
+        if (!oItem || !oItem.visible || (oItem.limitado && oItem.unidades <= 0)) return
+
+        const precio = item.system.precio
+        const dineros = actor.system.economia.dineros - precio
+        if (dineros < 0) return
+   
+        await Item.create([item], {parent: actor})
+      
+        if (oItem.limitado && oItem.unidades === 1) {
+            const index = tienda.system.productos.findIndex(e => e.id === item.id)            
+            let mProductos = tienda.system.productos
+            mProductos.splice(index, 1)
+            await tienda.update({"system.productos": mProductos})        
+            await item.delete()
+
+        } else if (oItem.limitado && oItem.unidades > 1) {
+            let mProductos = tienda.system.productos
+            const index = mProductos.findIndex(e => e.id === item.id)
+            mProductos[index].unidades -= 1
+            await tienda.update({"system.productos": mProductos})
+
+        }
+        
+        await actor.update({"system.economia.dineros": dineros})
+        await helperMessages.postMessage({
+            actor: actor,
+            title: item.name,
+            subTitle: game.i18n.localize('common.comprarItem'),
+            textAuxiliar: game.i18n.localize('common.precio') + ': ' + precio + ' ' + configRULES[actor.system.rules].moneda,
+            backImg: item.img,
+            content: '',
+            class: '_producto',
+            whisper: [game.users.activeGM.id, game.user.id]
+        })
+    }
+
     static _descrLocalizaciones(mLocalizaciones) {
         let mDescr = [];
         if (mLocalizaciones.find(e => e.key === 'cabeza')) mDescr.push(game.i18n.localize('common.cabeza'))
@@ -754,23 +954,23 @@ export default class helperSheets {
     }
 
     /**
-     * getSkillRenderOptions
+     * getItemsRenderOptions
      * @param {*} sheet 
      * @returns 
      */
-    static getSkillRenderOptions(sheet, html) {
+    static getItemsRenderOptions(sheet, html) {
         const pxUnit = sheet ? helperPxTools.toPX(sheet.document.system.control.textSize) :
                                helperPxTools.toPX(window.getComputedStyle(html[0]).getPropertyValue('--fSize'))
         const formWidth = sheet ? sheet.position.width -25: html.width() + 1.4 -25
         const formHeight = sheet ? sheet.position.height : html.height() + 1.4
         const divStats = pxUnit * 29.5
-        const divSkills = formWidth - divStats - 5
+        const divItem = formWidth - divStats - 5
         const divRow = pxUnit * 15
 
         const options = {
-            side: divSkills > divStats,
-            width: divSkills > divRow ? divSkills+'px' : '100%',
-            columns: divSkills > divRow ? Math.trunc(divSkills / divRow) : Math.trunc(formWidth / divRow)
+            side: divItem > divStats,
+            width: divItem > divRow ? divItem+'px' : '100%',
+            columns: divItem > divRow ? Math.trunc(divItem / divRow) : Math.trunc(formWidth / divRow)
         }
         options.columnSize = Math.trunc(100 / options.columns) + '%'
         options.templateAreas = "'"+'a '.repeat(options.columns).trim()+"'"
@@ -804,7 +1004,7 @@ export default class helperSheets {
         const stats = html.find('section[data-tab="stats"] ._stats')   
         if (skills.length > 0 && stats.width() > 0) { 
 
-            const skillOptions = this.getSkillRenderOptions(false, html)
+            const skillOptions = this.getItemsRenderOptions(false, html)
             skills.css({'width': skillOptions.width})
             skills.css({'gridAutoColumns': skillOptions.columnSize})
             skills.css({'gridTemplateAreas': skillOptions.templateAreas})
@@ -1051,6 +1251,68 @@ export default class helperSheets {
     }
 
     /**
+     * getUsers
+     */
+    static getUsers() {
+        let mUsers = []
+        Array.from(game.users).map(user => {
+            mUsers.push({
+                id: user.id,
+                name: user.name,
+                icon: user.role === 4 ? 'fa-user-beard' : 'fa-user',
+            })
+        })
+        mUsers.sort((a,b) => a.name.localeCompare(b.name))
+        return mUsers
+    }
+
+    /**
+     * getActors
+     * @param {*} actors 
+     * @returns 
+     */
+    static getActors(actors) {
+        let mActors = []
+        Array.from(game.actors).map(actor => {
+            const oActor = actors.find(o => o.id ===  actor.id)
+            mActors.push({
+                id: actor.id,
+                name: actor.name,
+                img: actor.img,
+                visible: oActor.visible
+            })
+        })
+        mActors.sort((a,b) => a.name.localeCompare(b.name))
+        return mActors
+    }
+
+    /**
+     * getProductos
+     * @param {*} folder 
+     * @param {*} productos 
+     * @returns 
+     */
+    static getProductos(folder, productos) {
+        if (!folder || !game.folders.get(folder)) return
+        let mItems = game.folders.get(folder).contents
+        let mProductos = []
+
+        mItems.map(item => {
+            const oItem = productos.find(o => o.id ===  item.id)
+            mProductos.push({
+                id: item.id,
+                name: item.name,
+                img: item.img,
+                visible: oItem ? oItem.visible : true,
+                limitado: oItem ? oItem.limitado : false,
+                unidades: oItem ? oItem.limitado ? oItem.unidades : '' : ''
+            })
+        })
+        mProductos.sort((a,b) => a.name.localeCompare(b.name))
+        return mProductos
+    }
+
+    /**
      * reconocerHechizo
      * @param {*} rules
      * @param {*} sContent 
@@ -1228,6 +1490,10 @@ export default class helperSheets {
                              (item.system.rules === 'aq4') ? "Fuente: Aquelarre Manual básico ( 4a Edición - NoSoloRol )" :
                              (item.system.rules === 'vyc') ? "Fuente: Villa y Corte Manual básico ( NoSoloRol )" : ''
 
+            if (item.system.rules === 'aq3') {
+                oSystem.vis = item.system.vis
+            }
+
             const newItem = await Item.create([{
                                         name: name, 
                                         img: item.img,
@@ -1245,7 +1511,76 @@ export default class helperSheets {
      * @param {*} sContent 
      */
     static reconocerEnsalmo(rules, sContent) {
+        const _config = aqConfig.hechizos[rules]
+        let oItem = {
+            name: '',
+            key: '',
+            nivel: '1',
+            requisitos: '',
+            ceremonia: '',
+            duracion: '',
+            descripcion: ''
+        }
+        let mLines = sContent.replaceAll('</p>', '').split('<p>').filter(e => e !== '')
+        let linesInit = 2
+        oItem.name = mLines[0].trim()
+        oItem.name = oItem.name.trim().charAt(0).toUpperCase() + oItem.name.trim().slice(1)
+        oItem.key = this.clearKey(oItem.name)
 
+        if (rules === 'aq3') {
+            linesInit = 2
+        }
+        if (rules === 'vyc' || rules === 'aq4') {
+            linesInit = 2
+            const sORDO = mLines[1].split('(')[0].trim().split(' ')[1];
+            ['ordo1', 'ordo2', 'ordo3', 'ordo4', 'ordo5', 'ordo6', 'ordo7'].map(s => {
+                if (game.i18n.localize('common.'+s).toLowerCase() === sORDO) oItem.nivel = s.substr(3,1)
+            })
+        }        
+
+        let sRest = ''
+        let sProperty = ''
+        for (var i = linesInit; i < mLines.length; i++) {
+            const line = mLines[i]
+            if (line.split('ProseMirror').length > 1) continue
+            if (line.substr(0, 2) === 'a ' ||                
+                line.substr(0, 10) === 'Ceremonia:' ||
+                line.substr(0, 11) === 'Requisitos:' ||
+                line.substr(0, 25) === 'Duración de la Ceremonia:' ||
+                line.substr(0, 8) === 'Efectos:') {
+
+                if (sProperty !== '') oItem[sProperty] = sRest
+                if (line.substr(0, 2) === 'a ') sProperty = this.clearKey(line.substr(2).split(':')[0].toLowerCase())
+                                           else sProperty = this.clearKey(line.split(':')[0].toLowerCase())
+
+                if (sProperty === 'ceremonia' || 
+                    sProperty === 'requisitos' ||
+                    sProperty === 'duracion de la ceremonia' ||
+                    sProperty === 'efectos') sRest = '<p>' + line.substr(2).split(':')[1].trim() + '</p>'
+                                        else sRest = line.substr(2).split(':')[1].trim()
+                
+            } else {
+                if (sProperty === 'ceremonia' ||
+                    sProperty === 'requisitos' ||
+                    sProperty === 'duracion de la ceremonia' || 
+                    sProperty === 'efectos') sRest += '<p>' + line + '</p>'
+                                        else sRest += line
+            }
+        }
+        oItem[sProperty] = sRest        
+
+        oItem.requisitos = oItem.requisitos.trim() === '' ? game.i18n.localize('common.noAplica') : oItem.requisitos
+        oItem.ceremonia = oItem.ceremonia.trim() === '' ? game.i18n.localize('common.noAplica') : oItem.ceremonia
+        oItem.duracion = oItem.duracion.trim() === '' ? game.i18n.localize('common.noAplica') : oItem.duracion
+        oItem.efectos = oItem.efectos.trim() === '' ? game.i18n.localize('common.noAplica') : oItem.efectos
+
+        return `<p><b>Nombre:</b> ${oItem.name}</p>
+                <p><b>Key:</b> ${oItem.key}</p>
+                <p><b>ORDO:</b> ${oItem.nivel}</p>
+                <p><b>REQUISITOS</b> ${oItem.requisitos}</p>
+                <p><b>CEREMONIA</b> ${oItem.ceremonia}</p>
+                <p><b>Duración:</b> ${oItem.duracion_de_la_ceremonia}</p>                
+                <p><b>EFECTOS</b> ${oItem.efectos}</p>`
     }
 
     /**
@@ -1253,11 +1588,55 @@ export default class helperSheets {
      * @param {*} sText 
      * @param {*} item 
      */
-    static parseEnsalmo(sText, item) {
+    static async parseEnsalmo(sText, item) {
+        try {
+            const folder = item.system.massEditFolder
+            let mLines = sText.split('<p><b>').filter(e => e !== '')
+            if (mLines.length === 1) mLines = sText.split('<p><strong>').filter(e => e !== '')
+            let oSystem = {
+                propiedades: {},
+                rules: item.system.rules
+            }
+            let name = ''
+            mLines.map(line => {
+                line = line.replaceAll('<b>', '<strong>').replaceAll('</b>', '</strong>')
 
-        const mLines = sText.split('<p><b>').filter(e => e !== '')
-        mLines.map(line => {
+                let sProperty = this.clearKey(line.replace('</strong></p>', '</strong> ').split('</strong> ')[0].toLowerCase().replaceAll(':', ''))
+                let sRest = ''
+                const temp = line.replace('</strong> ', '#--#').split('#--#')
+                if (temp.length === 1 ) sRest = line.split('</strong></p>')[1].replaceAll('<p></p>', '')
+                                   else sRest = line.replace('</strong> ', '#--#').split('#--#')[1].split('</p>\n')[0].trim()
 
-        })
+                if (sProperty !== 'requisitos' &&
+                    sProperty !== 'ceremonia' &&
+                    sProperty !== 'duracion' &&
+                    sProperty !== 'efectos') sRest = sRest.split('</p>')[0]
+
+                if (sProperty === 'nombre') name = sRest
+                if (sProperty === 'key')  oSystem.key = sRest
+                if (sProperty === 'ordo')  oSystem.ordo = 'ordo'+sRest
+
+                if (sProperty === 'requisitos') oSystem.propiedades.requisitos = sRest
+                if (sProperty === 'ceremonia') oSystem.propiedades.ceremonia = sRest
+                if (sProperty === 'duracion') oSystem.propiedades.duracion = sRest
+                if (sProperty === 'efectos') oSystem.descripcion = sRest
+            })
+            oSystem.fuente = (item.system.rules === 'aq3') ? "Fuente: Aquelarre Manual básico ( 3a Edición - NoSoloRol )" :
+                             (item.system.rules === 'aq4') ? "Fuente: Aquelarre Manual básico ( 4a Edición - NoSoloRol )" :
+                             (item.system.rules === 'vyc') ? "Fuente: Villa y Corte Manual básico ( NoSoloRol )" : ''
+
+            if (item.system.rules === 'aq3') {
+                oSystem.ordo = item.system.ordo
+            }
+
+            const newItem = await Item.create([{
+                                        name: name, 
+                                        img: item.img,
+                                        type: item.type, 
+                                        system: oSystem,
+                                        folder: folder}])
+        } catch(error) {
+            ui.notifications.error(`Error en el Sistema: ${error.message}`, { permanent: true });            
+        }
     }    
 }

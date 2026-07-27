@@ -36,13 +36,13 @@ export default class sheetEnsalmo extends extendItem0Sheet {
    */
   async _prepareContext() {
     const rules = this.document.system.rules
-    const context = await super._prepareContext()    
-    context.configRULES = configRULES[rules]
+    const context = await super._prepareContext()
     context.modeMass = helperSettings.getModeMass()
 
     context.niveles = helperContext.getEnsalmosNiveles(rules)
     context._textRequisitos = await extendItem0Sheet.textImplentation('propiedades.requisistos', this.document)
     context._textCeremonia = await extendItem0Sheet.textImplentation('propiedades.ceremonia', this.document)
+    context._textDuracion = await extendItem0Sheet.textImplentation('propiedades.duracion', this.document)
     context._textMassEdit = await extendItem0Sheet.textImplentation('propiedades.preparacion', this.document)
     context._folders = helperSheets.getFolders()
 

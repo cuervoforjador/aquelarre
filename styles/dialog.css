@@ -66,7 +66,12 @@ dialog._extend._vyc footer button {
     font-family: var(--vcfFont1);
     color: var(--vcText);
 }
-
+dialog._extend._description .dialog-content {
+    gap: 0.1rem;
+}
+dialog._extend._description ._semi {
+    opacity: 1;
+}
 dialog._extend form.dialog-form {
     display: flex;
     width: 100%;
@@ -79,7 +84,7 @@ dialog._extend._description table {
 dialog._extend._description table td {
     padding: 0.15rem 0.5rem;
 }
-dialog._extend._description table tbody tr:nth-child(odd) {
+dialog._extend._description table tbody tr:nth-child(even) {
     background-color: #6711111c;
 }
 dialog._extend._description p {
@@ -104,6 +109,15 @@ dialog._extend._description h4 {
 dialog._extend._vyc._description h4 {
     font-family: var(--vcfFont1);
 }
+dialog._extend._description table._descr tr td:first-child {
+    width: 50%;
+}
+dialog._extend._description table._descr tr td p {
+    font-size: calc(var(--fSize) * 1.05);
+    line-height: calc(var(--fSize) * 1.4);
+}
+
+
 dialog._extend ._wrapImg {
     display: flex;
     flex-wrap: wrap;

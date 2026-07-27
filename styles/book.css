@@ -141,6 +141,12 @@ dialog._book._vyc span._pseudoTitle {
     font-family: var(--vcfFont1);
     font-size: calc(var(--fSize) * 1.5);    
 }
+dialog._book span._pseudoTitle._small {
+    font-size: calc(var(--fSize) * 0.75);
+}
+dialog._book._vyc span._pseudoTitle._small {
+    font-size: calc(var(--fSize) * 1);
+}
 dialog._book ._markers {
     position: absolute;
     display: flex;
@@ -168,4 +174,35 @@ dialog._book ._markers ._marker:hover {
 dialog._book ._title._pointer:hover {
     border-bottom: 4px solid #000;
     margin-bottom: -4px;
+}
+dialog._extend._book ._row._stats {
+    display: flex;
+    flex-wrap: wrap;
+}
+dialog._extend._book ._buttons {
+    display: flex;
+    flex-direction: row;
+    align-content: center;
+    align-items: center;
+    justify-content: flex-start;
+    background: #46050514;
+    border-top: 1px solid #00000024;
+    border-bottom: 1px solid #00000024;
+    margin-bottom: 0.5rem;
+}
+dialog._extend._book ._buttons button {
+    font-size: calc(var(--fSize) * 1);
+    line-height: calc(var(--fSize) * 1);
+    font-family: var(--fFont0);
+    padding: 0 0.5rem;
+    border-radius: 0;    
+    margin: 0.25rem 0;
+    --button-size: calc(var(--fSize) * 1.5);
+}
+dialog._extend._vyc._book ._buttons button {
+    font-size: calc(var(--fSize) * 1);   
+    font-family:  var(--vcfFont1);
+}
+dialog._extend._book ._buttons button[disabled="disabled"] {
+    opacity: 0.5;
 }

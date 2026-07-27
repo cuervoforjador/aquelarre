@@ -13,7 +13,8 @@ export default class extendCharacter_Base extends extend_Base {
         /** --- CONTROL --- */
         schema.control  = new api.SchemaField({
             textSize: new api.StringField({ initial: '1rem' }),
-            importedSkills: new api.BooleanField({ initial: false })
+            importedSkills: new api.BooleanField({ initial: false }),
+            tienda: new api.StringField({ initial: '' })
         })
 
         /** --- INFO --- */
@@ -31,7 +32,13 @@ export default class extendCharacter_Base extends extend_Base {
             familia: md_text({label: 'common.familia', hint: 'common.familia'}),
             descripcion: md_text({label: 'common.descripcion', hint: 'common.descripcion'}),            
             limpiezaSangre: new api.NumberField({ nullable: true, initial: 0 }),
-            localizacion: new api.StringField({ initial: 'humanoide' })
+            localizacion: new api.StringField({ initial: 'humanoide' }),            
+        })
+
+        schema.economia = new api.SchemaField({
+            dineros: new api.NumberField({ nullable: true, initial: 0 }),
+            ingresos: new api.NumberField({ nullable: true, initial: 0 }),
+            gastos: new api.NumberField({ nullable: true, initial: 0 }),
         })
 
         /** --- CARACTERÍSTICAS --- */
