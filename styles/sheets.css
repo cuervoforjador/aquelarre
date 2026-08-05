@@ -59,7 +59,8 @@ form._extend ._main {
     overflow: hidden;
 }
 form._extend ._sheetContent {
-    overflow-y: auto;
+    overflow-y: hidden;
+    overflow-x: hidden;
     height: calc(100% - 40px);
     padding: 0 10px;
     color: var(--aqText);

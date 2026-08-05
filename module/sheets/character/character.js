@@ -67,7 +67,16 @@ export default class extendCharacterSheet extends extendActorSheet {
     },
     main: {       
       template: `${this.templateFolder}/main/${this.templateTag}.hbs`,
-      scrollable: [".scrollable"]
+      scrollable: [".scrollableStats", 
+                   ".scrollableHechizos1",
+                   ".scrollableHechizos2",
+                   ".scrollableHechizos3",
+                   ".scrollableEquipo1",
+                   ".scrollableEquipo2",
+                   ".scrollableEquipo3",
+                   ".scrollableEnsalmos1",
+                   ".scrollableEnsalmos2",
+                   ".scrollableEnsalmos3"]
     }
   }
   static TABS = {
@@ -151,10 +160,29 @@ export default class extendCharacterSheet extends extendActorSheet {
    */
   async _onRender(context, options) {
     await super._onRender(context, options)
+    this._applyScroll($(this.element))
     this.activateListeners($(this.element))
     this.activateFirstTime()
   }
 
+  _syncPartState(partId, newElement, priorElement, state) {
+    super._syncPartState(partId, newElement, priorElement, state)
+    for ( const [selector, scrollTop, scrollLeft] of state.scrollPositions ) {
+      const el = selector === "" ? newElement : newElement.querySelector(selector);
+      if ( el && scrollTop > 0) {
+        $(el).data('scrollTop', scrollTop);
+      }
+    }    
+  }
+  _applyScroll(html) {
+    if (!html) return;
+    for ( const sClass of extendCharacterSheet.PARTS.main.scrollable) {
+      html.find(sClass).each((i, e) => {
+        const scrollTop = $(e).data('scrollTop')
+        if (scrollTop > 0) $(e).scrollTop(scrollTop)
+      })
+    }
+  }
 
   /**
    * activateListeners
@@ -180,6 +208,7 @@ export default class extendCharacterSheet extends extendActorSheet {
 
     html.find('._stepValue').on("change", sheetHandler._onChangeStepValue.bind(this))
 
+    this._applyScroll()
     if ( !this.isEditable || !this.isEditMode) return;
     
     html.find('._charTotal').on("change", sheetHandler._onChangeCharTotal.bind(this))

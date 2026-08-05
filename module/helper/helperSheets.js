@@ -245,7 +245,10 @@ export default class helperSheets {
             let systemSkill = competencias.find(e => e.key === skill.system.key)
             let stats = systemSkill.stats
             const min = (systemSkill.primaria) ? base*3 : base
-            const value = this._checkMinMax(stats.value, stats.min, stats.max)
+            let value = this._checkMinMax(stats.value, stats.min, stats.max)
+
+            if (systemSkill.normal && systemSkill.checked) systemSkill.normal = false
+            if (systemSkill.normal) value = min
 
             if ((stats.min !== min) || (stats.value !== value)) changed = true
             stats.min = min
@@ -964,7 +967,7 @@ export default class helperSheets {
         const formWidth = sheet ? sheet.position.width -25: html.width() + 1.4 -25
         const formHeight = sheet ? sheet.position.height : html.height() + 1.4
         const divStats = pxUnit * 29.5
-        const divItem = formWidth - divStats - 5
+        const divItem = formWidth - divStats - (sheet.isEditMode ? 10 : 5)
         const divRow = pxUnit * 15
 
         const options = {

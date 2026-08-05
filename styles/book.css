@@ -118,6 +118,7 @@ dialog._book ._page h1._title {
     color: #000000c7;
     margin: 0;
     padding: 0;
+    text-align: left;
 }
 dialog._book._vyc ._page h1._title {
     text-align: left;
@@ -127,6 +128,9 @@ dialog._book._vyc ._page h1._title {
 }
 dialog._book ._page h4 {
     margin: calc(var(--fSize) * 0.5) 0;
+}
+dialog._book ._wrapImg ._header h4 {
+    font-size: calc(var(--fSize) * 0.8);
 }
 dialog._book label._field {
     color: #000!important;

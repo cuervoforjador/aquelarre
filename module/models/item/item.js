@@ -15,6 +15,7 @@ export default class modelItem extends extendItem_Base {
         schema.ropa = new api.BooleanField({ initial: false })
         schema.comida = new api.BooleanField({ initial: false })
         schema.bebida = new api.BooleanField({ initial: false })
+        schema.montura = new api.BooleanField({ initial: false })
 
         return schema;
     }

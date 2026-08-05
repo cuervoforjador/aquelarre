@@ -6,7 +6,7 @@
   "download": "https://github.com/cuervoforjador/conventum/releases/download/v311/aquelarre.zip",
   "url": "https://github.com/cuervoforjador/conventum/",
   "license": "LICENSE",
-  "version": "3.1.1",
+  "version": "3.1.2",
   "authors": [
     {
       "name": "Cuervo Forjador",
@@ -37,6 +37,7 @@
     "libs/turnjs4/turn.min.js"
   ],
   "styles": [
+      "styles/app.css",
       "styles/main.css",
       "styles/sheets.css",
       "styles/dialog.css",

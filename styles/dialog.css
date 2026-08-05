@@ -138,7 +138,7 @@ dialog._extend ._wrapImg ._stats ._combo {
     flex-direction: row;
 }
 dialog._extend ._wrapImg ._header h4 {
-    font-size: calc(var(--fSize) * 0.75);
+    font-size: calc(var(--fSize) * 1.25);
     margin: 0.25rem 0;
     padding: 0;
     color: #000000a8;
