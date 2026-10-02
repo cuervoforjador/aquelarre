@@ -33,14 +33,28 @@ export default class sheetHandler {
    * @param {*} event 
    */
   static async _onChangeSkillValue(event) {
+    event.stopPropagation()
+
     const target = event.currentTarget
     const key = $(target).parents('._skill').data('key')
+    const nValue = Number($(target).val())
+    let bChanged = false
+
     let competencias = this.actor.system.competencias
     let skill = competencias.find(e => e.key === key)
     if (!skill) return
 
-    skill.stats.value = $(target).val()
-    this.actor.update({"system.competencias": competencias})
+    if (skill.normal) {
+      skill.normal = false
+      skill.aprendida = true
+      bChanged = true
+    }
+
+    bChanged = nValue !== skill.stats.value || bChanged
+    if (!bChanged) return
+
+    skill.stats.value = nValue
+    this.actor.update({"system.competencias": competencias})    
   }
 
   /**
@@ -57,6 +71,23 @@ export default class sheetHandler {
     skill.checked = $(target).prop('checked')
     this.actor.update({"system.competencias": competencias})
   }  
+
+  /**
+   * _onChangeSwitch
+   * @param {*} event 
+   */
+  static async _onChangeSwitch(event) {
+    event.stopPropagation()
+
+    const target = event.currentTarget
+    const target1 = $(target).parents('._switch').find('input[name="'+$(target).data('path')+'"]')[0]
+    const target2 = $(target1).parents('._switch').find('input[type="checkbox"]').not(target1)[0]
+
+    const path1 = $(target1).attr('name')
+    const path2 = $(target2).attr('name')
+
+    await this.actor.update({[path1]: true, [path2]: false})
+  }
 
   /**
    * _onChangeStepValue

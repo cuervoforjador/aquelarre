@@ -19,6 +19,7 @@ export default class extendActorSheet
   //Attributes...
   _sheetMode = this.constructor.SHEET_MODES.PLAY
   _firstTimeStep = '01' 
+  _focus = null
 
   /**
    * constructor
@@ -145,7 +146,8 @@ export default class extendActorSheet
         formula: $(target).data('formula'),
         mod: $(target).data('mod') ? $(target).data('mod') : null,
         mods: $(target).data('mods') ? $(target).data('mods').split(',') : null,
-        useLuck: $(target).data('useluck') ? $(target).data('useluck') : true
+        useLuck: $(target).data('useluck') ? $(target).data('useluck') : true,
+        playing: $(target).hasClass('_playing')
       })
   }
 
@@ -207,6 +209,7 @@ export default class extendActorSheet
 
   /**
    * minimize
+   * @override
    */
   async minimize() {
     helperSheets.showTitle($(this.document.sheet.element))
@@ -215,6 +218,7 @@ export default class extendActorSheet
 
   /**
    * maximize
+   * @override
    */
   async maximize() {
     helperSheets.hideTitle($(this.document.sheet.element))
@@ -239,6 +243,7 @@ export default class extendActorSheet
     helperSheets.drawSpectrum($(this.element))
     this.activateListeners($(this.element))
     this.activateTab(context, $(this.element))
+    this.activateFocus()
   }
 
   /**
@@ -270,6 +275,20 @@ export default class extendActorSheet
   }
 
   /**
+   * 
+   * @param {*} event 
+   * @override
+   */
+  _onFocusIn(event) {
+    if (!$(event.currentTarget).is('button')) event.stopPropagation()    
+    this._focus = $(event.currentTarget)
+  }
+  activateFocus() {
+    if (!this._focus) return
+    $(this.form).find('[name="'+this._focus.prop('name')+'"]').focus()
+  }
+
+  /**
    * activateListeners
    * @param {*} html 
    */
@@ -288,8 +307,16 @@ export default class extendActorSheet
     this._extendHandlers["resizeUp"] = ["pointerup", e => this._onResizeMouseUp(e), false];   
     this._resizableButton.addEventListener(...this._extendHandlers.resizeDown);    
 
+    html.find("input[name]").on("focusin", this._onFocusIn.bind(this))
+    html.find("button").on("click", this._onFocusIn.bind(this))
+    
+    //html.find("input._focus").on("focusin", this._onFocusIn.bind(this))
+
+
     if ( !this.isEditable || !this.isEditMode) return;
     
+    html.find('._switch button').on("click", sheetHandler._onChangeSwitch.bind(this))
+
     /** --- SORTABLES --- */
     if (html.find('table._sortable').length > 0) {
       html.find('table._sortable tbody').sortable({
@@ -317,6 +344,7 @@ export default class extendActorSheet
     [
      context.tabs, 
      context.tabsStats,
+     context.tabsCombate,
      context.tabsHechizos,
      context.tabsEnsalmos,
      context.tabsEquipo

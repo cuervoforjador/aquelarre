@@ -5,6 +5,7 @@ import extendCharacterNPCSheet from "../sheets/character/npc.js"
 
 import sheetItem from "../sheets/item/item.js"
 import sheetCompetencia  from "../sheets/item/competencia.js"
+import sheetAccion  from "../sheets/item/accion.js"
 import sheetArma  from "../sheets/item/arma.js"
 import sheetArmadura  from "../sheets/item/armadura.js"
 import sheetSociedad  from "../sheets/item/sociedad.js"
@@ -31,6 +32,7 @@ import { configRULES } from "../config/rules.js"
 import helperTools from "./helperTools.js"
 import helperSocket from "./helperSocket.js"
 import helperMessages from "./helperMessages.js"
+import helperCombat from "./helperCombat.js"
 
 export default class helperSheets {
 
@@ -61,6 +63,7 @@ export default class helperSheets {
 
         vI.registerSheet(SYSTEM_ID, sheetItem, { types: ["item"], makeDefault: true, label: "sheet.item" })
         vI.registerSheet(SYSTEM_ID, sheetCompetencia, { types: ["competencia"], makeDefault: true, label: "sheet.competencia" })
+        vI.registerSheet(SYSTEM_ID, sheetAccion, { types: ["accion"], makeDefault: true, label: "sheet.accion" })
         vI.registerSheet(SYSTEM_ID, sheetArma, { types: ["arma"], makeDefault: true, label: "sheet.arma" })
         vI.registerSheet(SYSTEM_ID, sheetArmadura, { types: ["armadura"], makeDefault: true, label: "sheet.armadura" })
         vI.registerSheet(SYSTEM_ID, sheetSociedad, { types: ["sociedad"], makeDefault: true, label: "sheet.sociedad" })
@@ -164,10 +167,13 @@ export default class helperSheets {
 
         //Estatus de Vida
         this.checkStatusVida(rules, system.atributos.ptv, system.salud.estado)
-
-        
-
         system.salud.heridaGrave = Math.ceil(system.atributos.ptv.total / 2)
+
+        //Economía
+        system.economia.dineros = Math.round(system.economia.dineros)
+        system.economia.ingresos = Math.round(system.economia.ingresos)
+        system.economia.gastos = Math.round(system.economia.gastos)
+
         return system
     }
 
@@ -221,16 +227,60 @@ export default class helperSheets {
     }
 
     /**
+     * checkVersion
+     * @param {*} actor 
+     */
+    static async checkVersion(actor) {
+        const rules = actor.system.rules
+        const vCurrent = game.system.version
+        const vActor = actor.system.control.version
+
+        if (vActor !== vCurrent) {
+            
+            const mCompSkills = (await helperContext.getFromCompendium(rules, 'competencia'))           
+            const mSkills = actor.items.filter(e => e.type === 'competencia' 
+                                                 && e.system.rules === actor.system.rules)
+            const mNews = []
+            for (const oSkill of mSkills) {
+                const compSkill = mCompSkills.find(e => e.system.key === oSkill.system.key)
+                if (!compSkill) continue
+                await oSkill.delete()
+                mNews.push(compSkill)
+            }
+            await Item.create(mNews, {parent: actor})
+
+            await actor.update({"system.control.version": vCurrent})
+        }
+    }
+
+    /**
      * checkSkills
      * @param {*} actor 
      */
     static async checkSkills(actor) {
-        const mSkills = actor.items.filter(e => e.type === 'competencia')
+
+        //Competencias con otras reglas...
+        const mBads = actor.items.filter(e => e.type === 'competencia' 
+                                           && e.system.rules !== actor.system.rules)
+        for (const oSkill of mBads) {
+            await oSkill.delete()
+        }
+
+        //Competencias
+        const mSkills = actor.items.filter(e => e.type === 'competencia' 
+                                             && e.system.rules === actor.system.rules)
         if (mSkills.length === 0 && !actor.system.control.importedSkills) await this._importSkills(actor)
         
         let addSkills = []
         let systemSkills = actor.system.competencias
+
+        //Limpiando competencias vacías
+        if (systemSkills.find(e => e.key === '')) {
+            systemSkills = systemSkills.filter(e => e.key !== '')
+            await actor.update({"system.competencias": systemSkills})
+        }
         
+        //Añadiendo competencias que no están registradas
         mSkills.map(skill => {
             let systemSkill = actor.system.competencias.find(e => e.key === skill.system.key)
             if (!systemSkill) { addSkills.push({ key: skill.system.key }) }
@@ -242,14 +292,23 @@ export default class helperSheets {
 
         let changed = false
         const competencias = actor.system.competencias
+
+        //Completando...
         mSkills.map(skill => {
+
             const base = actor.system.caracteristicas[skill.system.caracteristica].value
             let systemSkill = competencias.find(e => e.key === skill.system.key)
             let stats = systemSkill.stats
             const min = (systemSkill.primaria) ? base*3 : base
             let value = this._checkMinMax(stats.value, stats.min, stats.max)
 
-            if (systemSkill.normal && systemSkill.checked) systemSkill.normal = false
+            //if (systemSkill.normal && systemSkill.checked) systemSkill.normal = false
+            if (!systemSkill.paterna && !systemSkill.primaria && !systemSkill.secundaria 
+                                                              && !systemSkill.aprendida) systemSkill.normal = true
+            if (systemSkill.checked && systemSkill.normal) {
+                systemSkill.normal = false
+                systemSkill.aprendida = true
+            }
             if (systemSkill.normal) value = min
 
             if ((stats.min !== min) || (stats.value !== value)) changed = true
@@ -258,8 +317,26 @@ export default class helperSheets {
             stats.penal = this.checkSkillPenal(actor, skill.system.key)
             stats.total = stats.value + stats.penal
         })
-        if (changed) {
-            await actor.update({"system.competencias": competencias})
+
+        //if (changed) {
+        //    await actor.update({"system.competencias": competencias})
+        //}
+    }
+
+    /**
+     * checkWeapons
+     * @param {*} actor 
+     */
+    static async checkWeapons(actor) {
+        const rules = actor.system.rules
+        const pelea =  actor.items.find(e => e.type === 'arma' 
+                                          && e.system.rules === rules
+                                          && e.system.key === 'pelea')
+        if (!pelea) {
+            
+            const oPelea = (await helperContext.getFromCompendium(rules, 'arma')).find(e => e.system.key === 'pelea')
+            if (!oPelea) return
+            await Item.create([oPelea], {parent: actor})
         }
     }
 
@@ -309,7 +386,7 @@ export default class helperSheets {
      * @param {*} actor 
      */
     static getActorSkills(actor) {
-        const mSkills = actor.items.filter(e => e.type === 'competencia', e.system.rules === actor.system.rules)
+        const mSkills = actor.items.filter(e => e.type === 'competencia' && e.system.rules === actor.system.rules)
         mSkills.sort((a,b) => a.name.localeCompare(b.name))
         return mSkills
     }
@@ -384,6 +461,14 @@ export default class helperSheets {
         const nIndex = mContext.findIndex(e => e.item.system.armas)
         mContext.splice(nIndex, 0, {blank: true});
 
+        //TabIndex
+        var nTabIndex = 1000
+        mContext.map(e1 => {
+            e1.tabIndex = nTabIndex
+            e1.index =  actor.system.competencias.findIndex(e2 => e2.key === e1.key)
+            nTabIndex++
+        })
+
         return mContext
     }
 
@@ -451,6 +536,22 @@ export default class helperSheets {
     static itemsVerguenzas(actor, rules) {
         let mReturn = []
         let mItems = actor.items.filter(e => e.type === 'rasgo' && e.system.verguenza && e.system.rules === rules)
+        mItems.map(item => {
+            mReturn.push({
+                item: item
+            })
+        })
+        return mReturn
+    }
+
+    /**
+     * itemsAcciones
+     * @param {*} actor 
+     * @param {*} rules 
+     */
+    static itemsAcciones(actor, rules) {
+        let mReturn = []
+        let mItems = actor.items.filter(e => e.type === 'accion' && e.system.rules === rules)
         mItems.map(item => {
             mReturn.push({
                 item: item
@@ -1053,6 +1154,19 @@ export default class helperSheets {
     }
 
     /**
+     * adjustDescriptionSection
+     * @param {*} html 
+     */
+    static adjustDescriptionSection(html) {
+        const sheetContent = html.find('._sheetContent')
+        const section = html.find('section.tab[data-tab="descripcion"]')
+        const properties = sheetContent.find('._properties')
+        const nHeight = (properties.length === 0) ? 30 : properties.height() + 30
+        if (section.length === 0) return
+        section.css({ height: `calc(100% - ${nHeight}px)`})
+    }
+
+    /**
      * addRulesButton
      * @param {*} html 
      */
@@ -1208,7 +1322,9 @@ export default class helperSheets {
             {type: 'profesion', field: 'profesionPaterna'}
 
         ].map(o => {
-            const oItem = document.items.find(e => e.type === o.type)
+            const oItem = o.type !== 'profesion' ? document.items.find(e => e.type === o.type) :
+                          o.field === 'profesion' ? document.items.find(e => e.type === o.type && !e.system.paterna) :
+                          o.field === 'profesionPaterna' ? document.items.find(e => e.type === o.type && e.system.paterna) : null
             info[o.field] = {
                 id: '',
                 key: '',
@@ -1322,6 +1438,53 @@ export default class helperSheets {
         mProductos.sort((a,b) => a.name.localeCompare(b.name))
         return mProductos
     }
+
+    /**
+     * checkCombatEvents
+     * @param {*} html 
+     * @param {*} actor 
+     * @returns 
+     */
+    static checkCombatEvents(html, actor) {        
+
+        const oStep = helperCombat.getStepInfo(actor)
+        if (!oStep.myTurn) return
+        let oDiv = null
+        
+        //Tirada de Competencia
+        if (!oStep.step.rolls.skill.rolled) {
+            
+            const _actionName = oStep.target && oStep.target.action?.system.afectaDefensa ?
+                                    oStep.main.action?.name + ' - ' + oStep.target.action?.name :
+                                    oStep.main.action?.name
+
+            if (oStep.main.weapon.type === 'competencia') {
+                oDiv = html.find(`._skills ._skill[data-key="${oStep.main.weapon.system.key}"]`)
+                oDiv.find('._skillValue ._value').text(oStep.main.skill.value+'%')
+                oDiv.attr('data-tooltip', `${oStep.main.skill.label} (${_actionName})`)
+                oDiv.addClass('_playing')
+                oDiv.find('._skillValue').addClass('_playing')
+            }                    
+            else if (oStep.main.weapon.type === 'arma') {
+                oDiv = html.find(`._weapons ._list ._weapon[data-id="${oStep.step.weaponId}"]`)
+                oDiv.find('._skillValue ._value').text(oStep.main.skill.value)
+                oDiv.find('._skillValue').attr('data-tooltip', `${oStep.main.skill.label} (${_actionName})`)
+                oDiv.find('._skillValue').addClass('_playing')
+            }
+        }
+
+        //Tirada de Daño
+        if (oStep.step.rolls.skill.rolled && !oStep.step.rolls.damage.rolled) {
+            oDiv = html.find(`._weapons ._list ._weapon[data-id="${oStep.step.weaponId}"]`)
+            oDiv.find('._damageValue ._value').text(oStep.main.damage.formula)
+            oDiv.find('._damageValue').attr('data-tooltip', 
+                            `${oStep.main.action?.name}: ${oStep.main.damage.label}</br>
+                             ${game.i18n.localize('common.objetivo')}: ${oStep.target.combatant.name}`)
+            oDiv.find('._damageValue').addClass('_playing')
+        }
+    }
+
+
 
     /**
      * reconocerHechizo

@@ -14,7 +14,9 @@ export default class helperTables {
      * @param {*} auto
      */
     static async tableLore(rules, lore, actor, auto=false) {
-        const mOptions = await helperContext.getLoreOptions(rules, lore, actor)
+        const mOptions = (await helperContext.getLoreOptions(rules, lore, actor))
+                                             .filter(e => e.low !== null && e.low !== 0 
+                                                       && e.high !== null && e.high !== 0)
 
         if (mOptions.length === 1) {
             await helperContext.assignLoreToActor(rules, lore, actor, mOptions[0].item.system.key)

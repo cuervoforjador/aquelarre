@@ -5,6 +5,16 @@
   overflow-y: auto;
 }
 
+form._extend ._loreButtons {
+    display: flex;
+    gap: 3px;
+    margin: 0 10px 0 0;
+}
+form._extend ._loreButtons button {
+    border-radius: 0;
+    background: none;
+}
+
 form._extend section.window-content {
     padding: 0;
     background-image: url(../assets/ui/paper.png);
@@ -144,6 +154,10 @@ form._extend._vyc file-picker:disabled {
     --input-text-color: var(--vcTextDisabled);
 }
 
+form._extend input._smallFont {
+    font-size: calc(var(--fSize) * 0.9)!important;
+}
+
 form._extend ._sheetContent input,
 form._extend ._sheetContent select,
 form._extend ._sheetContent textarea {
@@ -170,7 +184,7 @@ select._accent[disabled] {
 
 button._checked {
     background: var(--aqRed2)!important;
-    color: #000;
+    color: #FFF;
     border: 1px solid var(--aqRed1);
 }
 ._vyc button._checked {
@@ -214,6 +228,15 @@ form._extend input[name="name"]:disabled {
 }
 form._extend._vyc input[name="name"]:disabled {
     color: var(--vcText2);
+}
+
+form._extend img._option {
+    width: calc(var(--fSize) * 2.5);
+    opacity: 0.35;
+    cursor: pointer;
+}
+form._extend img._option._selected {
+    opacity: 1;
 }
 
 /** --- SECCIONES --- */
@@ -284,6 +307,9 @@ form._extend._vyc input[name="name"]:disabled {
 ._table option {
     background: #000000e0;
     color: #FFF;
+}
+._boxed {
+    border: 1px solid #00000099;
 }
 
 ._combo {
@@ -737,11 +763,15 @@ form._extend._actor ._sheetHeader .portrait {
 }
 form._extend._actor ._sheetHeader .portrait img.actor-portrait {
     box-shadow: #00000085 0px 0px 5px 2px;
-    border: 1px solid #00000073;
+    border-radius: 0;
+    border: 0;    
+    /* 
+    border: 1px solid #00000073; 
     border-top-right-radius: 4%;
     border-bottom-right-radius: 50%;
     border-bottom-left-radius: 4%;
     border-top-left-radius: 4%;
+    */
 }
 form._extend._aq3._actor ._sheetHeader .portrait img.actor-portrait {
     border-radius: 0;
@@ -963,7 +993,6 @@ form._extend ._options {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    padding: 0 0.5rem;
 }
 
 /** --- TIRADAS --- */
@@ -1421,7 +1450,8 @@ form._extend section.tab[data-tab="rasgos"] {
 }
 form._extend section.tab[data-tab="rasgos"] ._orgullos,
 form._extend section.tab[data-tab="rasgos"] ._verguenzas,
-form._extend section.tab[data-tab="rasgos"] ._secuelas {
+form._extend section.tab[data-tab="rasgos"] ._secuelas,
+form._extend section.tab[data-tab="acciones"] ._acciones {
     width: 100%;
     min-height: 30%;
 }
@@ -1470,6 +1500,15 @@ form._extend ._fog ._buttons {
     padding: 0 1rem;
     justify-content: flex-end;
 }
+form._extend ._basicButton {
+    font-family: var(--fFont1);
+    font-size: var(--fSize);
+    padding: 5px;
+    border-radius: 0;
+}   
+form._extend._vyc ._basicButton {
+    font-family: var(--vcfFont1);
+}   
 ._sbutton {
     background: #514d4d;
     border: 1px solid #ffffff91;
@@ -1725,6 +1764,19 @@ form._extend input._itemInput {
 }
 
 /** COMBATE **/
+form._extend section.tab.active._combate0 {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-content: flex-start;
+    justify-content: flex-start;
+    flex-direction: column;
+    position: relative;
+    align-items: flex-start;
+}
+form._extend section.tab.active._combate0 nav.tabs._subMenu {
+    margin-bottom: calc(var(--fSize) * -0.7);
+}
 form._extend section.tab.active._combate {
     display: flex;
     align-content: flex-start;
@@ -1804,6 +1856,9 @@ form._extend section.tab._combate ._location ._escudo ._input {
     align-items: center;
     font-size: 259%;
     text-shadow: -1px -1px 0 #ffffff, 1px -1px 0 #ffffff, -1px 1px 0 #ffffff, 1px 1px 0 #ffffff;
+}
+form._extend._actor section.tab[data-tab="acciones"] {
+    margin-top: calc(var(--fSize) * 1);
 }
 
 ._escudo.cabeza {
@@ -2200,6 +2255,16 @@ form._extend ._skills ._skill button[data-action="_deleteItem"] {
     margin: 0 calc(var(--fSize) * -0.3);
 }
 
+/** --- PLAYING --- */
+form._extend ._playing {
+    animation: blinkBorder 1.5s ease-in-out infinite, 
+               blinkBackground 1.5s ease-in-out infinite;
+    border-width: 4px !important;
+}
+form._extend ._skill ._skillValue._playing {
+    animation: none !important;
+    border: 0;
+}
 
 /** --- OTROS --- */
 form._extend .window-resize-handle {

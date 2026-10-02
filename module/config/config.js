@@ -1,6 +1,6 @@
 export const aqConfig = {
     skills: {
-        status: ['normal', 'paterna', 'primaria', 'secundaria']
+        status: ['normal', 'paterna', 'primaria', 'secundaria', 'aprendida']
     },
     armas: {
         tamanos: {
@@ -133,9 +133,9 @@ export const aqConfig = {
             {id: '030', label: 'mods.m030', mod: '-30', rules: ['aq4', 'vyc']}
         ],    
         distancia: [
-            {id: '031', label: 'mods.m031', mod: '-20', rules: ['aq4', 'vyc']},
-            {id: '032', label: 'mods.m032', mod: '+0', rules: ['aq4', 'vyc']},
-            {id: '033', label: 'mods.m033', mod: '+20', rules: ['aq4', 'vyc']},
+            {id: '031', label: 'mods.m031', mod: '-20', rules: ['aq3', 'aq4', 'vyc']},
+            {id: '032', label: 'mods.m032', mod: '+0',  rules: ['aq3', 'aq4', 'vyc']},
+            {id: '033', label: 'mods.m033', mod: '+20', rules: ['aq3', 'aq4', 'vyc']},
             {id: '034', label: 'mods.m034', mod: '+40', rules: ['vyc']},
         ],            
         localizacion: [

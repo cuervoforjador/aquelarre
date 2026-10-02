@@ -14,8 +14,8 @@ export default class hooksItem {
         const activeGM = game.users.activeGM        
         if (!game.user.isGM || (activeGM && activeGM.id !== game.user.id)) return
 
-        //Recibiendo Secuelas
         if (item.type === 'secuela' && options.parent && options.parent.type === 'character') helperContext.activeSecuela(item)
+        if (item.type === 'profesion' && options.parent && options.parent.type === 'character') helperContext.activeProfesion(item)
 
     }
 

@@ -66,6 +66,29 @@ dialog._extend._vyc footer button {
     font-family: var(--vcfFont1);
     color: var(--vcText);
 }
+
+dialog._extend ._properties {
+    border: 1px solid #000;
+    background: #ffffff40;
+    padding: 1rem;
+    font-size: calc(var(--fSize) * 1.15);
+}
+dialog._extend ._properties ._row {
+    display: flex;
+    align-content: center;
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin: 0.35rem 0;
+}
+dialog._extend img._textIcon {
+    width: 1.15rem;
+    height: 1.15rem;
+}
+dialog._extend._description strong {
+    font-weight: 900;
+}
+
+
 dialog._extend._description .dialog-content {
     gap: 0.1rem;
 }
@@ -167,6 +190,9 @@ dialog._extend._vyc._description span._pseudoTitle {
 }
 
 
+dialog._dialogAction {
+    z-index: 10001 !important;
+}
 
 
 
@@ -252,6 +278,15 @@ dialog._extend button[type="submit"]._selected {
 }
 dialog._extend._vyc button[type="submit"]._selected {
     background: var(--vcGreen);
+}
+dialog._extend ._explain {
+    font-family: var(--fFont0);
+    font-size: calc(1rem * 1.2);
+    line-height: calc(1rem * 1.2);
+    width: 100%;
+}
+dialog._extend._vyc ._explain {
+    font-family: var(--vcfFont1);
 }
 
 dialog._extend ._buttons {
@@ -390,6 +425,13 @@ dialog._extend._diffLevels ._info {
     width: 100%;
     font-size: 1.15rem;
     border: 1px solid #00000070;
+}
+dialog._extend._diffLevels ._info._alert {
+    background: #e2be35;
+    text-align: end;
+}
+dialog._extend._diffLevels ._info._criVScri label {
+    width: 100%;
 }
 dialog._extend._diffLevels ._penals {
     border: 1px solid #9b1515ad;

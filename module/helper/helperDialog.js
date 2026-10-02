@@ -1,5 +1,6 @@
 import { SYSTEM_ID } from "../config/uiConstants.js"
 import helperContext from "./helperContext.js"
+import { configRULES } from "../config/rules.js";
 
 export default class helperDialog {
 
@@ -99,7 +100,7 @@ export default class helperDialog {
      * @param {*} options 
      * @param {*} position 
      */
-    static async dialogListOptions(rules, title, options, bMultiple=false, position={height: 'auto'}) {
+    static async dialogListOptions(rules, title, options, bMultiple=false, position={height: 'auto'}, sExplain='') {
         let _options = ''
         let _buttonClassSelected = ''
         options.map(option => {
@@ -116,7 +117,8 @@ export default class helperDialog {
                         </li>`
             if (!!option.checked) _buttonClassSelected = '_selected'
         })
-        const content = `<ul class="_main">${_options}</ul>`
+        const content = sExplain === '' ? `<ul class="_main">${_options}</ul>` :
+                                          `<div class="_explain">${sExplain}</div><ul class="_main">${_options}</ul>`
 
         const option = await foundry.applications.api.DialogV2.wait({
             classes: ['_extend', '_'+rules],
@@ -198,7 +200,8 @@ export default class helperDialog {
      * @param {*} actor
      */
     static async dialogSelectLore(rules, lore, actor) {
-        const mOptions = await helperContext.getLoreOptions(rules, lore, actor)
+        const lore2 = lore === 'profesionPaterna' ? 'profesion' : lore
+        const mOptions = await helperContext.getLoreOptions(rules, lore2, actor)
         let options = ''
         mOptions.map(option => {
             options += `<li data-key=${option.item.system.key}>
@@ -206,7 +209,7 @@ export default class helperDialog {
                             <label class="_title">${option.item.name}</label>
                             <button type="button" class="icon fas fa-solid fa-magnifying-glass _showDescription" 
                                     data-action="showCompendiumItem" 
-                                    data-rules="${rules}" data-lore="${lore}" data-item="${option.item.id}"
+                                    data-rules="${rules}" data-lore="${lore2}" data-item="${option.item.id}"
                                     data-tooltip="${game.i18n.localize('tooltip.showItem')}">
                             </button>                        
                         </li>`
@@ -215,7 +218,7 @@ export default class helperDialog {
 
         const option = await foundry.applications.api.DialogV2.wait({
             classes: ['_extend', '_'+rules],
-            window: { title: game.i18n.localize("common."+lore) },
+            window: { title: game.i18n.localize("common."+lore2) },
             position: { height: 'auto' },            
             content,
             buttons: [{
@@ -243,7 +246,7 @@ export default class helperDialog {
      */
     static async dialogDescription(document=null, content='', title='', rules=null, width, img='', position) {
         const sRules = rules ? rules : document?.system.rules
-        const sContent = document ? document.system.descripcion : content
+        let sContent = document ? await this.descriptionByType(document) : content
         const sTitle = document ? document.name : title
         const sImg = img !== '' ? img : 
                      document ? document.img : ''
@@ -263,6 +266,120 @@ export default class helperDialog {
                 this._setNoFooter(dialog)
             }
         })
+    }
+
+    /**
+     * descriptionByType
+     */
+    static async descriptionByType(document) {
+
+        const rules = document.system.rules
+        const moneda = configRULES[rules].moneda
+
+        if (document.type === 'profesion') {
+
+            let sEstratos = ''
+            const oEstratos = await helperContext.getEstratos(document.system.rules)
+            const mCompetencias = await helperContext.getCompetencias(document.system.rules)
+
+            document.system.estratos.filter(e => e.checked).map(e => {
+                if (oEstratos[e.key]) {
+                    sEstratos += sEstratos === '' ? oEstratos[e.key].label : 
+                                                    ', '+oEstratos[e.key].label
+                }
+            })
+
+            let sCaracteristicas = ''
+            for (var s in document.system.caracteristicas) {
+                const nChar = document.system.caracteristicas[s]
+                if (nChar > 0) {
+                    sCaracteristicas += sCaracteristicas === '' ? nChar + ' en ' + game.i18n.localize('CHAR.'+s) :
+                                                                  ', ' + nChar + ' en ' + game.i18n.localize('CHAR.'+s)
+                }
+            }
+
+            let sPrimarias = ''
+            let sSecundarias = ''
+            
+            for (var s0 of ['primaria', 'secundaria']) {
+                let sText = ''
+                const mCompEval = document.system.competencias.filter(e => e[s0])            
+                const mCompEvalGrupos = [...new Set(
+                    mCompEval.map(obj => obj.grupo).filter(grupo => grupo !== undefined && grupo !== null && grupo !== '') 
+                )]   
+                mCompEvalGrupos.unshift('')             
+                mCompEvalGrupos.map(nGrupo => {
+
+                    let sText0 = ''
+                    mCompEval.filter(e => Number(e.grupo) === Number(nGrupo)).map(comp => {
+                        const oComp = mCompetencias.find(e => e.system.key === comp.key)
+                        const _s = nGrupo === '' ? ', ' : ' o '
+                        sText0 += sText0 === '' ? oComp.name : _s + oComp.name
+                    })
+                    if (nGrupo !== '') sText0 = '( '+ sText0 +' )'
+                    sText += sText === '' ? sText0 : ', '+sText0
+                })
+                if (s0 === 'primaria') sPrimarias = sText
+                if (s0 === 'secundaria') sSecundarias = sText
+            }
+
+            let sIngresos = ''
+            document.system.estratos.filter(e => e.checked).map(e => {
+                const _estrato = oEstratos[e.key].label              
+                if (e.ingresos !== '') {
+                    let sFormula = e.ingresos
+                    const matchSkill = e.ingresos.match(/\{skill ([^}]+)\}/);
+                    if (matchSkill) {
+                        const skill = mCompetencias.find(e => e.system.key ===  matchSkill[1])
+                        sFormula = sFormula.replaceAll("{skill "+matchSkill[1]+"}", skill.name)
+                    }
+                    sFormula = sFormula.replaceAll("*", ' x ')
+                    
+                    const addText = `<span class="_bold _italic">${_estrato}</span>: ${sFormula} <span class="_italic">${moneda}</span>`
+                    sIngresos += sIngresos === '' ? addText : ', '  + addText
+                }   
+            })
+
+            return `<div class="_properties">
+                        <div class="_row _gapped">
+                            <img src="systems/aquelarre/assets/ui/vyc_comp_normal.png" class="_textIcon"/>
+                            <label>
+                                <span class="_bold _noWrap">${game.i18n.localize('common.estratos')}:</span>
+                                <span>${sEstratos}</span>
+                            </label>
+                        </div>
+                        <div class="_row _gapped">
+                            <img src="systems/aquelarre/assets/ui/vyc_comp_normal.png" class="_textIcon"/><label>
+                                <span class="_bold _noWrap">${game.i18n.localize('common.minCaracteristicas')}:</span>
+                                <span>${sCaracteristicas}</span>
+                            </label>
+                        </div>        
+                        <div class="_row _gapped">
+                            <img src="systems/aquelarre/assets/ui/vyc_comp_normal.png" class="_textIcon"/>
+                            <label>
+                                <span class="_bold _noWrap">${game.i18n.localize('common.compPrimarias')}:</span>
+                                <span>${sPrimarias}</span>
+                            </label>
+                        </div> 
+                        <div class="_row _gapped">
+                            <img src="systems/aquelarre/assets/ui/vyc_comp_normal.png" class="_textIcon"/>
+                            <label>
+                                <span class="_bold _noWrap">${game.i18n.localize('common.compSecundarias')}:</span>
+                                <span>${sSecundarias}</span>
+                            </label>
+                        </div>        
+                        <div class="_row _gapped">
+                            <img src="systems/aquelarre/assets/ui/vyc_comp_normal.png" class="_textIcon"/>
+                            <label>
+                                <span class="_bold _noWrap">${game.i18n.localize('common.ingresosSemanales')}:</span>
+                                <span>${sIngresos}</span>
+                            </label>
+                        </div>                                                                                 
+                    </div>
+                    <div class="_description">${document.system.descripcion}</div>`
+
+        }
+        return document.system.descripcion
     }
 
     static async dialogDescription2(content='', title='', rules=null, position, sClass='') {

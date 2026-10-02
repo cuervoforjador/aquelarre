@@ -13,31 +13,35 @@ export default class helperRolls {
      * @param {*} value
      * @param {*} useLuck 
      */
-    static async roll(options={actor, target:'', item:null, path:'', formula:'', useLuck:true, mod:null, mods:null}) {
+    static async roll(options={actor, target:'', item:null, path:'', formula:'', useLuck:true, mod:null, mods:null, playing: false}) {
        
-        let percent = 0
+        const oStep = options.playing && game.combat ? helperCombat.getStepInfo(options.actor) : null
+
         switch(options.target) {
             case 'char':
-                percent = Number(options.actor.system.caracteristicas[options.path].value)*5
                 await this.statRoll({...options, ...{
                     formula: '1D100',
-                    percent,
+                    percent: Number(options.actor.system.caracteristicas[options.path].value)*5,
                     title: game.i18n.localize('CHAR.'+options.path) + ' x5',
-                    subtitle: game.i18n.localize('common.rollChar') }})
+                    subtitle: game.i18n.localize('common.rollChar'),
+                    playing: options.playing,
+                    step: oStep }})
                 break;
 
             case 'attr':                
-                percent = Number(this._access(options.actor.system.atributos, options.path))
                 await this.statRoll({...options, ...{
                     formula: '1D100',
-                    percent,
+                    percent: Number(this._access(options.actor.system.atributos, options.path)),
                     title: game.i18n.localize('ATTR.'+options.path.split('.')[0]),
-                    subtitle: game.i18n.localize('common.rollAttr') }})
+                    subtitle: game.i18n.localize('common.rollAttr'),
+                    playing: options.playing,
+                    step: oStep }})
                 break;
 
             case 'skill':  
                 const skill = options.actor.items.find(e => e.type === 'competencia' && e.system.key === options.path)
-                const stats = options.actor.system.competencias.find(e => e.key === options.path)
+                var stats = options.actor.system.competencias.find(e => e.key === options.path)
+
                 if (!skill || !stats) return
 
                 await this.statRoll({...options, ...{
@@ -47,11 +51,15 @@ export default class helperRolls {
                     percent: stats.stats.total,
                     title: skill.name,
                     subtitle: skill.name+': '+stats.stats.total+'%',
-                    img: skill.img }})
+                    img: skill.img,
+                    playing: options.playing,
+                    step: oStep }})
                 break;  
             
             case 'damage':
-                const tokenTarget = await helperCombat.selectTokenTarget(options.actor);
+                let tokenTarget = null
+                if (options.playing) tokenTarget = oStep.target.combatant.token
+                                else tokenTarget = await helperCombat.selectTokenTarget(options.actor)
                 if (!tokenTarget) return
 
                 await this.damageRoll({...options, ...{
@@ -59,7 +67,9 @@ export default class helperRolls {
                     subtitle: tokenTarget.actor.name,
                     targetToken: tokenTarget,
                     targetActor: tokenTarget.actor,
-                    img: options.item.img }})
+                    img: options.item.img,
+                    playing: options.playing,
+                    step: oStep}})
                 break;
         }
 
@@ -81,7 +91,7 @@ export default class helperRolls {
      * statRoll
      * @param {*} options 
      */
-    static async statRoll(options={actor: null, formula: '', percent: 0, mod: null, mods: null, useluck: true, title: '', subtitle: '', img: ''}) {
+    static async statRoll(options={actor: null, formula: '', percent: 0, mod: null, mods: null, useluck: true, title: '', subtitle: '', img: '', playing: false, step: null}) {
         const diceRoll = new newRoll('1D100', {...options, ...{
             rollType: 'simple',
             useDiffLevel: true
@@ -93,7 +103,11 @@ export default class helperRolls {
      * damageRoll
      * @param {*} options 
      */
-    static async damageRoll(options={actor: null, formula: '', title: '', subtitle: '', img: ''}) {
+    static async damageRoll(options={actor: null, formula: '', title: '', subtitle: '', img: '', playing: false, step: null}) {
+        
+        if (options.playing && options.step) {
+            options.formula = options.step.main.damage.formula
+        }
         const diceRoll = new newRoll(options.formula, {...options, ...{
             rollType: 'damage',
             targeted: true,

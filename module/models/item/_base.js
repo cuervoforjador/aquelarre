@@ -10,6 +10,7 @@ export default class extendItem_Base extends extend_Base {
     static defineSchema() {
         const schema = super.defineSchema()
 
+        schema.applied = new api.BooleanField({ initial: false })
         schema.descripcion = new api.HTMLField({ initial: '' })
         schema.fuente =  new api.StringField({ initial: '' })
 

@@ -27,10 +27,16 @@ export default class helperTemplates {
             tab_Formulas: `${character}/tabs/formulas.hbs`,
             tab_Equipo: `${character}/tabs/equipo.hbs`,
 
+            competencias_comun: `${character}/parts/comun/competencias.hbs`,
             secuelas_comun: `${character}/parts/comun/secuelas.hbs`,
             orgullos_comun: `${character}/parts/comun/orgullos.hbs`,
             verguenzas_comun: `${character}/parts/comun/verguenzas.hbs`,
+
+            combate_armas_comun: `${character}/parts/comun/combateArmas.hbs`,
+            combate_mods_comun: `${character}/parts/comun/combateMods.hbs`,
+            combate_armaduras_comun: `${character}/parts/comun/combateArmaduras.hbs`,
             
+            combateAcciones_comun: `${character}/parts/comun/combateAcciones.hbs`,
             hechizosGrimorio_comun: `${character}/parts/comun/hechizosGrimorio.hbs`,
             hechizosEstudio_comun: `${character}/parts/comun/hechizosEstudio.hbs`,
             hechizosPreparacion_comun: `${character}/parts/comun/hechizosPreparacion.hbs`,
@@ -50,10 +56,6 @@ export default class helperTemplates {
             stats_health_aq3: `${character}/parts/aq3/stats_health.hbs`,
             stats_rrirr_aq3: `${character}/parts/aq3/stats_rrirr.hbs`,
             stats_exper_aq3: `${character}/parts/aq3/stats_exper.hbs`,
-            stats_skills_aq3: `${character}/parts/aq3/stats_skills.hbs`,
-            combat_weapons_aq3: `${character}/parts/aq3/combat_weapons.hbs`,
-            combat_armors_aq3: `${character}/parts/aq3/combat_armors.hbs`,
-            combat_mods_aq3: `${character}/parts/aq3/combat_mods.hbs`,
             combat_location_aq3: `${character}/parts/aq3/combat_location.hbs`,
 
             stats_main_aq4: `${character}/parts/aq4/stats_main.hbs`,
@@ -62,10 +64,6 @@ export default class helperTemplates {
             stats_health_aq4: `${character}/parts/aq4/stats_health.hbs`,
             stats_rrirr_aq4: `${character}/parts/aq4/stats_rrirr.hbs`,
             stats_exper_aq4: `${character}/parts/aq4/stats_exper.hbs`,
-            stats_skills_aq4: `${character}/parts/aq4/stats_skills.hbs`,     
-            combat_weapons_aq4: `${character}/parts/aq4/combat_weapons.hbs`,
-            combat_armors_aq4: `${character}/parts/aq4/combat_armors.hbs`,
-            combat_mods_aq4: `${character}/parts/aq4/combat_mods.hbs`,
             combat_location_aq4: `${character}/parts/aq4/combat_location.hbs`,
 
             stats_main_vyc: `${character}/parts/vyc/stats_main.hbs`,
@@ -73,15 +71,12 @@ export default class helperTemplates {
             stats_rrirr_vyc: `${character}/parts/vyc/stats_rrirr.hbs`,
             stats_health_vyc: `${character}/parts/vyc/stats_health.hbs`,            
             stats_percents_vyc: `${character}/parts/vyc/stats_percents.hbs`,
-            stats_skills_vyc: `${character}/parts/vyc/stats_skills.hbs`,      
-            combat_weapons_vyc: `${character}/parts/vyc/combat_weapons.hbs`,
-            combat_armors_vyc: `${character}/parts/vyc/combat_armors.hbs`,
-            combat_mods_vyc: `${character}/parts/vyc/combat_mods.hbs`,
             combat_location_vyc: `${character}/parts/vyc/combat_location.hbs`,
 
             // --- ITEMS ---
             main_Item: `${item}/main/item.hbs`,
             main_Competencia: `${item}/main/competencia.hbs`,
+            main_Accion: `${item}/main/accion.hbs`,
             main_Arma: `${item}/main/arma.hbs`,
             main_Armadura: `${item}/main/armadura.hbs`,
             main_Sociedad: `${item}/main/sociedad.hbs`,
@@ -104,6 +99,7 @@ export default class helperTemplates {
             item_background: `${item}/headers/_background.hbs`,
             
             header_Competencia: `${item}/headers/competencia.hbs`,
+            header_Accion: `${item}/headers/accion.hbs`,
             header_Arma: `${item}/headers/arma.hbs`,
             header_Armadura: `${item}/headers/armadura.hbs`,
             header_Sociedad: `${item}/headers/sociedad.hbs`,
@@ -132,7 +128,10 @@ export default class helperTemplates {
             tab_EnsalmosPropiedades: `${item}/tabs/ensalmosPropiedades.hbs`,
             tab_MassEdit: `${item}/tabs/massEdit.hbs`,
             tab_Actores: `${item}/tabs/actores.hbs`,
-            tab_Productos: `${item}/tabs/productos.hbs`
+            tab_Productos: `${item}/tabs/productos.hbs`,
+            tab_AccionesPropiedades: `${item}/tabs/accionesPropiedades.hbs`,
+            tab_ProfesionesCaracteristicas: `${item}/tabs/profesionesCaracteristicas.hbs`,
+            tab_ProfesionesCompetencias: `${item}/tabs/profesionesCompetencias.hbs`
         })
     }
 }

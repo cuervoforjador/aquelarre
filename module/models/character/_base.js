@@ -12,6 +12,7 @@ export default class extendCharacter_Base extends extend_Base {
         
         /** --- CONTROL --- */
         schema.control  = new api.SchemaField({
+            version: new api.StringField({ initial: '' }),
             textSize: new api.StringField({ initial: '1rem' }),
             importedSkills: new api.BooleanField({ initial: false }),
             tienda: new api.StringField({ initial: '' })
@@ -19,6 +20,8 @@ export default class extendCharacter_Base extends extend_Base {
 
         /** --- INFO --- */
         schema.info  = new api.SchemaField({
+            femenino: new api.BooleanField({ initial: false }),
+            masculino: new api.BooleanField({ initial: true }),
             edad: new api.NumberField({ nullable: true, initial: 25 }),
             altura: new api.NumberField({ nullable: true, initial: null }),
             peso: new api.NumberField({ nullable: true, initial: null }),
@@ -38,6 +41,7 @@ export default class extendCharacter_Base extends extend_Base {
         schema.economia = new api.SchemaField({
             dineros: new api.NumberField({ nullable: true, initial: 0 }),
             ingresos: new api.NumberField({ nullable: true, initial: 0 }),
+            ingresosFormula: new api.StringField({ initial: '' }),
             gastos: new api.NumberField({ nullable: true, initial: 0 }),
         })
 
@@ -101,7 +105,8 @@ export default class extendCharacter_Base extends extend_Base {
             profesion: new api.BooleanField({ initial: false }),
             paterna: new api.BooleanField({ initial: false }),
             primaria: new api.BooleanField({ initial: false }),
-            secundaria: new api.BooleanField({ initial: false })
+            secundaria: new api.BooleanField({ initial: false }),
+            aprendida: new api.BooleanField({ initial: false })
         }))
 
 

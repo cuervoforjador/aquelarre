@@ -1,0 +1,49 @@
+<div class="_main {{#if isEditable}}_editable{{/if}}">
+    <div class="_sheetContent">
+
+        {{!-- PROPERTIES --}}
+        <div class="_properties">
+            <input type="text" 
+                class="_italic"
+                style="width: 100%;"
+                {{{_disabled}}}
+                name="system.resumen" 
+                value="{{system.resumen}}">                 
+            <div class="_buttons _spaced _row">
+                <div class="_combo _gapped">
+                    <div class="_alternative _combo _smallGapped _smallPadding _boxed">
+                        {{{checkButton 'system.favorita' 'common.favorita' 'fa-star'}}}                    
+                    </div>                
+                    <div class="_alternative _combo _smallGapped _smallPadding _boxed">
+                        {{{checkButton 'system.ataque' 'common.ataque' 'fa-sword'}}}
+                        {{{checkButton 'system.defensa' 'common.defensa' 'fa-shield'}}}
+                        {{{checkButton 'system.movimiento' 'common.movimiento' 'fa-arrow-right'}}}
+                    </div>
+                </div>
+                <div class="_alternative _combo _smallGapped _smallPadding _boxed">
+                    {{{checkButton 'system.normal' 'common.normal0' 'fa-1'}}}
+                    {{{checkButton 'system.extendida' 'common.extendida' 'fa-2'}}}                    
+                </div>            
+            </div>
+            <div class="_options _combo">
+                {{#each competenciasArmas as |competencia index|}}
+                <img class="_option {{#if (_property 'system.armas' competencia.key 'checked')}} _selected {{/if}}"
+                     src="{{competencia.img}}" 
+                     data-path="system.armas"
+                     data-key="{{competencia.key}}"
+                     data-tooltip="{{competencia.label}}" />
+                {{/each}}
+            </div>
+            <div class="_row _gapped _menu">
+                {{{navTab 'primary' (array 'propiedades' 'descripcion') '_expanded'}}}
+            </div>                                     
+        </div>
+
+        {{>tab_AccionesPropiedades}}
+        {{>tab_Descripcion}}
+
+    </div>
+    <div class="_sheetFooter">
+        {{>item_footer}}
+    </div>    
+</div>

@@ -3,6 +3,7 @@ import extendCharacter_NPC from "../models/character/npc.js"
 
 import modelItem from "../models/item/item.js"
 import modelCompetencia from "../models/item/competencia.js"
+import modelAccion from "../models/item/accion.js"
 import modelArma from "../models/item/arma.js"
 import modelArmadura from "../models/item/armadura.js"
 import modelSociedad from "../models/item/sociedad.js"
@@ -26,6 +27,8 @@ import newRollTable from "../documents/rollTable.js"
 import newCombat from "../documents/combat.js"
 import newRoll from "../documents/roll.js"
 
+import extend_Combat from "../models/combat.js"
+
 export default class helperModels {
 
     /**
@@ -38,6 +41,7 @@ export default class helperModels {
 
         CONFIG.Item.dataModels.item = modelItem
         CONFIG.Item.dataModels.competencia = modelCompetencia
+        CONFIG.Item.dataModels.accion = modelAccion
         CONFIG.Item.dataModels.arma = modelArma
         CONFIG.Item.dataModels.armadura = modelArmadura
         CONFIG.Item.dataModels.sociedad = modelSociedad
@@ -53,6 +57,8 @@ export default class helperModels {
         CONFIG.Item.dataModels.ensalmo = modelEnsalmo
         CONFIG.Item.dataModels.formula = modelFormula
         CONFIG.Item.dataModels.tienda = modelTienda
+
+        CONFIG.Combat.documentClass = extend_Combat
     }
 
     /**

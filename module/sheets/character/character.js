@@ -12,6 +12,7 @@ import helperSettings from "../../helper/helperSettings.js";
 import helperMessages from "../../helper/helperMessages.js";
 import helperBooks from "../../helper/helperBooks.js";
 import helperMagia from "../../helper/helperMagia.js";
+import helperCombat from "../../helper/helperCombat.js";
 
 export default class extendCharacterSheet extends extendActorSheet {
 
@@ -56,7 +57,9 @@ export default class extendCharacterSheet extends extendActorSheet {
       _minusUnidad:           this.#onMinusUnidad,
       _openTienda:            this.#onOpenTienda,
       _productoDescr:         this.#onProductoDescr,
-      _comprarItem:           this.#onComprarItem
+      _comprarItem:           this.#onComprarItem,
+      _markFavourite:         this.#onMarkFavourite,
+      _calcIngresos:          this.#onCalcIngresos
     }
   }
 
@@ -69,6 +72,8 @@ export default class extendCharacterSheet extends extendActorSheet {
     main: {       
       template: `${this.templateFolder}/main/${this.templateTag}.hbs`,
       scrollable: [".scrollableStats", 
+                   ".scrollableCombate1",
+                   ".scrollableCombate2",
                    ".scrollableHechizos1",
                    ".scrollableHechizos2",
                    ".scrollableHechizos3",
@@ -88,6 +93,10 @@ export default class extendCharacterSheet extends extendActorSheet {
     stats: {
       tabs: [ {id: "principal"}, {id: "rasgos"} ],
       initial: "principal"
+    },
+    combate: {
+      tabs: [ {id: "principal"}, {id: "acciones"}],
+      initial: "principal"      
     },
     hechizos: {
       tabs: [ {id: "preparacion"}, {id: "estudio"}],
@@ -120,11 +129,15 @@ export default class extendCharacterSheet extends extendActorSheet {
     context.m10 = helperTools.numberArray(10)
     context.m20 = helperTools.numberArray(20)
 
+    await helperSheets.checkVersion(this.document)
     await helperSheets.checkSkills(this.document)
+    await helperSheets.checkWeapons(this.document)
+
     context.skills = helperSheets.systemSkills(this.document)
     context.secuelas = helperSheets.itemsSecuelas(this.document, rules)
     context.orgullos = helperSheets.itemsOrgullos(this.document, rules)
     context.verguenzas = helperSheets.itemsVerguenzas(this.document, rules)
+    context.acciones = helperSheets.itemsAcciones(this.document, rules)
     context.weapons = helperSheets.itemsWeapons(this.document, rules)
     context.armors = helperSheets.itemsArmors(this.document, rules)
     context.shields = helperSheets.systemShields(this.document, rules)
@@ -146,6 +159,7 @@ export default class extendCharacterSheet extends extendActorSheet {
 
     context.tabs = this._prepareTabs("primary")
     context.tabsStats = this._prepareTabs("stats")
+    context.tabsCombate = this._prepareTabs("combate")
     context.tabsHechizos = this._prepareTabs("hechizos")
     context.tabsEnsalmos = this._prepareTabs("ensalmos")
     context.tabsEquipo = this._prepareTabs("equipo")
@@ -164,6 +178,7 @@ export default class extendCharacterSheet extends extendActorSheet {
     this._applyScroll($(this.element))
     this.activateListeners($(this.element))
     this.activateFirstTime()
+    this.checkCombatEvents()
   }
 
   _syncPartState(partId, newElement, priorElement, state) {
@@ -216,7 +231,7 @@ export default class extendCharacterSheet extends extendActorSheet {
     html.find('._charRR').on("change", sheetHandler._onChangeRrIrr.bind(this))
     html.find('._charIRR').on("change", sheetHandler._onChangeRrIrr.bind(this))
     html.find('._skillValue').on("change", sheetHandler._onChangeSkillValue.bind(this))
-    html.find('._skillCheck').on("change", sheetHandler._onChangeSkillCheck.bind(this))    
+    //html.find('._skillCheck').on("change", sheetHandler._onChangeSkillCheck.bind(this))        
   }  
 
   /**
@@ -244,6 +259,14 @@ export default class extendCharacterSheet extends extendActorSheet {
       $(this.element).find('._fog').remove()
       this.document.sheet.render(true)
     })    
+  }
+
+  /**
+   * checkCombatEvents
+   */
+  checkCombatEvents() {
+    if (this.document.sheet.isEditMode) return
+    helperSheets.checkCombatEvents($(this.element), this.actor)
   }
 
   _lineFirstTime(sCount, bLast) {
@@ -351,7 +374,8 @@ export default class extendCharacterSheet extends extendActorSheet {
       options.push({
         key: s,
         label: game.i18n.localize('common.'+s),
-        img: "systems/"+SYSTEM_ID+"/assets/ui/"+rules+'_comp_'+s+'.png'
+        img: "systems/"+SYSTEM_ID+"/assets/ui/"+rules+'_comp_'+s+'.png',
+        checked: stats[s]
       })
     })
     const option = await helperDialog.dialogSelectOptions(rules, item.name, options, position)
@@ -648,6 +672,20 @@ export default class extendCharacterSheet extends extendActorSheet {
     const rules = this.document.system.rules
     const mPages = helperMagia.readPagesEnsalmos(rules, this.document)
     await helperBooks.openBook(rules, this.document, mPages)
+  }
+
+  static async #onMarkFavourite(_event, target) {
+    _event.stopPropagation() 
+    const item = this.document.items.get($(target).data('id'))
+    await item.update({"system.favorita": !item.system.favorita})    
+  }
+
+  static async #onCalcIngresos(_event, target) {
+    _event.stopPropagation()
+    const rules = this.document.system.rules
+    const nIngresos = helperContext.calcIngresos(this.document.system.economia.ingresosFormula, this.document)
+    await this.document.update({"system.economia.ingresos": nIngresos})
+
   }
 
   static async #onMinusUnidad(_event, target) {
