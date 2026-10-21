@@ -1,0 +1,7 @@
+2026/10/21-08:30:13.808 6fb4 Recovering log #452
+2026/10/21-08:30:13.810 6fb4 Delete type=0 #452
+2026/10/21-08:30:13.810 6fb4 Delete type=3 #451
+2026/10/21-09:46:50.399 6e08 Compacting 1@0 + 1@1 files
+2026/10/21-09:46:50.409 6e08 Generated table #455@0: 1020 keys, 978247 bytes
+2026/10/21-09:46:50.409 6e08 Compacted 1@0 + 1@1 files => 978247 bytes
+2026/10/21-09:46:50.409 6e08 compacted to: files[ 0 1 0 0 0 0 0 ]
