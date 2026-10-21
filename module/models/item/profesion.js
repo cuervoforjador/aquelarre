@@ -27,6 +27,7 @@ export default class modelProfesion extends extendItem_Base {
             cul: new api.NumberField({ nullable: true, initial: 0 }),
             asp: new api.NumberField({ nullable: true, initial: 0 }),
         })
+        schema.suerte = new api.NumberField({ nullable: true, initial: 0 })
         schema.competencias = new api.ArrayField(new api.SchemaField({
             key: new api.StringField({ initial: '' }),
             primaria: new api.BooleanField({ initial: false }),

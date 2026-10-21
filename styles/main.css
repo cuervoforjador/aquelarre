@@ -223,6 +223,11 @@ label._pointer:hover {
     text-shadow: 0 0 5px #c76f6f;
     font-weight: 900;
 }
+._green {
+    color: #1d511d !important;
+    text-shadow: 0 0 5px #6fc76f;
+    font-weight: 900;
+}
 ._noBorder {
     border-color: #00000000 !important;
 }

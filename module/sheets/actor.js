@@ -48,6 +48,7 @@ export default class extendActorSheet
       _play:          this.#onPlaySheet,
       _rules:         this.#onChangeRules,
       _textsize:      this.#onChangeTextSize,
+      _showWizard:    this.#onShowWizard,
       _readKey:       this.#onReadKey,
       _showItem:      this.#onShowItem,
       _showDescr:     this.#onShowDescr,
@@ -82,6 +83,10 @@ export default class extendActorSheet
     helperSheets.changeTextSize(this.document)
   }
 
+  static #onShowWizard(_event, target) {
+    helperSheets.showWizard(this.document)
+  }
+
   static async #onReadKey(_event, target) {
     const sTarget = $(event.currentTarget).parent().find('input[name="name"]')
     let sKey = sTarget.val().replaceAll(' ', '_').toLowerCase()
@@ -103,7 +108,7 @@ export default class extendActorSheet
     const sId = $(target).data('id')
     const item = this.document.items.get(sId) 
     if (!item) return
-    helperDialog.dialogDescription(item)
+    helperDialog.dialogDescription({document: item})
   }
 
   static async #onBooleanField(_event, target) {
@@ -239,6 +244,7 @@ export default class extendActorSheet
     helperSheets.hideTitle($(this.element))
     helperSheets.addRulesButton($(this.element))
     helperSheets.addTextSizeButton($(this.element))
+    helperSheets.addWizardButton($(this.element))
     helperSheets.addEditButton($(this.element), this.isPlayMode)
     helperSheets.drawSpectrum($(this.element))
     this.activateListeners($(this.element))

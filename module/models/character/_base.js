@@ -15,7 +15,12 @@ export default class extendCharacter_Base extends extend_Base {
             version: new api.StringField({ initial: '' }),
             textSize: new api.StringField({ initial: '1rem' }),
             importedSkills: new api.BooleanField({ initial: false }),
-            tienda: new api.StringField({ initial: '' })
+            tienda: new api.StringField({ initial: '' }),
+            wizard: new api.SchemaField({
+                show: new api.BooleanField({ initial: false }),
+                active: new api.BooleanField({ initial: true }),
+                step: new api.NumberField({ initial: 0 })
+            })
         })
 
         /** --- INFO --- */
@@ -66,7 +71,7 @@ export default class extendCharacter_Base extends extend_Base {
             ptv: md_stat({label: 'ATTR.ptv', hint: 'ATTR.ptv'}),                    //Puntos de Vida
             ptf: md_stat({label: 'ATTR.ptf', hint: 'ATTR.ptf'}),                    //Puntos de Fe
             ptc: md_stat({label: 'ATTR.ptc', hint: 'ATTR.ptc'}),                    //Puntos de Concentración
-            pta: md_stat({label: 'ATTR.pta', hint: 'ATTR.pta', min: 0, max: 666}),  //Puntos de Concentración
+            pta: md_stat({label: 'ATTR.pta', hint: 'ATTR.pta', min: 0, max: 666}),  //Puntos de Aprendizaje
             tem: md_stat({label: 'ATTR.tem', hint: 'ATTR.tem'}),                    //Templanza (como atributo)            
         })
 

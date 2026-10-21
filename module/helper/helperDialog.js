@@ -100,7 +100,8 @@ export default class helperDialog {
      * @param {*} options 
      * @param {*} position 
      */
-    static async dialogListOptions(rules, title, options, bMultiple=false, position={height: 'auto'}, sExplain='') {
+    static async dialogListOptions({rules, title, options, bMultiple=false, 
+                                    position={height: 'auto'}, sExplain='', bFromWizard=false, bPriority=false}) {
         let _options = ''
         let _buttonClassSelected = ''
         options.map(option => {
@@ -121,7 +122,7 @@ export default class helperDialog {
                                           `<div class="_explain">${sExplain}</div><ul class="_main">${_options}</ul>`
 
         const option = await foundry.applications.api.DialogV2.wait({
-            classes: ['_extend', '_'+rules],
+            classes: ['_extend', `_${rules}`, ...(bPriority ? ['_priority'] : []), ...(bFromWizard ? ['_wizard'] : [])],
             window: { title: title },
             position: position,            
             content,
@@ -146,9 +147,11 @@ export default class helperDialog {
                     }
                 }
             }],
-            render: (_event, dialog) => {               
+            render: (_event, dialog) => {                             
                 this._setShadowToDialog(dialog)
+                if (bFromWizard) this._setFrameToDialog(dialog)
                 if (!bMultiple) this._setInitialDialogEvents(dialog)  
+                this._setScrollTo0(dialog)
             }
         })      
         return option
@@ -199,13 +202,13 @@ export default class helperDialog {
      * @param {*} lore 
      * @param {*} actor
      */
-    static async dialogSelectLore(rules, lore, actor) {
+    static async dialogSelectLore(rules, lore, actor, bFromWizard=false) {
         const lore2 = lore === 'profesionPaterna' ? 'profesion' : lore
         const mOptions = await helperContext.getLoreOptions(rules, lore2, actor)
         let options = ''
-        mOptions.map(option => {
+        mOptions.map((option, index) => {
             options += `<li data-key=${option.item.system.key}>
-                            <input type="checkbox" class="_selector">
+                            <input type="checkbox" class="_selector" ${index === 0 ? 'checked' : ''}>
                             <label class="_title">${option.item.name}</label>
                             <button type="button" class="icon fas fa-solid fa-magnifying-glass _showDescription" 
                                     data-action="showCompendiumItem" 
@@ -214,12 +217,21 @@ export default class helperDialog {
                             </button>                        
                         </li>`
         })
-        const content = `<ul class="_main">${options}</ul>`
+        let title = game.i18n.localize("common."+lore2)
+        let content = `<ul class="_main">${options}</ul>`
+        let position = { height: 'auto' }
+        if (bFromWizard) {
+            const nStep = actor.system.control.wizard.step
+            title = game.i18n.localize(`wizard.step${nStep}.title_${rules}`)
+            content = `<div class="_description">${game.i18n.localize("wizard.step"+nStep+".description_"+rules)}</div>
+                       ${content}`
+            position = { height: 'auto', width: $(document).width()/2 }
+        }
 
         const option = await foundry.applications.api.DialogV2.wait({
-            classes: ['_extend', '_'+rules],
-            window: { title: game.i18n.localize("common."+lore2) },
-            position: { height: 'auto' },            
+            classes: ['_extend', '_selectLore', `_${rules}`, ...(bFromWizard ? ['_wizard'] : [])],
+            window: { title: title },
+            position,            
             content,
             buttons: [{
                 label: game.i18n.localize("common.confirmar"),
@@ -233,6 +245,7 @@ export default class helperDialog {
             render: (_event, dialog) => {   
                 this._addAleaButton(dialog)             
                 this._setShadowToDialog(dialog)
+                if (bFromWizard) this._setFrameToDialog(dialog)
                 this._setInitialDialogEvents(dialog)  
                 this._setShowCompendiumEvent(dialog)
             }
@@ -244,7 +257,7 @@ export default class helperDialog {
      * dialogDescription
      * @param {*} document 
      */
-    static async dialogDescription(document=null, content='', title='', rules=null, width, img='', position) {
+    static async dialogDescription({document=null, content='', title='', rules=null, width, img='', position, bFromWizard=false}) {
         const sRules = rules ? rules : document?.system.rules
         let sContent = document ? await this.descriptionByType(document) : content
         const sTitle = document ? document.name : title
@@ -255,7 +268,7 @@ export default class helperDialog {
                                document ? document.sheet.position.width : 500
 
         const dialog = await foundry.applications.api.DialogV2.prompt({
-            classes: ['_extend', '_description', '_'+sRules],
+            classes: ['_extend', '_description', `_${sRules}`, ...(bFromWizard ? ['_wizard'] : [])],
             window: { title: sTitle },
             position: position || {width: sWidth},
             content: sContent,
@@ -264,6 +277,7 @@ export default class helperDialog {
                 this._setShadowToDialog(dialog)   
                 this._setWaterMarkToDialog(dialog, document, sImg)             
                 this._setNoFooter(dialog)
+                this._setScrollTo0(dialog)            
             }
         })
     }
@@ -331,7 +345,7 @@ export default class helperDialog {
                     const matchSkill = e.ingresos.match(/\{skill ([^}]+)\}/);
                     if (matchSkill) {
                         const skill = mCompetencias.find(e => e.system.key ===  matchSkill[1])
-                        sFormula = sFormula.replaceAll("{skill "+matchSkill[1]+"}", skill.name)
+                        sFormula = sFormula.replaceAll("{skill "+matchSkill[1]+"}", skill?.name)
                     }
                     sFormula = sFormula.replaceAll("*", ' x ')
                     
@@ -391,9 +405,10 @@ export default class helperDialog {
             ok: {
                 label: game.i18n.localize("common.continuar"),
             },
-            render: (_event, dialog) => {
+            render: (_event, dialog) => {             
                 this._setShadowToDialog(dialog)   
                 this._setWaterMarkToDialog(dialog, document, '')             
+                this._setScrollTo0(dialog)
                 //this._setNoFooter(dialog)
             }
         })
@@ -413,6 +428,13 @@ export default class helperDialog {
         $(dialog.element).find('.window-content').prepend(`<div class="_shadow"></div>`)  
     }
 
+    static _setFrameToDialog(dialog) {
+        $(dialog.element).find('.window-content').prepend(`<div class="_frame _top" style="background-image: url(../systems/${SYSTEM_ID}/assets/ui/vyc_frameTop.png)"></div>
+                                                           <div class="_frame _right" style="background-image: url(../systems/${SYSTEM_ID}/assets/ui/vyc_frameRight.png)"></div>
+                                                           <div class="_frame _bottom" style="background-image: url(../systems/${SYSTEM_ID}/assets/ui/vyc_frameBottom.png)"></div>
+                                                           <div class="_frame _left" style="background-image: url(../systems/${SYSTEM_ID}/assets/ui/vyc_frameLeft.png)"></div>`)  
+    }
+
     static _setWaterMarkToDialog(dialog, document, sImg='') {
         if (!document && sImg==='') return
         const img = document ? document.img : sImg
@@ -423,7 +445,12 @@ export default class helperDialog {
         $(dialog.element).find('.form-footer').remove()
     }
 
-    static _setInitialDialogEvents(dialog) {        
+    static _setInitialDialogEvents(dialog) {       
+        const formDialog = $(dialog.element).find('form.dialog-form') 
+        if (formDialog) {
+            formDialog.css('--formDialogHeight', Math.round(formDialog.height()) + 'px')
+            formDialog.find('.dialog-content').scrollTop(0)
+        }
         $(dialog.element).find('ul._main li').on("click", event => {
             event.stopPropagation()
             this._checkOnlyMe($(event.currentTarget))
@@ -444,8 +471,17 @@ export default class helperDialog {
             const itemID = $(event.currentTarget).data('item')
             const mDocs = await helperContext.getFromCompendium(rules, lore)
             const document = mDocs.find(e => e.id === itemID)
-            this.dialogDescription(document)
+            const bFromWizard = $(event.currentTarget).parents('dialog').hasClass('_wizard')
+            this.dialogDescription({document, bFromWizard})
         })
+    }
+
+    static _setScrollTo0(dialog) {
+        const formDialog = $(dialog.element).find('form.dialog-form') 
+        if (formDialog.length > 0) {
+            formDialog.scrollTop(0)
+            formDialog.find('.dialog-content').scrollTop(0)    
+        }
     }
 
     static _checkOnlyMe(li) {

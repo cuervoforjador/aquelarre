@@ -458,7 +458,7 @@ export default class helperContext {
      * @param {*} actor 
      * @param {*} key 
      */
-    static async assignLoreToActor(rules, lore, actor, key) {
+    static async assignLoreToActor({rules, lore, actor, key}) {
         const lore2 = lore === 'profesionPaterna' ? 'profesion' : lore
         const item = await this.getLoreItem(rules, lore2, key)
         if (!item) return
@@ -543,8 +543,14 @@ export default class helperContext {
                             checked: i === 0
                         })
                     })
-                    const sKey = await helperDialog.dialogListOptions(item.system.rules, '', mOptions, false, {height: 'auto'}, 
-                                                                    game.i18n.localize('explain.elegirCompetencias'))
+                    const sKey = await helperDialog.dialogListOptions({rules:item.system.rules, 
+                                                                       title: '', 
+                                                                       options: mOptions, 
+                                                                       bMultiple: false, 
+                                                                       position: {height: 'auto'}, 
+                                                                       sExplain: game.i18n.localize('explain.elegirCompetencias'),
+                                                                       bFromWizard: true,
+                                                                       bPriority: true})
                     mCompEval = mCompEval.filter(e => e.grupo !== nGrupo || e.key === sKey)
                 }
             }
@@ -575,8 +581,8 @@ export default class helperContext {
         if (!bPaterna) {
             let oCaracteristicas = actor.system.caracteristicas
             for (var s in item.system.caracteristicas) {
-                var nMin = item.system.caracteristicas[s]
-                if (nMin > 0) oCaracteristicas[s].min = nMin
+                var nMin = Number(item.system.caracteristicas[s])
+                oCaracteristicas[s].min = nMin
                 if ( oCaracteristicas[s].value < nMin) oCaracteristicas[s].value = nMin
                 if ( oCaracteristicas[s].total < nMin) oCaracteristicas[s].total = nMin
             }
@@ -613,6 +619,13 @@ export default class helperContext {
             const skill = actor.system.competencias.find(e => e.key ===  matchSkill[1])
             sFormula = sFormula.replaceAll("{skill "+matchSkill[1]+"}", skill.stats.value)
         }     
+        const matchAttr = sFormula.match(/\{attr ([^}]+)\}/);
+        if (matchAttr) {
+            const attrTag = matchAttr[1] === 'suerte' ? 'sue' : matchAttr[1]
+            const attr = actor.system.atributos[attrTag]
+            const attrValue = attrTag === 'sue' ? attr.total : attr.value
+            sFormula = sFormula.replaceAll("{attr "+matchAttr[1]+"}", attrValue)
+        }          
         try { nIngresos = Math.round(eval(sFormula)) } 
         catch (error) { nIngresos = 0 } 
         return nIngresos       
@@ -725,7 +738,12 @@ export default class helperContext {
      */
     static showHechizo(rules, item) {
         const sContent = this._contentHechizo(rules, item)
-        helperDialog.dialogDescription(null, sContent, item.name, rules, 700, item.img)
+        helperDialog.dialogDescription({document: null, 
+                                        content: sContent,
+                                        title: item.name,
+                                        rules,
+                                        width: 700,
+                                        img: item.img})          
     }
     static _contentHechizo(rules, item, bBook=false) {
         const _noApp = !item.system.aprendido
@@ -816,7 +834,12 @@ export default class helperContext {
      */
     static showEnsalmo(rules, item) {
         const sContent = this._contentEnsalmo(rules, item)
-        helperDialog.dialogDescription(null, sContent, item.name, rules, 700, item.img)
+        helperDialog.dialogDescription({document: null, 
+                                        content: sContent,
+                                        title: item.name,
+                                        rules,
+                                        width: 700,
+                                        img: item.img})            
     }
     static _contentEnsalmo(rules, item, bBook=false) {            
         const _config = aqConfig.ensalmos[rules]

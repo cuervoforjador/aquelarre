@@ -19,6 +19,7 @@ export default class helperTemplates {
             character_background: `${character}/headers/_background.hbs`,            
             header_Character: `${character}/headers/character.hbs`,
             header_Lore: `${character}/headers/lore.hbs`,
+            header_wizardBar: `${character}/headers/wizardBar.hbs`,
 
             tab_Stats: `${character}/tabs/stats.hbs`,
             tab_Combate: `${character}/tabs/combate.hbs`,

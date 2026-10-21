@@ -2207,7 +2207,8 @@ form._extend ._skills ._skill a._skillIcon {
     height: var(--fSize);
 }
 form._extend ._skills ._skill a._skillIcon:hover img {
-    filter: invert(1);
+    border: 1px solid #0000008f;
+    background: #ff9e009c;
 }
 form._extend input._skillValue,
 form._extend label._skillValue {
@@ -2328,6 +2329,116 @@ form._extend section.tab.active[data-tab="massedit"] {
     border-top: 1px solid #000;
     box-shadow: 0 0 6px 1px #000000c7;
 }
+
+/** WIZARD **/
+/** Wizard Bar **/
+._extend ._wizardBar {
+    width: 100%;
+    height: calc(var(--fSize) * 6);
+    display: flex;
+    position: relative;
+}
+._extend ._wizardBar ._wizardLine {
+    position: absolute;
+    width: 93%;
+    height: 2px;
+    box-shadow: 0 0 5px 1px #a76d3b;
+    background: #e3cb937a;
+    left: 3.5%;
+    top: calc(50% - var(--fSize) * 0.55);
+}
+._extend ._wizardBar ._step {
+    display: flex;
+    align-content: center;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    flex-direction: column;
+    position: relative;
+    top: calc(var(--fSize) * -0.5);
+}
+._extend ._wizardBar ._step ._icon {
+    display: flex;
+    position: absolute;
+    border-radius: 50%;
+    border: 2px solid #ffffff82;
+    box-shadow: 0 0 3px 3px #ff8d008c;
+    width: calc(var(--fSize) * 2);
+    height: calc(var(--fSize) * 2);
+    align-items: center;
+    justify-content: center;
+    align-content: center;
+    background: #ceab8785;
+    opacity: 0.35;
+    z-index: 1;
+}
+._extend ._wizardBar ._step::before {
+    content: " ";
+    display: flex;
+    background: #516957;
+    width: calc(var(--fSize) * 2);
+    height: calc(var(--fSize) * 2);
+    position: absolute;
+    z-index: 0;
+    border-radius: 50%;
+}
+._extend ._wizardBar ._step._active ._icon {
+    opacity: 1;
+    animation: blinkBorder 1.5s ease-in-out infinite;
+    cursor: pointer;
+}
+._extend ._wizardBar ._step._completed ._icon {
+    background: #00000085;
+    box-shadow: 0 0 3px 3px #1a1a198c;
+    opacity: 1;
+    cursor: pointer;
+}
+._extend ._wizardBar ._step._completed ._icon:hover,
+._extend ._wizardBar ._step._active ._icon:hover {
+    border: 2px solid #ffbc00;
+}
+._extend ._wizardBar ._step:hover ._title {
+    display: flex;
+}
+._extend ._wizardBar ._step ._title {
+    position: absolute;
+    top: calc(var(--fSize) * 3.5);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    font-size: calc(var(--fSize) * 1);
+    line-height: calc(var(--fSize) * 0.9);
+    text-shadow: 0 0 0px #000;
+    text-align: center;
+    color: #ffffff;
+}
+._extend ._wizardBar ._step._active ._title {
+    padding: 6px 4px;
+    display: flex;
+    background: #412404c7;
+    color: #ffffff;
+    border: 1px solid #ed9738;
+    border-radius: 3px;
+}
+._extend ._wizardBar ._step ._title label {
+    white-space: pre-wrap;
+}
+
+._main ._wizardFog {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    z-index: 1;
+}
+._header ._wizardFog {
+    width: calc(100% - 20px);
+    height: calc(100% - var(--fSize) * 5);
+    top: calc(var(--fSize) * 5);
+    position: absolute;
+    z-index: 1;
+}
+
+
 
 /** TOURS **/
 .tour ._tourWrap {

@@ -22,6 +22,7 @@ export default class modelEstrato extends extendItem_Base {
             low: new api.NumberField({ nullable: true, initial: null }),
             high: new api.NumberField({ nullable: true, initial: null })
         }))
+        schema.gastos = new api.NumberField({ nullable: true, initial: 0 })
 
         return schema;
     }

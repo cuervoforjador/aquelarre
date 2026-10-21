@@ -53,6 +53,7 @@ export default class sheetHandler {
     bChanged = nValue !== skill.stats.value || bChanged
     if (!bChanged) return
 
+    skill.checked = nValue > skill.stats.min
     skill.stats.value = nValue
     this.actor.update({"system.competencias": competencias})    
   }
@@ -62,6 +63,7 @@ export default class sheetHandler {
    * @param {*} event 
    */  
   static async _onChangeSkillCheck(event) {
+    /*
     const target = event.currentTarget
     const key = $(target).parents('._skill').data('key')
     let competencias = this.actor.system.competencias
@@ -70,6 +72,7 @@ export default class sheetHandler {
 
     skill.checked = $(target).prop('checked')
     this.actor.update({"system.competencias": competencias})
+    */
   }  
 
   /**

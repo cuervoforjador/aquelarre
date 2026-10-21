@@ -254,6 +254,24 @@ export default class helperSheets {
     }
 
     /**
+     * modDanno
+     * @param {*} system 
+     */
+    static modDanno(system) {
+        const rules = system.rules
+        const nFUE = system.caracteristicas.fue.value
+        let sBono = ''
+
+        sBono = '-1D6'
+        if (nFUE >= 5) sBono = '-1D4'
+        if (nFUE >= 10) sBono = ''
+        if (nFUE >= 15) sBono = '+1D4'
+        if (nFUE >= 20) sBono = `+${Math.floor((nFUE - 15) / 5)}D6`
+        
+        return sBono
+    }
+
+    /**
      * checkSkills
      * @param {*} actor 
      */
@@ -299,17 +317,20 @@ export default class helperSheets {
             const base = actor.system.caracteristicas[skill.system.caracteristica].value
             let systemSkill = competencias.find(e => e.key === skill.system.key)
             let stats = systemSkill.stats
-            const min = (systemSkill.primaria) ? base*3 : base
+            const min = (systemSkill.primaria) ? base*3 <= 80 ? base*3 : 80 : base
             let value = this._checkMinMax(stats.value, stats.min, stats.max)
 
             //if (systemSkill.normal && systemSkill.checked) systemSkill.normal = false
-            if (!systemSkill.paterna && !systemSkill.primaria && !systemSkill.secundaria 
-                                                              && !systemSkill.aprendida) systemSkill.normal = true
-            if (systemSkill.checked && systemSkill.normal) {
-                systemSkill.normal = false
+            if (systemSkill.checked) {
+                //systemSkill.aprendida = !systemSkill.primaria && !systemSkill.secundaria && !systemSkill.paterna
                 systemSkill.aprendida = true
+                systemSkill.normal = false
+            } else if (!systemSkill.aprendida) {
+                value = min
             }
-            if (systemSkill.normal) value = min
+            if (!systemSkill.primaria && !systemSkill.secundaria && !systemSkill.paterna) {
+                systemSkill.normal = true
+            }
 
             if ((stats.min !== min) || (stats.value !== value)) changed = true
             stats.min = min
@@ -405,10 +426,14 @@ export default class helperSheets {
         const content = `<h4 class="_title divider">${game.i18n.localize('RULES.'+rules)}</h4>
                          <p>${game.i18n.localize("explain.newSkills")}</p>
                          <p><strong>${game.i18n.localize("common.competencias")}: </strong> ${skillsInfo}</p>`
-        await helperDialog.dialogDescription(null, content, game.i18n.localize('competencias'), rules, 500)
+        await helperDialog.dialogDescription({document: null, 
+                                              content,
+                                              title: game.i18n.localize('competencias'),
+                                              rules,
+                                              width: 500})        
         
         await Item.create(mSkills, {parent: actor})
-        actor.update({"system.control.importedSkills": true})
+        await actor.update({"system.control.importedSkills": true})
     }
 
     /**
@@ -1245,6 +1270,28 @@ export default class helperSheets {
         })
         if (!textSize) return
         document.update({"system.control.textSize": textSize})
+    }
+
+    /**
+     * addWizardButton
+     * @param {*} html 
+     */
+    static addWizardButton(html) {
+        let header = html.find('.window-header')
+        if (header.find('button[data-action="_showWizard"]').length === 1) return;
+        const sTooltip = game.i18n.localize('common.verWizard')
+        header.find('button[data-action="close"]').before(`
+            <button type="button" class="header-control icon fa-solid fa-wand-magic-sparkles"
+                    data-tooltip="${sTooltip}" aria-label="${sTooltip}" data-action="_showWizard"></button>`)        
+    }
+
+    /**
+     * showWizard
+     * @param {*} document 
+     */
+    static async showWizard(document) {
+        await document.update({ "system.control.wizard.show": !document.system.control.wizard.show,
+                                "system.control.wizard.active": true })
     }
 
     /**

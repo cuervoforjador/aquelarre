@@ -2,6 +2,9 @@
 
     <div class="_row _100 _inverse">
         <button type="button" 
+                data-action="_assignStratos" 
+                class="_basicButton">%</button>        
+        <button type="button" 
                 data-action="_clearChars" 
                 class="_basicButton">{{localize 'common.limpiar'}}</button>
     </div>
@@ -44,6 +47,18 @@
 
             {{#each caracteristicas as |char index|}}
             <div class="_row _middle _gapped _100">
+                <button type="button" 
+                        data-action="_clickChar" 
+                        data-char="{{char.key}}" 
+                        data-value="15" 
+                        class="_basicButton"
+                        style="margin-right: -9px; padding: 3px;">15</button>
+                <button type="button" 
+                        data-action="_clickChar" 
+                        data-char="{{char.key}}" 
+                        data-value="20" 
+                        class="_basicButton"
+                        style="margin-right: -9px; padding: 3px;">20</button>
                 <label class="_100">{{char.label}}</label>
                 <input type="number"
                     class="_bordered _center"
@@ -55,6 +70,17 @@
                     value="{{_value (concat "system.caracteristicas." char.key)}}">        
             </div>
             {{/each}}
+            <div class="_row _middle _gapped _100">
+                <label class="_100">{{localize "ATTR.sue"}}</label>
+                <input type="number"
+                    class="_bordered _center"
+                    {{{_disabled}}}
+                    style="width: 50px"
+                    name="system.suerte" 
+                    min="0"
+                    max="99"       
+                    value="{{system.suerte}}">                    
+            </div>
 
         </div>
         <div class="_box _bordered _70">
@@ -80,7 +106,7 @@
                             data-action="_checkProperty"                        
                             data-field="checked"                    
                             {{checked (_property "system.estratos" estrato.key "checked")}}>                   
-                        <label for="estrato_{{estrato.key}}" class="_100">{{estrato.label}} ({{estrato.sociedad.label}})</label>
+                        <label for="estrato_{{estrato.key}}" class="_stratoTitle _100">{{estrato.label}} ({{estrato.sociedad.label}})</label>
                     </div>
                     <div class="_line _30">
                         <input type="text"

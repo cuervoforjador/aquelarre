@@ -27,6 +27,15 @@
                         value="{{system.roll.high}}">                          
                 {{/if}}
             </div>
+            <div class="_row _gapped">
+                <label>{{localize 'common.gastosSemanales'}} :</label>
+                <input type="number"
+                    {{{_disabled}}} 
+                    class="_sSize"
+                    name="system.gastos" 
+                    value="{{system.gastos}}">  
+                <label class="_small _italic" data-tooltip="{{configRULES.moneda}}">{{configRULES.monedaShort}}</label>                
+            </div>
             <div class="_row _gapped _menu">
                 {{{navTab 'primary' (array 'posiciones' 'descripcion') '_expanded'}}}
             </div>

@@ -13,6 +13,7 @@ import helperMessages from "../../helper/helperMessages.js";
 import helperBooks from "../../helper/helperBooks.js";
 import helperMagia from "../../helper/helperMagia.js";
 import helperCombat from "../../helper/helperCombat.js";
+import helperWizard from "../../helper/helperWizard.js";
 
 export default class extendCharacterSheet extends extendActorSheet {
 
@@ -28,6 +29,7 @@ export default class extendCharacterSheet extends extendActorSheet {
     },
     actions: {
       _editLore:              this.#onEditLore,
+      _wizardStep:            this.#onWizardStep,
       _showStatus:            this.#onShowStatus,
       _calc:                  this.#onCalc,
       _changeSkillStatus:     this.#onChangeSkillStatus,
@@ -120,20 +122,22 @@ export default class extendCharacterSheet extends extendActorSheet {
     const rules = this.document.system.rules
     const context = await super._prepareContext()
     context.configRULES = configRULES[rules]
+    context.m10 = helperTools.numberArray(10)
+    context.m20 = helperTools.numberArray(20)
 
     context.caracteristicas = helperContext.getCaracteristicas()
     context.skillRenderOptions = helperSheets.getItemsRenderOptions(this)
     context.itemsRenderOptions = context.skillRenderOptions
-
     context.info = {...context.info, ...helperSheets.readLoreContext(this.document)}
-    context.m10 = helperTools.numberArray(10)
-    context.m20 = helperTools.numberArray(20)
 
     await helperSheets.checkVersion(this.document)
     await helperSheets.checkSkills(this.document)
-    await helperSheets.checkWeapons(this.document)
-
+    await helperSheets.checkWeapons(this.document)     
+    await helperWizard.checkWizard(this.document)
+    
     context.skills = helperSheets.systemSkills(this.document)
+    context.wizard = helperWizard.systemWizard(this.document)
+    context.wizardStep = helperWizard.wizardStep(this.document, context.wizard)
     context.secuelas = helperSheets.itemsSecuelas(this.document, rules)
     context.orgullos = helperSheets.itemsOrgullos(this.document, rules)
     context.verguenzas = helperSheets.itemsVerguenzas(this.document, rules)
@@ -293,23 +297,38 @@ export default class extendCharacterSheet extends extendActorSheet {
 
       const option = await helperDialog.dialogSelectLore(rules, lore, this.document)
       if (!option) return
-      if (option === '#alea') await helperTables.tableLore(rules, lore, this.document)
-                         else await helperContext.assignLoreToActor(rules, lore, this.document, option)
+      if (option === '#alea') await helperTables.tableLore({rules, lore, actor: this.document})
+                         else await helperContext.assignLoreToActor({rules, lore, actor: this.document, key: option})
 
     } else {
 
       const optionEstrato = await helperDialog.dialogSelectLore(rules, 'estrato', this.document)
       if (!optionEstrato) return
-      if (optionEstrato === '#alea') await helperTables.tableLore(rules, 'estrato', this.document)
+      if (optionEstrato === '#alea') await helperTables.tableLore({rules, lore: 'estrato', actor: this.document})
       else {
-        await helperContext.assignLoreToActor(rules, 'estrato', this.document, optionEstrato)
+        await helperContext.assignLoreToActor({rules, lore: 'estrato', actor: this.document, key: optionEstrato})
         const optionPosicion = await helperDialog.dialogSelectLore(rules, 'posicion', this.document)
         if (!optionPosicion) return
-        if (optionPosicion === '#alea') await helperTables.tableLore(rules, 'posicion', this.document)
-                                    else await helperContext.assignLoreToActor(rules, 'posicion', this.document, optionPosicion)
+        if (optionPosicion === '#alea') await helperTables.tableLore({rules, lore: 'posicion', actor: this.document})
+                                    else await helperContext.assignLoreToActor({rules, lore: 'posicion', actor: this.document, key: optionPosicion})
       }   
     }
   }  
+
+  /**
+   * onWizardStep
+   */
+  static async #onWizardStep(_event, target) {
+    const nStep = Number($(target).data('step'))
+
+    for (const app of Object.values(ui.windows)) {
+      if (app instanceof foundry.applications.api.DialogV2) { app.close() }
+    }    
+    $(document).find('dialog._wizard').each((i,e) => { $(e).remove() })
+
+    await this.document.update({ "system.control.wizard.step": nStep,
+                                 "system.control.wizard.active": true })
+  }
 
   /**
    * onShowStatus
@@ -327,7 +346,11 @@ export default class extendCharacterSheet extends extendActorSheet {
                         ${game.i18n.localize('common.penalIni')}: <strong>- ${data.penalIni} x AGI</strong></p>
                      <p>${game.i18n.localize('explain.'+key)}</p>`
                             
-    helperDialog.dialogDescription(null, content, game.i18n.localize('common.'+key), this.document.system.rules, 300)
+    helperDialog.dialogDescription({document: null, 
+                                    content,
+                                    title: game.i18n.localize('common.'+key),
+                                    rules: this.document.system.rules,
+                                    width: 300})    
   }
 
   /**
@@ -454,7 +477,12 @@ export default class extendCharacterSheet extends extendActorSheet {
                        <td class="_field">${o.field}%</td></tr>`
     })
     sContent += '</table>'
-    helperDialog.dialogDescription(null, sContent, game.i18n.localize('common.penalizaciones'), rules, 550, img)
+    helperDialog.dialogDescription({document: null, 
+                                    content: sContent,
+                                    title: game.i18n.localize('common.penalizaciones'),
+                                    rules,
+                                    width: 550,
+                                    img})
   }
 
   static #onShowHechizo(_event, target) {
@@ -472,7 +500,7 @@ export default class extendCharacterSheet extends extendActorSheet {
   static #onShowItemDescr(_event, target) {
     _event.stopPropagation()
     const item = this.document.items.get($(target).data('id'))
-    helperDialog.dialogDescription(item)
+    helperDialog.dialogDescription({document: item})
   } 
 
   static async #onToggleAprendido(_event, target) {
@@ -582,7 +610,10 @@ export default class extendCharacterSheet extends extendActorSheet {
         label: e.name
       })
     })
-    const answer = await helperDialog.dialogListOptions(this.document.system.rules, item.name, mOptions, true)
+    const answer = await helperDialog.dialogListOptions({rules: this.document.system.rules, 
+                                                         tile: item.name, 
+                                                         options: mOptions, 
+                                                         bMultiple: true})
     if (!answer) return
     prep.componentes.map(componente => {
       componente.checked = answer.find(e => Number(e.key) === Number(componente.key)).checked
@@ -705,7 +736,7 @@ export default class extendCharacterSheet extends extendActorSheet {
   static #onProductoDescr(_event, target) {
     _event.stopPropagation()
     const item = game.items.get($(target).data('id'))
-    helperDialog.dialogDescription(item)
+    helperDialog.dialogDescription({document: item})
   }
 
   static #onComprarItem(_event, target) {
@@ -723,7 +754,8 @@ export default class extendCharacterSheet extends extendActorSheet {
       "system.atributos.ptv.value": this.document.system.atributos.ptv.max,
       "system.atributos.ptf.value": this.document.system.atributos.ptf.max,
       "system.atributos.ptc.value": this.document.system.atributos.ptc.max,
-      "system.atributos.sue.value": this.document.system.atributos.sue.max
+      "system.atributos.sue.value": this.document.system.atributos.sue.max,
+      "system.modificadores.danno": helperSheets.modDanno(this.document.system)
     })
   }
 

@@ -28,13 +28,18 @@
                 <a class="_skillIcon"
                     data-action="_changeSkillStatus" 
                     data-id="{{skill.item.id}}">            
-                    {{/if}}
+                {{/if}}
+                {{#if skill.aprendida}}<img data-tooltip="{{localize 'common.aprendida'}}" class="_skillIcon" src="{{assets}}/ui/{{../myRules}}_comp_aprendida.png" />{{else}}
+                  {{#if skill.primaria}}<img data-tooltip="{{localize 'common.primaria'}}" class="_skillIcon" src="{{assets}}/ui/{{../myRules}}_comp_primaria.png" />{{else}}
+                    {{#if skill.secundaria}}<img data-tooltip="{{localize 'common.secundaria'}}" class="_skillIcon" src="{{assets}}/ui/{{../myRules}}_comp_secundaria.png" />{{else}}
+                      {{#if skill.paterna}}<img data-tooltip="{{localize 'common.paterna'}}" class="_skillIcon" src="{{assets}}/ui/{{../myRules}}_comp_paterna.png" />{{else}}
                         {{#if skill.normal}}<img data-tooltip="{{localize 'common.normal'}}" class="_skillIcon" src="{{assets}}/ui/{{../myRules}}_comp_normal.png" style="opacity: 0.5"/>{{/if}}
-                        {{#if skill.paterna}}<img data-tooltip="{{localize 'common.paterna'}}" class="_skillIcon" src="{{assets}}/ui/{{../myRules}}_comp_paterna.png" />{{/if}}
-                        {{#if skill.primaria}}<img data-tooltip="{{localize 'common.primaria'}}" class="_skillIcon" src="{{assets}}/ui/{{../myRules}}_comp_primaria.png" />{{/if}}
-                        {{#if skill.secundaria}}<img data-tooltip="{{localize 'common.secundaria'}}" class="_skillIcon" src="{{assets}}/ui/{{../myRules}}_comp_secundaria.png" />{{/if}}
-                        {{#if skill.aprendida}}<img data-tooltip="{{localize 'common.aprendida'}}" class="_skillIcon" src="{{assets}}/ui/{{../myRules}}_comp_aprendida.png" />{{/if}}
-                    {{#if ../isEditable}}
+                      {{/if}}   
+                    {{/if}}
+                  {{/if}}
+                {{/if}}
+
+                {{#if ../isEditable}}
                 </a>
                 {{/if}}
 
@@ -108,6 +113,9 @@
                     <input type="hidden" name="system.competencias.{{skill.index}}.secundaria" 
                            value="{{skill.secundaria}}" 
                            data-dtype="Boolean">
+                    <input type="hidden" name="system.competencias.{{skill.index}}.aprendida" 
+                           value="{{skill.aprendida}}" 
+                           data-dtype="Boolean">                           
                     <input type="hidden" name="system.competencias.{{skill.index}}.stats.min" 
                            value="{{skill.stats.min}}" 
                            data-dtype="Number">

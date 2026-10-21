@@ -62,7 +62,7 @@ static define() {
         const value = oData.find(e => e.key === sKey)
         if (value && sProperty) return value[sProperty]
         else if (value) return value
-        return false
+        return ''
     })      
 
     Handlebars.registerHelper("navTab", (...args) => {
