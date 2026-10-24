@@ -1,7 +1,3 @@
-2026/10/21-08:30:13.826 3db0 Recovering log #422
-2026/10/21-08:30:13.827 3db0 Delete type=0 #422
-2026/10/21-08:30:13.827 3db0 Delete type=3 #421
-2026/10/22-10:50:27.486 6e08 Compacting 1@0 + 1@1 files
-2026/10/22-10:50:27.499 6e08 Generated table #425@0: 899 keys, 975500 bytes
-2026/10/22-10:50:27.499 6e08 Compacted 1@0 + 1@1 files => 975500 bytes
-2026/10/22-10:50:27.499 6e08 compacted to: files[ 0 1 0 0 0 0 0 ]
+2026/10/24-18:06:29.782 f32c Recovering log #432
+2026/10/24-18:06:29.786 f32c Delete type=0 #432
+2026/10/24-18:06:29.786 f32c Delete type=3 #430

@@ -414,7 +414,7 @@ export default class newRoll extends Roll {
                           <button type="button" id="_showMods" class="icon fas fa-gear" data-tooltip="${game.i18n.localize('common.verModificadores')}" />
                     </div>`
 
-    let barPenals = this.percent && Number(this.stats.penal) !== 0 ?
+    let barPenals = this.percent && this.stats.penal && Number(this.stats.penal) !== 0 ?
                    `<div class="_info _penals">
                           <label class="_title">${game.i18n.localize("common.penalizacion")}:</label>
                           <label class="_value glowBlink">${this.stats.penal}%</label>
