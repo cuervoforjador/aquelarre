@@ -13,11 +13,15 @@ export default class helperRolls {
      * @param {*} value
      * @param {*} useLuck 
      */
-    static async roll(options={actor, target:'', item:null, path:'', formula:'', useLuck:true, mod:null, mods:null, playing: false}) {
+    static async roll(options={actor, target:'', item:null, path:'', formula:'', useLuck:true, mod:null, mods:null, playing: false, title: "", subtitle: ""}) {
        
         const oStep = options.playing && game.combat ? helperCombat.getStepInfo(options.actor) : null
+        let tokenTarget = null
 
         switch(options.target) {
+            case 'simple':
+                return (await this.simpleRoll({...options}))
+                break;
             case 'char':
                 await this.statRoll({...options, ...{
                     formula: '1D100',
@@ -57,7 +61,6 @@ export default class helperRolls {
                 break;  
             
             case 'damage':
-                let tokenTarget = null
                 if (options.playing) tokenTarget = oStep.target.combatant.token
                                 else tokenTarget = await helperCombat.selectTokenTarget(options.actor)
                 if (!tokenTarget) return
@@ -70,6 +73,16 @@ export default class helperRolls {
                     img: options.item.img,
                     playing: options.playing,
                     step: oStep}})
+                break;
+
+            case 'tecnica':          
+                await this.tecnicaRoll({...options, ...{
+                    title: options.item.name,
+                    subtitle: tokenTarget?.actor.name,
+                    targetToken: tokenTarget,
+                    targetActor: tokenTarget?.actor,
+                    img: options.item.img,
+                    step: oStep}})                
                 break;
         }
 
@@ -85,6 +98,19 @@ export default class helperRolls {
         }});
         await diceRoll.rollFormula()
         return diceRoll.total
+    }
+
+    /**
+     * simpleRoll
+     * @param {*} options 
+     */
+    static async simpleRoll(options={actor: null, formula: '1D100', title: "", subtitle: ""}) {
+        const diceRoll = new newRoll(options.formula, {...options, ...{
+            rollType: 'simple0',
+            useDiffLevel: false
+        }})
+        await diceRoll.rollFormula()
+        return diceRoll
     }
 
     /**
@@ -114,6 +140,19 @@ export default class helperRolls {
             useLocation: true
         }});
         await diceRoll.rollDamage()
+    }
+
+    /**
+     * tecnicaRoll
+     * @param {*} options 
+     */
+    static async tecnicaRoll(options={actor: null, formula: '', title: '', subtitle: '', img: '', playing: false, step: null}) {
+        
+        const diceRoll = new newRoll(options.formula, {...options, ...{
+            rollType: 'tecnica',
+            targeted: false
+        }});
+        await diceRoll.rollTecnica()
     }
 
     /**

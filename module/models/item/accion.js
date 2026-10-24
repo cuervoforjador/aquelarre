@@ -19,6 +19,20 @@ export default class modelAccion extends extendItem_Base {
         schema.ataque = new api.BooleanField({ initial: false })
         schema.defensa = new api.BooleanField({ initial: false })
         schema.movimiento = new api.BooleanField({ initial: false })
+        
+        schema.treta = new api.SchemaField({
+            treta: new api.BooleanField({ initial: false }),
+            ptAp: new api.NumberField({ nullable: true, initial: 0 }),
+            verdadera: new api.BooleanField({ initial: false }),
+            vulgar: new api.BooleanField({ initial: false }),
+            requisitos: new api.SchemaField({
+                esgrima: new api.NumberField({ nullable: true, initial: 0 }),
+                skill: new api.BooleanField({ initial: false }),
+                skillID: new api.StringField({ initial: '' }),
+                skillValue: new api.NumberField({ nullable: true, initial: 0 })
+            })
+        })        
+
 
         schema.armas = new api.ArrayField(new api.SchemaField({
             key: new api.StringField({ initial: '' }),

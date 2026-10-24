@@ -21,6 +21,7 @@ import sheetHechizo  from "../sheets/item/hechizo.js"
 import sheetEnsalmo  from "../sheets/item/ensalmo.js"
 import sheetFormula  from "../sheets/item/formula.js"
 import sheetTienda  from "../sheets/item/tienda.js"
+import sheetTecnicaSocial  from "../sheets/item/tecnicaSocial.js"
 
 import sheetTableExtend from "../sheets/table/base.js"
 
@@ -79,6 +80,7 @@ export default class helperSheets {
         vI.registerSheet(SYSTEM_ID, sheetEnsalmo, { types: ["ensalmo"], makeDefault: true, label: "sheet.ensalmo" })
         vI.registerSheet(SYSTEM_ID, sheetFormula, { types: ["formula"], makeDefault: true, label: "sheet.formula" })
         vI.registerSheet(SYSTEM_ID, sheetTienda, { types: ["tienda"], makeDefault: true, label: "sheet.tienda" })
+        vI.registerSheet(SYSTEM_ID, sheetTecnicaSocial, { types: ["tecnicaSocial"], makeDefault: true, label: "sheet.tecnicaSocial" })
 
         const vT = foundry.documents.collections.RollTables
         vT.registerSheet(SYSTEM_ID, sheetTableExtend, { types: ["base"], makeDefault: true, label: "sheet.lore" })
@@ -567,6 +569,83 @@ export default class helperSheets {
             })
         })
         return mReturn
+    }
+
+    /**
+     * itemsSociales
+     * @param {*} actor 
+     * @param {*} rules 
+     */
+    static itemsSociales(actor, rules) {
+        let oReturn = {
+            apariencia: {
+                value: 0,
+                mod: 0,
+                total: 0,
+                items: [],
+                label: '',
+            },
+            renombre: {
+                value: 0,
+                mod: 0,
+                total: 0,                
+                items: [],
+                label: '',
+            },
+            naturaleza: {
+                value: 0,
+                mod: 0,
+                total: 0,                
+                items: [],
+                label: '',
+            },
+            actitud: {
+                value: 0,
+                mod: 0,
+                total: 0,                
+                items: [],
+                label: '',
+            },
+            tecnicas: []
+        };
+        ['apariencia', 'renombre', 'naturaleza', 'actitud'].map(s => {
+
+            ['rasgo', 'item', 'profesion', 'pueblo', 'estrato'].map(s2 => {
+                actor.items.filter(e => e.type === s2 && e.system.rules === rules
+                                    && e.system.sociedad[s] && Number(e.system.sociedad[s]) !== 0).map(e => {
+                    if (s2 === 'profesion' && e.system.paterna) return
+                    oReturn[s].items.push(e)
+                    oReturn[s].mod += e.system.sociedad[s]
+                })
+            })
+            if (s === 'renombre' && actor.system.sociedad.deshonra.checked) {
+                oReturn[s].mod += actor.system.sociedad.deshonra.value
+            }
+          
+            oReturn[s].total = actor.system.sociedad[s].value + oReturn[s].mod
+        })
+
+        if (oReturn.apariencia.total >= -40) oReturn.apariencia.label = game.i18n.localize('common.repugnante')
+        if (oReturn.apariencia.total >= -20) oReturn.apariencia.label = game.i18n.localize('common.feo')
+        if (oReturn.apariencia.total >= 0) oReturn.apariencia.label = game.i18n.localize('common.normal0')
+        if (oReturn.apariencia.total >= 20) oReturn.apariencia.label = game.i18n.localize('common.atractivo')
+        if (oReturn.apariencia.total >= 40) oReturn.apariencia.label = game.i18n.localize('common.hermoso')
+        if (oReturn.apariencia.total >= 60) oReturn.apariencia.label = game.i18n.localize('common.bellezaInhumana')
+     
+        //Técnicas Sociales
+        actor.items.filter(e => e.type === 'tecnicaSocial' && e.system.rules === rules).map( e => {
+            let nValue = 0;
+            ['apariencia', 'renombre', 'naturaleza', 'actitud'].map(s => {
+                if (!e.system.sociedad[s]) return
+                nValue += oReturn[s].total
+            })
+            oReturn.tecnicas.push({
+                item: e,
+                value: nValue
+            })
+        })
+
+        return oReturn
     }
 
     /**
@@ -1849,6 +1928,140 @@ export default class helperSheets {
             if (item.system.rules === 'aq3') {
                 oSystem.ordo = item.system.ordo
             }
+
+            const newItem = await Item.create([{
+                                        name: name, 
+                                        img: item.img,
+                                        type: item.type, 
+                                        system: oSystem,
+                                        folder: folder}])
+        } catch(error) {
+            ui.notifications.error(`Error en el Sistema: ${error.message}`, { permanent: true });            
+        }
+    }    
+
+    /**
+     * reconocerFormula
+     * @param {*} rules
+     * @param {*} sContent 
+     */
+    static reconocerFormula(rules, sContent) {
+        const _config = aqConfig.hechizos[rules]
+        let oItem = {
+            name: '',
+            key: '',
+            requisitosAlquimia: '',
+            requisitosSkill: '',
+            requisitosFormula: '',
+            ptAp: '',
+            coste: '',
+            preparacion: '',
+            dosis: '',
+            caducidad: '',
+            descripcion: ''
+        }
+        let mLines = sContent.replaceAll('</p>', '').split('<p>').filter(e => e !== '')        
+        oItem.name = mLines[0].trim()
+        oItem.name = oItem.name.trim().charAt(0).toUpperCase() + oItem.name.trim().slice(1)
+        oItem.key = this.clearKey(oItem.name)
+
+        const mAux = mLines[1].trim().split(':')[1].split('/')        
+        var i = 0;
+        ['requisitosAlquimia', 'requisitosSkill', 'requisitosFormula'].map(s => {
+            const line0 = mAux[i]
+            if (!line0) return
+            const line = line0.replaceAll('%', '').replaceAll('.', '')
+            const a = line.split(',')[0].trim()
+            const b = line.split(',')[1] ? line.split(',')[1].trim() : ''
+            oItem[s] = a + (b ? ',' + b : '')
+            i++
+        })
+
+        oItem.ptAp =  Number(mLines[2].trim().split(':')[1].replaceAll('PAp', '').replaceAll('.', '').trim())
+        oItem.coste =  Number(mLines[3].trim().split(':')[1].replaceAll('reales', '').replaceAll('.', '').trim())
+        oItem.preparacion =  mLines[4].trim().split(':')[1].replaceAll('.', '').trim()
+        oItem.dosis =  mLines[5].trim().split(':')[1].replaceAll('.', '').trim().split('/')[0]
+        oItem.caducidad =  mLines[5].trim().split(':')[1].replaceAll('.', '').trim().split('/')[1]
+
+        for (var i=6; i<50; i++) {
+            if (!mLines[i]) continue
+            oItem.descripcion += `<p>${mLines[i].replaceAll('Efectos: ', '')}</p>`
+        }
+
+        return `<p><b>Nombre:</b> ${oItem.name}</p>
+                <p><b>Key:</b> ${oItem.key}</p>
+                <p><b>requisitosAlquimia:</b> ${oItem.requisitosAlquimia}</p>
+                <p><b>requisitosSkill:</b> ${oItem.requisitosSkill}</p>
+                <p><b>requisitosFormula:</b> ${oItem.requisitosFormula}</p>
+                <p><b>pta:</b> ${oItem.ptAp}</p>
+                <p><b>coste:</b> ${oItem.coste}</p>
+                <p><b>preparacion:</b> ${oItem.preparacion}</p>
+                <p><b>dosis:</b> ${oItem.dosis}</p>
+                <p><b>caducidad:</b> ${oItem.caducidad}</p>
+                <p><b>DESCRIPCIÓN</b> ${oItem.descripcion}</p>`                
+    }
+
+    /**
+     * parseFormula
+     * @param {*} sText 
+     * @param {*} item 
+     */
+    static async parseFormula(sText, item) {
+        try {
+            const folder = item.system.massEditFolder
+            let mLines = sText.split('<p><b>').filter(e => e !== '')
+            if (mLines.length === 1) mLines = sText.split('<p><strong>').filter(e => e !== '')
+            let oSystem = {
+                preparacion: {},
+                dosis: {
+                    caducidad: {},                    
+                },
+                requisitos: {},
+                rules: item.system.rules
+            }
+            let name = ''
+            mLines.map(line => {
+                line = line.replaceAll('<b>', '<strong>').replaceAll('</b>', '</strong>')
+
+                let sProperty = this.clearKey(line.replace('</strong></p>', '</strong> ').split('</strong> ')[0].toLowerCase().replaceAll(':', ''))
+                let sRest = ''
+                const temp = line.replace('</strong> ', '#--#').split('#--#')
+                if (temp.length === 1 ) sRest = line.split('</strong></p>')[1].replaceAll('<p></p>', '')
+                                   else sRest = line.replace('</strong> ', '#--#').split('#--#')[1].split('</p>\n')[0].trim()
+
+                if (sProperty !== 'preparacion' &&
+                    sProperty !== 'descripcion') sRest = sRest.split('</p>')[0]
+
+                if (sProperty === 'nombre') name = sRest
+                if (sProperty === 'key')  oSystem.key = sRest
+                if (sProperty === 'pta')  oSystem.pta = sRest
+                if (sProperty === 'coste')  oSystem.precio = sRest
+                if (sProperty === 'preparacion') { oSystem.preparacion.formula = sRest.split(' ')[0],
+                                                   oSystem.preparacion.unidad = sRest.split(' ')[1].replaceAll('</p>', '') }
+                if (sProperty === 'dosis') oSystem.dosis.formula = sRest
+                if (sProperty === 'caducidad') { if (sRest && sRest !== '') {
+                                                 oSystem.dosis.caducidad.formula = sRest.split(' ')[0]
+                                                 oSystem.dosis.caducidad.unidad = sRest.split(' ')[1] } else {
+                                                    oSystem.dosis.caducidad.formula = ''
+                                                    oSystem.dosis.caducidad.unidad = ''
+                                                 }
+                                               }
+                if (sProperty === 'requisitosalquimia') { oSystem.requisitos.alquimia = sRest }
+                if (sProperty === 'requisitosskill') { if (sRest && sRest !== '') {
+                                                 oSystem.requisitos.skill = true
+                                                 oSystem.requisitos.skillID = this.clearKey(sRest.split(',')[1])
+                                                 oSystem.requisitos.skillValue = sRest.split(',')[0] }}
+                if (sProperty === 'requisitosformula') { if (sRest && sRest !== '') {
+                                                 oSystem.requisitos.formula = true
+                                                 oSystem.requisitos.formulaID = this.clearKey(sRest.split(',')[0])
+                                                 if (sRest.split(',')[1])
+                                                    oSystem.requisitos.formulaExtraID = this.clearKey(sRest.split(',')[1])
+                                                }}
+                if (sProperty === 'descripcion') oSystem.descripcion = sRest
+            })
+            oSystem.fuente = (item.system.rules === 'aq3') ? "Fuente: Aquelarre Manual básico ( 3a Edición - NoSoloRol )" :
+                             (item.system.rules === 'aq4') ? "Fuente: Aquelarre Manual básico ( 4a Edición - NoSoloRol )" :
+                             (item.system.rules === 'vyc') ? "Fuente: Villa y Corte Manual básico ( NoSoloRol )" : ''
 
             const newItem = await Item.create([{
                                         name: name, 

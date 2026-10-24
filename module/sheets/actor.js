@@ -20,6 +20,7 @@ export default class extendActorSheet
   _sheetMode = this.constructor.SHEET_MODES.PLAY
   _firstTimeStep = '01' 
   _focus = null
+  _searching = ''
 
   /**
    * constructor
@@ -179,6 +180,9 @@ export default class extendActorSheet
    */
   async _prepareContext() {
 
+    const richDescription = await extendActorSheet.textImplentation('info.descripcion.value', this.document);
+    const richTrasfondo = await extendActorSheet.textImplentation('info.trasfondo.value', this.document);
+
     return {
       fields:             this.document.schema.fields,
       systemFields:       this.document.system.schema.fields,
@@ -192,16 +196,20 @@ export default class extendActorSheet
       rules:              helperContext.getRules(),
       myRules:            this.document.system.rules,
       configRULES:        configRULES[this.document.system.rules],
-      mainRenderOptions:  helperSheets.getMainRenderOptions(this)      
+      mainRenderOptions:  helperSheets.getMainRenderOptions(this),
+      
+      _searching:           this._searching,
+      _richDescripcion:     richDescription,
+      _richTrasfondo:       richTrasfondo      
     }    
   }
 
   /**
    * textImplentation
    */
-  static async textImplentation(field, document) {
+  static async textImplentation(fieldPath, document) {
       return await foundry.applications.ux.TextEditor.implementation.enrichHTML(
-                          document.system[field], { relativeTo: document }) 
+                          this.access(document.system, fieldPath), { relativeTo: document })                           
   }
 
   /**
@@ -424,5 +432,10 @@ export default class extendActorSheet
     path.split('.').map(s => { oReturn = oReturn[s] })
     return oReturn
   }
+  static access(object, path) {
+    let oReturn = object
+    path.split('.').map(s => { oReturn = oReturn[s] })
+    return oReturn
+  }    
 
 }

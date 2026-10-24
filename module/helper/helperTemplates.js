@@ -32,6 +32,7 @@ export default class helperTemplates {
             secuelas_comun: `${character}/parts/comun/secuelas.hbs`,
             orgullos_comun: `${character}/parts/comun/orgullos.hbs`,
             verguenzas_comun: `${character}/parts/comun/verguenzas.hbs`,
+            trasfondo_comun: `${character}/parts/comun/trasfondo.hbs`,
 
             combate_armas_comun: `${character}/parts/comun/combateArmas.hbs`,
             combate_mods_comun: `${character}/parts/comun/combateMods.hbs`,
@@ -72,6 +73,7 @@ export default class helperTemplates {
             stats_rrirr_vyc: `${character}/parts/vyc/stats_rrirr.hbs`,
             stats_health_vyc: `${character}/parts/vyc/stats_health.hbs`,            
             stats_percents_vyc: `${character}/parts/vyc/stats_percents.hbs`,
+            modSociales_vyc: `${character}/parts/vyc/modSociales.hbs`,
             combat_location_vyc: `${character}/parts/vyc/combat_location.hbs`,
 
             // --- ITEMS ---
@@ -93,6 +95,7 @@ export default class helperTemplates {
             main_Ensalmo: `${item}/main/ensalmo.hbs`,
             main_Formula: `${item}/main/formula.hbs`,
             main_Tienda: `${item}/main/tienda.hbs`,
+            main_TecnicaSocial: `${item}/main/tecnicaSocial.hbs`,
 
             item_footer: `${item}/parts/_footer.hbs`,
             item_descripcion: `${item}/parts/_description.hbs`,
@@ -115,6 +118,7 @@ export default class helperTemplates {
             header_Ensalmo: `${item}/headers/ensalmo.hbs`,
             header_Formula: `${item}/headers/formula.hbs`,
             header_Tienda: `${item}/headers/tienda.hbs`,
+            header_TecnicaSocial: `${item}/headers/tecnicaSocial.hbs`,
 
             tab_Descripcion: `${item}/tabs/descripcion.hbs`,
             tab_Idiomas: `${item}/tabs/idiomas.hbs`,

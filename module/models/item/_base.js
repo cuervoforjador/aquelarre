@@ -15,6 +15,7 @@ export default class extendItem_Base extends extend_Base {
         schema.fuente =  new api.StringField({ initial: '' })
 
         schema.precio = new api.NumberField({ nullable: true, initial: null })
+        schema.showPrecio = new api.BooleanField({ initial: false })
         schema.peso = new api.NumberField({ nullable: true, initial: null })
 
         schema.ubicacion = new api.SchemaField({

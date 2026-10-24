@@ -38,9 +38,21 @@ export default class extendCharacter_Base extends extend_Base {
             profesion: md_lore({label: 'common.profesion', hint: 'common.profesion'}),
             profesionPaterna: md_lore({label: 'common.profesionPaterna', hint: 'common.profesionPaterna'}),
             familia: md_text({label: 'common.familia', hint: 'common.familia'}),
-            descripcion: md_text({label: 'common.descripcion', hint: 'common.descripcion'}),            
+            descripcion: md_text({label: 'common.descripcion', hint: 'common.descripcion'}),
+            trasfondo: md_text({label: 'common.trasfondo', hint: 'common.trasfondo'}),
             limpiezaSangre: new api.NumberField({ nullable: true, initial: 0 }),
             localizacion: new api.StringField({ initial: 'humanoide' }),            
+        })
+
+        schema.sociedad = new api.SchemaField({
+            apariencia: md_stat({value: 0, label: 'common.apariencia', hint: 'common.apariencia'}),
+            renombre: md_stat({value: 0, label: 'common.renombre', hint: 'common.renombre'}),
+            naturaleza: md_stat({value: 0, label: 'common.naturaleza', hint: 'common.naturaleza'}),
+            actitud: md_stat({value: 0, label: 'common.actitud', hint: 'common.actitud'}),            
+            deshonra: new api.SchemaField({
+                checked: new api.BooleanField({ initial: false }),
+                value: new api.NumberField({ nullable: true, initial: 0 })
+            })
         })
 
         schema.economia = new api.SchemaField({

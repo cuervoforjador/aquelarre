@@ -93,7 +93,7 @@ export default class extendCharacterSheet extends extendActorSheet {
       initial: "stats"
     },
     stats: {
-      tabs: [ {id: "principal"}, {id: "rasgos"} ],
+      tabs: [ {id: "principal"}, {id: "rasgos"}, {id: "trasfondo"}, {id: "sociales"} ],
       initial: "principal"
     },
     combate: {
@@ -141,6 +141,7 @@ export default class extendCharacterSheet extends extendActorSheet {
     context.secuelas = helperSheets.itemsSecuelas(this.document, rules)
     context.orgullos = helperSheets.itemsOrgullos(this.document, rules)
     context.verguenzas = helperSheets.itemsVerguenzas(this.document, rules)
+    context.sociales = helperSheets.itemsSociales(this.document, rules)
     context.acciones = helperSheets.itemsAcciones(this.document, rules)
     context.weapons = helperSheets.itemsWeapons(this.document, rules)
     context.armors = helperSheets.itemsArmors(this.document, rules)

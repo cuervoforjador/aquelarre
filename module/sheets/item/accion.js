@@ -36,6 +36,7 @@ export default class sheetAccion extends extendItem0Sheet {
     const context = await super._prepareContext()
 
     context.competenciasArmas = await helperContext.getCompetenciasArmasSheet(rules)
+    context._textResumen = await extendItem0Sheet.textImplentation('resumen', this.document)
 
     context.tabs = this._prepareTabs("primary")
     return context

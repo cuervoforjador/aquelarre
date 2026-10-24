@@ -7,6 +7,7 @@ export const configRULES = {
         verCultura: false,          // Muestra la cultura (LORE) en la Ficha del Personaje
         verFamilia: true,           // Muestra la familia (LORE) en la Ficha del Personaje
         verExtraLore: false,        // Muestra los campos Edad, Altura, Peso
+        verSociedad: false,         // Muestra Mod. Sociales
         unitDistancia: 'varas',     // Unidad de distancia
         unitAltura: 'varas',        // Unidad de altura
         unitPeso: 'libras',         // Unidad de peso
@@ -35,6 +36,7 @@ export const configRULES = {
         verCultura: true,
         verFamilia: false,  
         verExtraLore: true,
+        verSociedad: true,
         unitDistancia: 'varas',
         unitAltura: 'varas',
         unitPeso: 'libras',
@@ -63,6 +65,7 @@ export const configRULES = {
         verCultura: false,
         verFamilia: true,
         verExtraLore: true,
+        verSociedad: true,
         unitDistancia: 'varas',
         unitAltura: 'varas',
         unitPeso: 'libras',
@@ -82,6 +85,6 @@ export const configRULES = {
             ensalmos: true,
             esgrima: true,
             alquimia: true
-        }             
+        }         
     },
 }

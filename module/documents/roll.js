@@ -182,6 +182,13 @@ export default class newRoll extends Roll {
     await this.postMessage()
   }
 
+  /**
+   * rollTecnica
+   */
+  async rollTecnica() {
+    await this.postMessage()
+  }
+
   _evalAction() {
     this.action = null
     if (this.data.step) { 
@@ -779,6 +786,7 @@ export default class newRoll extends Roll {
   }
 
   _messageParts_DiceToolTip() {
+    if (this.rollType === 'tecnica') return ''
     return `<div class="dice-tooltip">
               <div class="wrapper">
                 <section class="tooltip-part">
@@ -840,7 +848,7 @@ export default class newRoll extends Roll {
   }
 
   _messageParts_DiceTotal() {
-
+    if (this.rollType === 'tecnica') return ''
     let boxLeftContent = this.rollType === 'simple' ? `${this.total} <span class="_percent"> / ${this.evaluatedResult.percentFinal}</span>` : 
                          this.rollType === 'damage' ? `<div class="_subTitle">${game.i18n.localize('common.dano')}</div>
                                                        <div class="_value">${this.damageTotal}</div>` : 
@@ -898,6 +906,7 @@ export default class newRoll extends Roll {
   }
 
   _messageParts_Buttons() {
+    if (this.rollType === 'tecnica') return ''
     let sButtons = this.rollType === 'damage' ? 
                       this.damageTotal > 0 ? 
                           `<button type="button" 
@@ -919,7 +928,8 @@ export default class newRoll extends Roll {
     let sText = this.rollType === 'damage' ? 
                     this.secuela.apply ? `<div class="_extra _secuela">${game.i18n.localize('explain.aplicaSecuela')}</div>` : '' :
                 this.rollType === 'simple' ? '' :
-                this.rollType === 'location' ? '' : ''
+                this.rollType === 'location' ? '' : 
+                this.rollType === 'tecnica' ? `<div class="_extra _secuela">${this.data.item?.system.descripcion}</div>` : ''
     return sText
   }
 

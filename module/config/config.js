@@ -549,6 +549,12 @@ export const aqConfig = {
                 skillID: 'espadas',
                 minSkill: 60
             },
+            iniciales: [
+                {min: 60, max: 80, ptAp: 20},
+                {min: 81, max: 90, ptAp: 30},
+                {min: 91, max: 100, ptAp: 40},
+                {min: 101, max: 999, ptAp: 50}
+            ],         
         }
     },
     alquimia: {
@@ -558,7 +564,30 @@ export const aqConfig = {
             requisitos: {
                 skillID: 'alquimia',
                 minSkill: 60
-            },            
+            },  
+            iniciales: [
+                {min: 60, max: 80, ptAp: 30},
+                {min: 81, max: 90, ptAp: 40},
+                {min: 91, max: 100, ptAp: 50},
+                {min: 101, max: 999, ptAp: 60}
+            ],                       
+        }
+    },
+    rasgosWizard: {
+        aq3: {
+            tiradas: [
+                {min: 17, max: 18, obligatorias: 0, opcionales: 4},
+                {min: 19, max: 20, obligatorias: 1, opcionales: 3},
+                {min: 21, max: 22, obligatorias: 2, opcionales: 2},
+                {min: 23, max: 24, obligatorias: 3, opcionales: 1},
+                {min: 25, max: 99, obligatorias: 4, opcionales: 0}
+            ]
+        },
+        aq4: {
+            tiradas: []
+        },
+        vyc: {
+            tiradas: []
         }
     }
 }

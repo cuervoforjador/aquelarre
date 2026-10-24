@@ -874,7 +874,13 @@ form._extend ._simpleText._medSize .prosemirror,
 form._extend ._simpleText._medSize prose-mirror {
     min-height: calc(var(--fSize) * 18);
 }
-
+prose-mirror.editor.prosemirror[name="system.resumen"].inactive {
+    height: 100px;
+    min-height: 100px;
+}
+prose-mirror.editor.prosemirror[name="system.resumen"] p {
+    font-style: italic;
+}
 
 form._extend ._sheetContent ._properties {
     display: flex;
@@ -993,6 +999,35 @@ form._extend ._options {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
+}
+
+form._extend section.tab.active[data-tab="trasfondo"],
+form._extend ._stats ._trasfondo {
+    width: 100%;
+}
+form._extend section.tab.active[data-tab="sociales"],
+form._extend ._stats ._modSociales {
+    width: 100%;
+}
+form._extend ._modSociales ._chars {
+    width: 100%;
+}
+form._extend ._modSociales label._charTitle {
+    min-width: calc(100% - var(--fSize) * 13);
+}
+form._extend ._modSociales label._input,
+form._extend ._modSociales input._charValue {
+    width: calc(var(--fSize) * 3.5);
+}
+form._extend ._modSociales label._inter {
+    width: calc(var(--fSize) * 1);
+    text-align: center;
+    padding-left: 5px;
+    font-weight: 100;
+    font-size: calc(var(--fSize) * 1.4);
+}
+form._extend ._modSociales label._input._charValue._total {
+    border: 2px solid #0000007d;
 }
 
 /** --- TIRADAS --- */
@@ -2337,6 +2372,7 @@ form._extend section.tab.active[data-tab="massedit"] {
     height: calc(var(--fSize) * 6);
     display: flex;
     position: relative;
+    z-index: 2;
 }
 ._extend ._wizardBar ._wizardLine {
     position: absolute;
@@ -2429,13 +2465,22 @@ form._extend section.tab.active[data-tab="massedit"] {
     height: 100%;
     position: absolute;
     z-index: 1;
+    background-image: url(../assets/ui/diagonal.png);
+    background-size: 50px 50px;
+    background: #000000b3;
 }
 ._header ._wizardFog {
-    width: calc(100% - 20px);
+    width: 100%;
     height: calc(100% - var(--fSize) * 5);
     top: calc(var(--fSize) * 5);
+    left: 0;
     position: absolute;
     z-index: 1;
+    border-top: 4px solid #000000;
+    background-image: url(../assets/ui/diagonal.png);
+    background-position: bottom left;
+    background-size: 50px 50px;
+    background: #000000b3;
 }
 
 

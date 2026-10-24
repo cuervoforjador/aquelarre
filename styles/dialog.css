@@ -572,6 +572,7 @@ dialog._wizard .window-content input._big {
     font-size: calc(var(--fSize) * 1.5);
     line-height: calc(var(--fSize) * 1.5);
     width: calc(var(--fSize) * 30);
+    height: calc(var(--fSize) * 2);
 }
 dialog._wizard .window-content input[type="radio"]::before {
     margin: 0 !important;
@@ -824,4 +825,28 @@ dialog._wizard ._selector optgroup {
 dialog._wizard ._selector option {
     background: #cec6b5;
     color: #000;
+}
+dialog._wizard ._big {
+    font-size: calc(var(--fSize) * 1.75);
+}
+dialog._wizard ._big ._value {
+    font-size: calc(var(--fSize) * 2.15);
+    font-weight: 900;
+}
+dialog._wizard input._input {
+    width: calc(var(--fSize) * 5);
+    color: #000;
+    font-weight: 900;
+}
+dialog._wizard input._input._big {
+    width: calc(var(--fSize) * 5) !important;
+    border: 1px solid #0000004a;
+    height: calc(var(--fSize) * 1.75) !important;
+}
+dialog._wizard label._rowed {
+    width: calc(var(--fSize) * 5);
+}
+dialog._wizard prose-mirror[name="trasfondoText"] {
+    width: 100%;
+    min-height: 300px;
 }

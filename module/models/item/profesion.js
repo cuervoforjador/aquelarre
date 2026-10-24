@@ -42,6 +42,10 @@ export default class modelProfesion extends extendItem_Base {
             high: new api.NumberField({ nullable: true, initial: null })
         }))
         
+        schema.sociedad = new api.SchemaField({
+            apariencia: new api.NumberField({ nullable: true, initial: null })
+        })
+
         return schema;
     }
 

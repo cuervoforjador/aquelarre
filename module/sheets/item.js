@@ -197,6 +197,7 @@ export default class extendItem0Sheet
 
     if (this.document.type === 'hechizo') helperSheets.parseHechizo(sText, this.document)
     if (this.document.type === 'ensalmo') helperSheets.parseEnsalmo(sText, this.document)
+    if (this.document.type === 'formula') helperSheets.parseFormula(sText, this.document)
   }
 
   /** @override */
@@ -389,6 +390,7 @@ export default class extendItem0Sheet
           let sContent = content.html()                    
           if (type === 'hechizo') sContent = helperSheets.reconocerHechizo(rules, sContent)
           if (type === 'ensalmo') sContent = helperSheets.reconocerEnsalmo(rules, sContent)
+          if (type === 'formula') sContent = helperSheets.reconocerFormula(rules, sContent)
           content.html(sContent)
           await context.item.update({"system.massEdit": sContent})
         })
